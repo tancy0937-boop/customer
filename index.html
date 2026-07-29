@@ -108,6 +108,13 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .tagoptions{display:flex;flex-wrap:wrap;gap:7px;padding:2px 12px 12px}
 .tagopt{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}
 .tagopt.on{background:var(--teal-soft);color:#1f5249;border-color:transparent;font-weight:700}
+.tagmanage{display:flex;flex-direction:column;gap:8px}
+.tmrow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:var(--surface)}
+.tmname{font-weight:700;font-size:13.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tmcount{font-size:11.5px;color:var(--muted);background:var(--surface-2);padding:2px 9px;border-radius:999px;flex:none;font-weight:700}
+.tmcount.zero{color:var(--danger);background:var(--danger-soft)}
+.tmbtn{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--teal);font-size:12px;font-weight:700;padding:6px 10px;border-radius:9px;cursor:pointer}
+.tmbtn.danger{color:var(--danger);border-color:var(--danger-soft)}
 .tagaddrow input{flex:1}
 .tagaddrow .btn{white-space:nowrap;padding:0 16px;height:42px}
 .chip{
@@ -740,6 +747,75 @@ function toggleTagFilter(t){
   render();
 }
 function clearTagFilter(){ tagFilter=[]; render(); }
+
+/* ---------- tag management (rename/delete/usage counts) ---------- */
+function tagUsageCounts(){
+  const counts={};
+  allTags().forEach(t=>counts[t]=0);
+  DB.clients.forEach(c=>(c.tags||[]).forEach(t=>{ if(t) counts[t]=(counts[t]||0)+1; }));
+  return counts;
+}
+function tagManageListHtml(){
+  const counts=tagUsageCounts();
+  const tags=Object.keys(counts).sort((a,b)=> counts[b]-counts[a] || a.localeCompare(b,"zh-Hant"));
+  if(!tags.length) return `<div style="color:var(--faint);font-size:13px">尚無標籤，先到客戶編輯畫面新增幾個標籤吧。</div>`;
+  return `<div class="tagmanage">${tags.map(t=>`
+    <div class="tmrow">
+      <span class="tmname">${esc(t)}</span>
+      <span class="tmcount ${counts[t]===0?"zero":""}">${counts[t]} 筆</span>
+      <button type="button" class="tmbtn" data-tag="${esc(t)}" onclick="renameTagPrompt(this.dataset.tag)">重新命名</button>
+      <button type="button" class="tmbtn danger" data-tag="${esc(t)}" onclick="deleteTagPrompt(this.dataset.tag)">刪除</button>
+    </div>`).join("")}</div>`;
+}
+function refreshTagManageList(){ const el=$("#tagManageList"); if(el) el.innerHTML=tagManageListHtml(); }
+let tagBeingRenamed=null, tagBeingDeleted=null;
+function renameTagPrompt(t){
+  tagBeingRenamed=t;
+  openSheet("重新命名標籤", `
+    <div class="field"><label>目前名稱</label><input value="${esc(t)}" disabled></div>
+    <div class="field"><label>新名稱</label><input id="tmNewName" value="${esc(t)}" placeholder="輸入新的標籤名稱"></div>
+    <p style="color:var(--muted);font-size:12.5px;margin:-4px 0 14px">若改成和現有標籤相同的名稱，兩個標籤會自動合併成一個，適合用來整併相近的標籤。</p>
+    <button class="btn green full" onclick="doRenameTag()">確認重新命名</button>
+  `);
+}
+function doRenameTag(){
+  const oldT=tagBeingRenamed; if(!oldT) return;
+  const newT=($("#tmNewName")||{}).value?.trim();
+  if(!newT){ toast("請輸入新名稱","warn"); return; }
+  if(newT===oldT){ closeSheet(); return; }
+  DB.clients.forEach(c=>{
+    if(!Array.isArray(c.tags)||!c.tags.includes(oldT)) return;
+    c.tags=c.tags.filter(x=>x!==oldT);
+    if(!c.tags.includes(newT)) c.tags.push(newT);
+  });
+  DB.tagCatalog=(DB.tagCatalog||[]).filter(x=>x!==oldT);
+  if(!DB.tagCatalog.includes(newT)) DB.tagCatalog.push(newT);
+  tagBeingRenamed=null;
+  commit(); closeSheet();
+  toast("已更新標籤");
+  if(view==="guide") refreshTagManageList(); else render();
+}
+function deleteTagPrompt(t){
+  tagBeingDeleted=t;
+  const n=tagUsageCounts()[t]||0;
+  openSheet("刪除標籤", `
+    <p style="font-size:14px;line-height:1.65">確定要刪除標籤「<b>${esc(t)}</b>」嗎？${n?`目前有 <b>${n}</b> 位客戶使用這個標籤，刪除後會直接從這些客戶身上移除這個標籤（不會刪除客戶資料），此動作無法復原。`:"目前沒有客戶使用這個標籤，可以放心刪除。"}</p>
+    <div class="btnrow" style="margin-top:16px">
+      <button class="btn ghost" onclick="closeSheet()">取消</button>
+      <button class="btn" style="background:var(--danger);color:#fff" onclick="doDeleteTag()">確定刪除</button>
+    </div>
+  `);
+}
+function doDeleteTag(){
+  const t=tagBeingDeleted; if(!t) return;
+  DB.clients.forEach(c=>{ if(Array.isArray(c.tags)) c.tags=c.tags.filter(x=>x!==t); });
+  DB.tagCatalog=(DB.tagCatalog||[]).filter(x=>x!==t);
+  tagFilter=tagFilter.filter(x=>x!==t);
+  tagBeingDeleted=null;
+  commit(); closeSheet();
+  toast("已刪除標籤");
+  if(view==="guide") refreshTagManageList(); else render();
+}
 let lsOK = true;
 let dirty = false;
 let clientMode = "list";   // 'list' | 'board'
@@ -1621,6 +1697,11 @@ function viewGuide(){
       ${SOP.map(s=>`<li><span class="n"></span><div><b>${esc(s.title)}</b>${s.desc?`<small>${esc(s.desc)}</small>`:""}</div></li>`).join("")}
     </ol>
     <button class="btn green full" style="margin-top:14px" onclick="openSopEditor()">✏️ 自訂 SOP 流程（依你的銷售邏輯）</button>
+  </div>
+  <div class="info">
+    <h3>🏷️ 標籤整理</h3>
+    <p>目前各標籤的使用筆數如下，可以重新命名（跟現有標籤同名即自動合併）或刪除少用的標籤，方便歸整。</p>
+    <div id="tagManageList">${tagManageListHtml()}</div>
   </div>
   <div class="info">
     <h3>💾 備份與還原（重要）</h3>
