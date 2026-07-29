@@ -838,7 +838,8 @@ function gcalPushEnabled(){ return DB.meta.gcalPushVisits!==false; }
 function gcalReady(){ return typeof google!=="undefined" && google.accounts && google.accounts.oauth2; }
 
 function gcalConnect(silent){
-  const cid=gcalClientId() || (($("#setGcalCid")||{}).value||"").trim();
+  const fieldVal=(($("#setGcalCid")||{}).value||"").trim();
+  const cid=fieldVal || gcalClientId();
   if(!cid){ if(!silent) toast("請先貼上 Google 用戶端 ID","warn"); return; }
   gcalSetClientId(cid);
   if(!gcalReady()){ if(!silent) toast("Google 服務載入中，請稍後再試","warn"); return; }
