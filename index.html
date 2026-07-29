@@ -1,22 +1,2518 @@
-<!doctype html><html data-build-id="20d9aa4742" data-git-hash="20d9aa474237b1cc7f12faa3471d142703130109" data-build-timestamp="1784947364" data-version="1.0.0" data-env="" data-color-version="v2" lang="en" data-theme="claude" data-mode="light" data-density="comfortable" class="cds-root h-screen antialiased scroll-smooth"><head data-ion-ip-country="TW"><meta property="og:title" content="Claude Artifact"><meta name="twitter:title" content="Claude Artifact"><meta name="description" content="Try out Artifacts created by Claude users"><meta property="og:description" content="Try out Artifacts created by Claude users"><meta name="twitter:description" content="Try out Artifacts created by Claude users"><meta name="robots" content="noindex, nofollow"><link rel="preconnect" href="https://assets-proxy.anthropic.com" crossorigin><link rel="dns-prefetch" href="https://assets-proxy.anthropic.com"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title data-react-fallback>Claude Artifact</title><meta data-react-fallback name="description" content="Claude is Anthropic's AI, built for problem solvers. Tackle complex challenges, analyze data, write code, and think through your hardest work."><meta name="apple-itunes-app" content="app-id=6473753684"><meta property="og:type" content="website"><meta property="og:site_name" content="Claude"><meta property="og:image" content="https://claude.ai/images/claude_ogimage.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/svg+xml" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/cd02a42d9-Vq_H3mgS.svg"><link rel="icon" type="image/png" sizes="32x32" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/ce67964e7-CAX1bqSh.png"><link rel="icon" type="image/png" sizes="16x16" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c03e51811-DebilQLI.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c129d018a-jJjJELY8.png"><link rel="apple-touch-startup-image" href="/images/claude_app_icon.png"><link rel="manifest" href="/manifest.json"><meta name="mobile-web-app-capable" content="yes"><link rel="preload" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/cc27851ad-DDVos-BJ.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c66fc489e-2VcCjn5t.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c0f671921-_JGacpB2.woff2" as="font" type="font/woff2" crossorigin><script nonce="A/I3tmcZ3HGRfTD3IeA8Gw==">void 0===globalThis.process&&(globalThis.process={env:{},cwd:function(){return"/"}}),void 0===globalThis.global&&(globalThis.global=globalThis),"function"!=typeof URL.parse&&(URL.parse=function(n,o){try{return new URL(n,o)}catch(n){return null}}),"function"!=typeof URL.canParse&&(URL.canParse=function(n,o){try{return new URL(n,o),!0}catch(n){return!1}})</script><script type="application/ld+json" nonce="A/I3tmcZ3HGRfTD3IeA8Gw==">{
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "WebSite",
-            "name": "Claude",
-            "alternateName": ["Claude.ai", "Claude by Anthropic"],
-            "url": "https://claude.com"
-          },
-          {
-            "@type": "Organization",
-            "name": "Anthropic",
-            "url": "https://www.anthropic.com",
-            "logo": "https://claude.ai/images/claude_ogimage.png",
-            "sameAs": [
-              "https://x.com/AnthropicAI",
-              "https://www.linkedin.com/company/anthropic",
-              "https://www.youtube.com/@anthropic-ai"
-            ]
-          }
-        ]
-      }</script><script nonce="A/I3tmcZ3HGRfTD3IeA8Gw==">"use strict";!function(){try{performance.mark?.("rq_cache:preload_start");let e="keyval-store",r="keyval",o="react-query-cache",t=new Promise(t=>{if(!window.indexedDB)return void t(void 0);let a=indexedDB.open(e);a.onupgradeneeded=()=>{a.transaction?.abort()},a.onerror=()=>t(void 0),a.onsuccess=()=>{let c=a.result;if(!c.objectStoreNames.contains(r))return c.close(),indexedDB.deleteDatabase(e),void t(void 0);try{let e=c.transaction(r,"readonly").objectStore(r).get(o);e.onerror=()=>{c.close(),t(void 0)},e.onsuccess=()=>{c.close(),window.__PRELOADED_IDB_CACHE_RESULT__=e.result,t(e.result)}}catch{c.close(),t(void 0)}}});window.__PRELOADED_IDB_CACHE__=t,performance.measure?.("rq_cache:preload_exec",{start:"rq_cache:preload_start"})}catch{}}()</script><script nonce="A/I3tmcZ3HGRfTD3IeA8Gw==">"use strict";(()=>{function t(t){let e=t+"=";for(let t of document.cookie.split(";")){let n=t.trim();if(n.startsWith(e))try{return decodeURIComponent(n.slice(e.length))}catch{return}}}function e(t){if(0===t.length)return t;let e=t.replace(/[^\x20-\x7E]/g,"").trim();return e.length>0?e:"invalid"}var n=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,a=/^[a-zA-Z]{2,3}(-[a-zA-Z0-9]{2,8}){0,3}$/;var r=/[?&]platform=([^&#]*)/,i=/[?&]appVersion=([^&#]*)/,o=/^[0-9A-Za-z][0-9A-Za-z.+-]{0,63}$/;function s(t,e){let n=e.exec(t);if(null===n)return null;try{return decodeURIComponent(n[1])}catch{return null}}try{if(window.__SKIP_BOOTSTRAP_PRELOAD__)throw new Error;if(function(){if(!window.location.pathname.startsWith("/mobile/mcp-app-runtime/"))return!1;let t=s(window.location.search,r);if("ios"!==t&&"android"!==t)return!1;let e=s(window.location.search,i);return null!==e&&o.test(e)}())throw window.__BOOTSTRAP_PRELOAD__={wrapperSkip:!0},new Error;performance.mark?.("bootstrap:preload_start");let{path:c,headers:l}=function(r={}){let i=r.apiPrefix??"/edge-api",o=navigator.userAgent.toLowerCase(),s=(o.indexOf("claude/")>=0||o.indexOf("claudenest/")>=0||o.indexOf("claudegov/")>=0)&&!!window.claudeAppBindings,c=t("lastActiveOrg"),l=t("sessionKeyLC")??t("sessionKeyV3LC"),d=!r.skipOrgPath&&l&&c&&n.test(c)?c:void 0,p="?statsig_hashing_algorithm=djb2&growthbook_format=sdk"+(s?"":"&include_system_prompts=false"),u=d?i+"/bootstrap/"+d+"/app_start"+p:i+"/bootstrap"+p,h=document.documentElement.dataset,f={"anthropic-client-sha":h.gitHash??"unknown","anthropic-client-version":h.version??"unknown","anthropic-client-build":h.buildTimestamp??"unknown","anthropic-device-id":e(t("anthropic-device-id")??"unknown"),"anthropic-client-platform":s?"desktop_app":"web_claude_ai"},_=function(t){let e=t.length>=2&&t.startsWith('"')&&t.endsWith('"')?t.slice(1,-1):t;return/^[a-zA-Z0-9_.-]{1,128}$/.test(e)?e:void 0}(t("ajs_anonymous_id")??"");_&&(f["anthropic-anonymous-id"]=_);let m=t("activitySessionId");m&&(f["x-activity-session-id"]=e(m));let w=function(){try{let t=localStorage.getItem("spa:locale");return t&&a.test(t)?t:void 0}catch{return}}();return w&&(f["accept-language"]=w),{path:u,headers:f}}(),d=fetch(c,{credentials:"include",headers:l});d.catch(()=>{}),window.__BOOTSTRAP_PRELOAD__={promise:d,path:c},performance.measure?.("bootstrap:preload_exec",{start:"bootstrap:preload_start"})}catch{}})()</script><script nonce="A/I3tmcZ3HGRfTD3IeA8Gw==">"use strict";(()=>{var e="en-US",t=["en-US","de-DE","fr-FR","ko-KR","ja-JP","es-419","es-ES","it-IT","hi-IN","pt-BR","id-ID"];try{if(window.__SKIP_I18N_CATALOG_PRELOAD__)throw new Error;if(!function(){try{return"1"===localStorage.getItem("spa:i18nEarlyCatalog")}catch{return!1}}())throw new Error;let r=function(){let r=null;try{r=localStorage.getItem("spa:locale")}catch{r=null}return function(r,o=t){let n=new Map;for(let e of o){let t=e.toLowerCase();n.set(t,e);let r=t.split("-")[0];n.has(r)||n.set(r,e)}for(let e of r)if(e){let t=e.toLowerCase(),r=n.get(t);if(void 0!==r)return r;let o=t.split("-")[0],a=o.length?n.get(o):void 0;if(void 0!==a)return a}return e}([r,...navigator.languages])}();if(r===e)throw new Error;performance.mark?.("i18n:catalog_preload_start");let o=function(e){let t=encodeURIComponent(e);return{base:"/i18n/"+t+".json",dynamic:"/i18n/dynamic/"+t+".json",overrides:"/i18n/"+t+".overrides.json"}}(r),n={};for(let e of[o.base,o.dynamic,o.overrides]){let t=fetch(e);t.catch(()=>{}),n[e]=t}let a={locale:r,responses:n};window.__I18N_CATALOG_PRELOAD__=a,performance.measure?.("i18n:catalog_preload_exec",{start:"i18n:catalog_preload_start"})}catch{}})()</script><script type="module" crossorigin src="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/index-BZps39tL.js" nonce="A/I3tmcZ3HGRfTD3IeA8Gw=="></script><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/rolldown-runtime-iuO8RvI4.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/preload-helper-CjYDCzGS.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-frame-C4lqhs5_.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-0-BpstZget.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-1-6Kjp4OzW.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-2-Bkh7uebG.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-3-Cu3JRM9I.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-4-CctMYwR7.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-5-Cb1cvLzm.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-6-CuiWblc9.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-7-CwT69xBy.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-8-2pWBLh3o.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-9-B137znR7.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-10-BfOcttCn.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-11-CBjL0cp1.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-frame-Cc48q5Pz.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-0-B6nQ_22V.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-1-DA7Lp2m3.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-2-DxokTDcv.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-3-BiRzWlbq.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-4-feWZh8Dd.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-5-CO_G6jvu.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-6-DW8hstAB.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-7-BN5pWiQJ.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-8-ZzHOMhTR.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-9-CeyQ7Jls.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-10-DQ54zC-7.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-11-DcVbCssQ.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-12-BFkqlnt3.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-13-4Kblqpip.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-14-7yepiolN.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-15-Bl-GA3yR.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-16-B73NrnPK.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-17-CnVWyvs4.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-18-DICbOp8-.js"><link rel="modulepreload" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-19-PHkIpyjQ.js"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-all-10-ab8c5DQB.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-frame-Dl97dde7.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-1-DQrj0z26.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-3-CL45MlPx.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-7-DCxNJvZj.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-9-1byzjcqY.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-12-gJXTt32m.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-13-DcvAU-AX.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-14-CPjv1KCp.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-15-BA78Fll-.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-17-BiiQSXml.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-18-Bb85X5QU.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/shared-19-Nr1OlJep.css"><link rel="stylesheet" crossorigin href="https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c6a992d55-dpf7G8XJ.css"></head><body class="bg-bg-100 text-text-100 font-ui min-h-screen"><div id="root"></div><script nonce="A/I3tmcZ3HGRfTD3IeA8Gw==">(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.nonce='A/I3tmcZ3HGRfTD3IeA8Gw==';d.innerHTML="window.__CF$cv$params={r:'a22223681dc54a87',t:'MTc4NTIyMzQwNA=='};var a=document.createElement('script');a.nonce='A/I3tmcZ3HGRfTD3IeA8Gw==';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="客戶資料庫">
+<meta name="theme-color" content="#173F39">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADMElEQVR4nO3dwW0kVRhGUQ8iByIgCFYTAUIkQxAkgxAREAfJsOiNseZ6aqpbqg/3OTtLLav1+/q5+lU9+dMPn396gS/57uo3wC5xkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHKTv7/8Wf//+6+svP//2xz3f7Z+//rzv7fyP/fjzL1e/hf/4dM+/Dn2TxWvnEnnmMm6m+jgfxztl3HxTH7J4bSSRk9ccXy3j4GtYNnFBatl4Y2QgZ+I4viQceeXIINYsjGVi5WCTOEjiIImDdCaO4xsYd+6Wcq3rV46RDZ81C2M5GceRJeH4srEwiCkjAzm/crz/s/cH5QO468bbzQPvyi7s/FxrZM24eUAcj/XMfUyV8TIYBzuu/7TCLHGQxEESB0kcJHGQxEESB0kcJHGQxEF6wFnZN7fK7rx79MxHodaec7jrxts7d1DPJfLMZdxM9XE+jq/eW/+mPmTx2kgiJ685jjx18cxPZnwMExeklo03RgZyJo7jS8KRV44MYs3CWCZWDjaJgyQOkjhIZ+I4voGx9qw93+T6lWNkw2fNwlhOxnFkSTi+bCwMYsrIQM6vHO//7P1B+QAecOLtgXdlF3Z+rjWyZtzMHYd85j6myngZjIMd139aYZY4SOIgiYMkDpI4SOIgiYMkDpI4SOIgzZ2VfeajUGvPOWydlX3mMm6m+lg5KyuL10YScVaWNHFBKqM3RgZy/VnZkUGsWRjLxMrBJnGQxEESB8lZWdL1K4eAvmhhLBNnZRcGMWVkIM7KkrbOyi7s/Fxr6pdq7jjkM/cxVcbLYBzsuP7TCrPEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZD+BbGfqRujirHXAAAAAElFTkSuQmCC">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABBElEQVR4nO2Y0QnCQBBEjdiDFViEX6lAxGYswmZEUoF12IwfgXDcLcqOWeZW5n0Fxew+ssN6GfbjcZOZLbuBX5EAGwmwkQAbCbCRABsJsJEAGwmwSS+wMz993i7zxXi9t9++pkdQN4fT2fsT4wks3VfXM3HdYzf3jVBo91iJ9BkwBMq5rzIAzKgXb4kBeC/UVYgRga74xwzkwl5ky5SbQ9kuh7Uw9+ZnjCdQZrTNa1z32M19IxTaPVYifQYMgXLuqwwAM+rFWwLZA12FWIuMTXoBZJF19WfOvch0Ilu5RPoM+BaZTmRf0IksIRJgIwE2EmAjATYSYCMBNhJgIwE2EmCTXuANSWpPnRSY6O0AAAAASUVORK5CYII=">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%20%22%E4%BF%9D%E9%9A%AA%E5%AE%A2%E6%88%B6%E8%B3%87%E6%96%99%E5%BA%AB%22%2C%20%22short_name%22%3A%20%22%E5%AE%A2%E6%88%B6%E8%B3%87%E6%96%99%E5%BA%AB%22%2C%20%22start_url%22%3A%20%22.%22%2C%20%22scope%22%3A%20%22.%22%2C%20%22display%22%3A%20%22standalone%22%2C%20%22background_color%22%3A%20%22%23F4F2EA%22%2C%20%22theme_color%22%3A%20%22%23173F39%22%2C%20%22icons%22%3A%20%5B%7B%22src%22%3A%20%22data%3Aimage/png%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADMElEQVR4nO3dwW0kVRhGUQ8iByIgCFYTAUIkQxAkgxAREAfJsOiNseZ6aqpbqg/3OTtLLav1%2B/q5%2BlU9%2BdMPn396gS/57uo3wC5xkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHKTv7/8Wf//%2B6%2BsvP//2xz3f7Z%2B//rzv7fyP/fjzL1e/hf/4dM%2B/Dn2TxWvnEnnmMm6m%2Bjgfxztl3HxTH7J4bSSRk9ccXy3j4GtYNnFBatl4Y2QgZ%2BI4viQceeXIINYsjGVi5WCTOEjiIImDdCaO4xsYd%2B6Wcq3rV46RDZ81C2M5GceRJeH4srEwiCkjAzm/crz/s/cH5QO468bbzQPvyi7s/FxrZM24eUAcj/XMfUyV8TIYBzuu/7TCLHGQxEESB0kcJHGQxEESB0kcJHGQxEF6wFnZN7fK7rx79MxHodaec7jrxts7d1DPJfLMZdxM9XE%2Bjq/eW/%2BmPmTx2kgiJ685jjx18cxPZnwMExeklo03RgZyJo7jS8KRV44MYs3CWCZWDjaJgyQOkjhIZ%2BI4voGx9qw93%2BT6lWNkw2fNwlhOxnFkSTi%2BbCwMYsrIQM6vHO//7P1B%2BQAecOLtgXdlF3Z%2BrjWyZtzMHYd85j6myngZjIMd139aYZY4SOIgiYMkDpI4SOIgiYMkDpI4SOIgzZ2VfeajUGvPOWydlX3mMm6m%2Blg5KyuL10YScVaWNHFBKqM3RgZy/VnZkUGsWRjLxMrBJnGQxEESB8lZWdL1K4eAvmhhLBNnZRcGMWVkIM7KkrbOyi7s/Fxr6pdq7jjkM/cxVcbLYBzsuP7TCrPEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZD%2BBbGfqRujirHXAAAAAElFTkSuQmCC%22%2C%20%22sizes%22%3A%20%22180x180%22%2C%20%22type%22%3A%20%22image/png%22%7D%5D%7D">
+<title>保險客戶資料庫</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --pine:#173F39; --pine-2:#1F5249; --teal:#3C8C7C; --teal-soft:#E3F0EC;
+  --amber:#B97E27; --amber-soft:#F2E2BE;
+  --paper:#F4F2EA; --surface:#FFFFFF; --surface-2:#FBFAF5;
+  --ink:#17231E; --muted:#6C7A74; --faint:#94A09A;
+  --line:#E4E0D5; --line-2:#EEEBE2;
+  --slate:#647570; --clay:#A2855F;
+  --danger:#B23B3B; --danger-soft:#F3DCDC;
+  --ok:#3C8C7C;
+  --shadow:0 1px 2px rgba(23,35,30,.05), 0 10px 26px rgba(23,35,30,.07);
+  --shadow-lg:0 8px 40px rgba(23,35,30,.18);
+  --r:14px; --r-sm:10px; --r-lg:20px;
+  --mono:ui-monospace,"SF Mono",Menlo,"Roboto Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans); color:var(--ink); background:var(--paper);
+  -webkit-text-size-adjust:100%; line-height:1.5;
+  padding-bottom:calc(64px + var(--safe-bottom));
+  overscroll-behavior-y:none;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
+::placeholder{color:var(--faint)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:var(--pine);color:#F4F2EA;
+  padding:calc(var(--safe-top) + 10px) 16px 10px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 1px 0 rgba(0,0,0,.12);
+}
+.brand{display:flex;flex-direction:column;line-height:1.15;margin-right:auto;min-width:0}
+.brand b{font-size:17px;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand span{font-size:11px;color:#A9C2BA;letter-spacing:1.5px;text-transform:uppercase}
+.topact{display:flex;align-items:center;gap:8px}
+.tb-btn{
+  height:38px;padding:0 13px;border-radius:999px;font-size:13.5px;font-weight:600;
+  background:rgba(255,255,255,.12);color:#F4F2EA;display:inline-flex;align-items:center;gap:6px;
+  transition:background .15s,transform .1s;
+}
+.tb-btn:active{transform:scale(.95)}
+.tb-btn.primary{background:var(--amber);color:#241A06}
+.tb-btn.icon{width:38px;padding:0;justify-content:center;font-size:20px}
+
+/* backup status pill */
+.backup{
+  display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-radius:999px;
+  font-size:12.5px;font-weight:600;background:rgba(255,255,255,.1);
+}
+.backup .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 3px rgba(60,140,124,.25)}
+.backup.dirty{background:rgba(185,126,39,.22);color:#F2E2BE}
+.backup.dirty .dot{background:var(--amber);box-shadow:0 0 0 3px rgba(185,126,39,.3);animation:pulse 1.6s infinite}
+.backup.fail{background:rgba(178,59,59,.25);color:#F3DCDC}
+.backup.fail .dot{background:var(--danger)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.viewhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 14px}
+.viewhead h2{font-size:21px;margin:0;font-weight:700;letter-spacing:.3px}
+.viewhead .count{font-family:var(--mono);font-size:13px;color:var(--muted);background:var(--surface);border:1px solid var(--line);padding:2px 9px;border-radius:999px}
+.spacer{margin-left:auto}
+
+.search{
+  flex:1;min-width:200px;height:42px;border:1px solid var(--line);background:var(--surface);
+  border-radius:12px;padding:0 14px;display:flex;align-items:center;gap:9px;
+}
+.search input{border:none;background:none;outline:none;width:100%;height:100%}
+.search svg{flex:none;color:var(--faint)}
+
+.filters{display:flex;gap:7px;flex-wrap:wrap}
+.regiontag{background:var(--teal-soft);color:#1f5249;font-weight:600;padding:1px 8px;border-radius:999px;font-size:11.5px;display:inline-flex;align-items:center;gap:2px}
+.tagfilters{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tagfilters::-webkit-scrollbar{display:none}
+.tagpicker{display:flex;flex-wrap:wrap;gap:7px;min-height:22px;padding:10px;border:1px solid var(--line);background:var(--surface);border-radius:12px}
+.tagpicker .empty-hint{color:var(--faint);font-size:12.5px}
+.tagpill{display:inline-flex;align-items:center;gap:3px;background:var(--teal-soft);color:#1f5249;font-weight:600;padding:4px 4px 4px 11px;border-radius:999px;font-size:12.5px}
+.tagpill button{border:none;background:none;color:inherit;cursor:pointer;font-size:15px;line-height:1;padding:2px 5px;opacity:.65}
+.tagpill button:hover{opacity:1}
+.tagaddrow{display:flex;gap:8px;margin-top:9px}
+.tagdrop{margin-top:9px;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.tagdrop summary{list-style:none;cursor:pointer;padding:10px 12px;font-size:13px;font-weight:700;color:var(--teal);display:flex;align-items:center;gap:6px}
+.tagdrop summary::-webkit-details-marker{display:none}
+.tagdrop summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.tagdrop[open] summary::before{transform:rotate(90deg)}
+.tagoptions{display:flex;flex-wrap:wrap;gap:7px;padding:2px 12px 12px}
+.tagopt{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}
+.tagopt.on{background:var(--teal-soft);color:#1f5249;border-color:transparent;font-weight:700}
+.tagaddrow input{flex:1}
+.tagaddrow .btn{white-space:nowrap;padding:0 16px;height:42px}
+.chip{
+  height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);
+  font-size:13px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:.12s;
+}
+.chip.on{background:var(--pine);color:#fff;border-color:var(--pine)}
+.chip:active{transform:scale(.96)}
+.chip .n{font-family:var(--mono);font-size:11px;opacity:.85}
+
+/* ---------- client cards ---------- */
+.clientgrid{display:grid;grid-template-columns:1fr;gap:11px}
+@media(min-width:720px){.clientgrid{grid-template-columns:1fr 1fr}}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:15px 16px;transition:transform .1s,box-shadow .15s;position:relative;overflow:hidden;
+}
+.card:active{transform:scale(.992)}
+.card .grade-edge{position:absolute;left:0;top:0;bottom:0;width:5px}
+.card-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px}
+.avatar{
+  width:44px;height:44px;border-radius:13px;flex:none;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:#fff;background:var(--pine-2);letter-spacing:1px;
+}
+.card h3{margin:0;font-size:16.5px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card .sub{font-size:12.5px;color:var(--muted);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.card .sub .mono{font-size:12px}
+.gradebadge{
+  font-size:11px;font-weight:800;width:22px;height:22px;border-radius:7px;display:inline-flex;
+  align-items:center;justify-content:center;color:#fff;flex:none;
+}
+.g-A{background:var(--amber)} .g-B{background:var(--teal)} .g-C{background:var(--slate)} .g-D{background:var(--clay)}
+.g-none{background:#C9D0CC;color:#5d6b66}
+
+/* sop spine */
+.spine{display:flex;align-items:center;gap:0;margin-top:4px}
+.spine .seg{flex:1;height:5px;border-radius:3px;background:var(--line);position:relative}
+.spine .seg.done{background:var(--teal)}
+.spine .seg.cur{background:var(--amber)}
+.spine-mini{display:flex;gap:4px;align-items:center}
+.spine-mini i{width:7px;height:7px;border-radius:50%;background:var(--line);display:block}
+.spine-mini i.done{background:var(--teal)} .spine-mini i.cur{background:var(--amber);transform:scale(1.35)}
+.steplabel{font-size:11.5px;color:var(--muted);margin-top:7px;display:flex;justify-content:space-between}
+.steplabel b{color:var(--pine);font-weight:700}
+
+/* ---------- empty / generic ---------- */
+.empty{
+  text-align:center;padding:54px 24px;color:var(--muted);
+  background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);
+}
+.empty .big{font-size:34px;margin-bottom:10px}
+.empty h3{margin:0 0 6px;color:var(--ink);font-size:17px}
+.empty p{margin:0 0 16px;font-size:14px}
+
+/* ---------- bottom nav ---------- */
+.bottomnav{
+  position:fixed;left:0;right:0;bottom:0;z-index:45;
+  background:rgba(251,250,245,.92);backdrop-filter:saturate(1.5) blur(14px);
+  -webkit-backdrop-filter:saturate(1.5) blur(14px);
+  border-top:1px solid var(--line);
+  display:flex;padding:6px 6px calc(6px + var(--safe-bottom));
+}
+.navbtn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;
+  color:var(--muted);font-size:10.5px;font-weight:600;transition:.12s;
+}
+.navbtn svg{width:23px;height:23px}
+.navbtn.on{color:var(--pine)}
+.navbtn.on .ic{background:var(--teal-soft)}
+.navbtn .ic{width:46px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;transition:.12s}
+.navbtn .badge{position:absolute;transform:translate(13px,-8px);background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;font-family:var(--mono)}
+
+/* ---------- modal ---------- */
+.scrim{
+  position:fixed;inset:0;z-index:60;background:rgba(23,35,30,.42);
+  display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(2px);
+}
+.scrim.show{display:flex}
+.sheet{
+  background:var(--paper);width:100%;max-width:680px;max-height:94vh;border-radius:22px 22px 0 0;
+  box-shadow:var(--shadow-lg);display:flex;flex-direction:column;overflow:hidden;
+  animation:up .25s cubic-bezier(.2,.7,.2,1);
+}
+@media(min-width:680px){.scrim{align-items:center}.sheet{border-radius:22px;max-height:90vh}}
+@keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:translateY(0);opacity:1}}
+.sheet-head{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);
+  background:var(--surface);flex:none;
+}
+.sheet-head h2{margin:0;font-size:18px;font-weight:700;margin-right:auto}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px;flex:1}
+.x{width:36px;height:36px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--muted);border:1px solid var(--line)}
+.x:active{transform:scale(.92)}
+
+/* ---------- form ---------- */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px;letter-spacing:.3px}
+.field input,.field select,.field textarea{
+  width:100%;height:46px;border:1px solid var(--line);border-radius:11px;background:var(--surface);
+  padding:0 13px;outline:none;transition:border .15s,box-shadow .15s;
+}
+.field textarea{height:auto;min-height:74px;padding:11px 13px;line-height:1.55;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.field.datefield label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.dtoggle{border:1px solid var(--line);background:var(--surface);color:var(--teal);font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;cursor:pointer;letter-spacing:0}
+.dtoggle:active{transform:scale(.95)}
+.dtrow{display:flex;gap:8px}
+.dtinput{flex:1;font-variant-numeric:tabular-nums}
+.dtpick{flex:none;width:46px;height:46px;border:1px solid var(--line);border-radius:11px;background:var(--surface);font-size:18px;line-height:1;cursor:pointer}
+.dtpick:active{transform:scale(.95)}
+.dterr{color:var(--danger);font-size:12px;margin-top:6px;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:520px){.row3{grid-template-columns:1fr 1fr}}
+.formsec{margin:22px 0 8px;font-size:13px;font-weight:800;color:var(--pine);letter-spacing:1px;display:flex;align-items:center;gap:9px}
+.formsec::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* grade picker */
+.gradepick{display:flex;gap:8px}
+.gradepick button{
+  flex:1;height:48px;border-radius:11px;border:1.5px solid var(--line);background:var(--surface);
+  font-weight:800;font-size:15px;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+}
+.gradepick button small{font-size:9.5px;font-weight:600;letter-spacing:.3px}
+.gradepick button.sel.s-A{background:var(--amber);color:#fff;border-color:var(--amber)}
+.gradepick button.sel.s-B{background:var(--teal);color:#fff;border-color:var(--teal)}
+.gradepick button.sel.s-C{background:var(--slate);color:#fff;border-color:var(--slate)}
+.gradepick button.sel.s-D{background:var(--clay);color:#fff;border-color:var(--clay)}
+.gradepick button.sel.s-none{background:var(--pine);color:#fff;border-color:var(--pine)}
+
+/* sop step picker */
+.soppick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.soppick button{
+  border:1.5px solid var(--line);background:var(--surface);border-radius:11px;padding:9px 5px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:5px;transition:.12s;
+}
+.soppick .num{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--muted)}
+.soppick small{font-size:10.5px;color:var(--muted);font-weight:600;line-height:1.2}
+.soppick button.done{border-color:var(--teal);background:var(--teal-soft)}
+.soppick button.done .num{color:var(--teal)}
+.soppick button.cur{border-color:var(--amber);background:var(--amber);}
+.soppick button.cur .num,.soppick button.cur small{color:#fff}
+
+/* policy / claim rows */
+.subcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px;position:relative}
+.subcard .del{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:8px;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:17px}
+.sopmini{width:36px;height:42px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--pine);font-size:16px;font-weight:700;flex:none}
+.sopmini:active{transform:scale(.94)}
+.sopmini[disabled]{opacity:.3}
+.sopmini.del{color:var(--danger);background:var(--danger-soft);border-color:var(--danger-soft);position:static;width:36px;height:42px}
+.addrow{
+  width:100%;height:44px;border:1.5px dashed var(--line);border-radius:11px;color:var(--pine);font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;background:var(--surface-2);
+}
+.addrow:active{transform:scale(.99)}
+
+/* riders (附約) */
+.riders{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line)}
+.riders-h{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.riderrow{border:1px solid var(--line-2);border-radius:10px;padding:8px;margin-bottom:8px;background:var(--surface-2)}
+.riderrow .rtop{display:flex;gap:7px;align-items:center;margin-bottom:7px}
+.riderrow .rbot{display:flex;gap:7px}
+.riderrow .rn{flex:1;height:40px;border:1px solid var(--line);border-radius:9px;padding:0 11px;font-size:14.5px;background:var(--surface)}
+.riderrow .rc,.riderrow .rp,.riderrow .rt{flex:1;min-width:0;height:40px;border:1px solid var(--line);border-radius:9px;padding:0 11px;font-size:14.5px;background:var(--surface)}
+.field input[readonly]{background:var(--surface-2);color:var(--muted);cursor:not-allowed}
+.field .hint{display:block;font-size:11.5px;color:var(--faint);font-weight:400;margin-top:5px;letter-spacing:0}
+.riderrow .rx{width:38px;height:40px;border-radius:9px;background:var(--danger-soft);color:var(--danger);font-size:18px;font-weight:700;flex:none}
+.addrider{width:100%;height:40px;border:1.5px dashed var(--line);border-radius:10px;color:var(--pine);font-weight:700;font-size:13.5px;background:var(--surface-2)}
+.addrider:active{transform:scale(.99)}
+.riderlist{padding:0 0 8px;border-bottom:1px solid var(--line-2)}
+.rideritem{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2,#39423e);padding:2px 0 2px 6px}
+.rideritem .rc{color:var(--muted);font-family:var(--mono);text-align:right;white-space:nowrap}
+
+/* buttons */
+.btn{height:48px;border-radius:12px;font-weight:700;font-size:15.5px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;transition:transform .1s,filter .15s}
+.btn:active{transform:scale(.98)}
+.btn.full{width:100%}
+.btn.green{background:var(--pine);color:#fff}
+.btn.amber{background:var(--amber);color:#241A06}
+.btn.ghost{background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.btn.red{background:var(--danger-soft);color:var(--danger)}
+.btnrow{display:flex;gap:10px;margin-top:8px}
+
+/* detail */
+.detail-hero{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:17px;margin-bottom:14px;box-shadow:var(--shadow)}
+.detail-hero .top{display:flex;gap:13px;align-items:center}
+.detail-hero h2{margin:0;font-size:22px}
+.detail-hero .meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:10px}
+.detail-hero .meta a{color:var(--pine);font-weight:600;text-decoration:none}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.kpi .v{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--pine)}
+.kpi .l{font-size:11px;color:var(--muted);margin-top:2px}
+
+.block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:13px;overflow:hidden;box-shadow:var(--shadow)}
+.block>h4{margin:0;padding:14px 16px;font-size:14px;font-weight:800;letter-spacing:.5px;border-bottom:1px solid var(--line-2);display:flex;align-items:center;gap:8px;background:var(--surface-2)}
+.block>h4 .tag{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:600}
+.block-body{padding:14px 16px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line-2);font-size:14px}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--muted)}
+.kv .v{font-weight:600;text-align:right}
+
+/* sop detail spine */
+.sopfull{padding:6px 16px}
+.sopstep{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line-2);cursor:pointer;border-radius:8px;transition:background .12s}
+.sopstep:active{background:var(--surface-2)}
+.sopstep:last-child{border:none}
+.sopstep .badge{width:30px;height:30px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:14px;background:var(--line);color:var(--muted)}
+.sopstep.done .badge{background:var(--teal);color:#fff}
+.sopstep.cur .badge{background:var(--amber);color:#fff}
+.sopstep .t{font-weight:700;font-size:14px}
+.sopstep.done .t,.sopstep.cur .t{color:var(--ink)}
+.sopstep .t small{display:block;font-weight:500;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.4}
+.sopstep .sopedit{color:var(--faint);flex:none}
+.sopstep.cur .sopedit{color:var(--amber)}
+
+/* line templates */
+.linebtn{
+  width:100%;text-align:left;background:#06C755;color:#fff;border-radius:12px;padding:13px 15px;margin-bottom:9px;
+  display:flex;align-items:center;gap:11px;font-weight:700;font-size:14px;box-shadow:0 4px 14px rgba(6,199,85,.22);
+}
+.linebtn:active{transform:scale(.99)}
+.linebtn .ic{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+.linebtn small{display:block;font-weight:500;opacity:.9;font-size:12px;margin-top:2px}
+.linepreview{
+  background:#DCF8C6;border:1px solid #c9ecb4;border-radius:16px 16px 16px 5px;
+  padding:13px 16px;font-size:14px;line-height:1.65;white-space:pre-wrap;color:#16321a;
+  box-shadow:var(--shadow);
+}
+
+/* reminder list */
+.remgroup{margin-bottom:18px}
+.remgroup>h4{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:1px;margin:0 0 9px;display:flex;align-items:center;gap:8px}
+.remgroup.over>h4{color:var(--danger)}
+.remitem{
+  display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);
+}
+.remitem .date{font-family:var(--mono);font-size:12px;font-weight:700;text-align:center;flex:none;width:46px;line-height:1.15}
+.remitem .date b{display:block;font-size:18px;color:var(--pine)}
+.remitem.over .date b{color:var(--danger)}
+.remitem .body{flex:1;min-width:0}
+.remitem .body .t{font-weight:700;font-size:14px}
+.remitem .body .who{font-size:12.5px;color:var(--muted);margin-top:2px}
+.remitem .type{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;flex:none}
+.t-bday{background:var(--amber-soft);color:#7a5410}
+.t-pay{background:var(--teal-soft);color:#1f5249}
+.t-mat{background:#E7E0F0;color:#503b78}
+.t-care{background:#E9EDEB;color:#475550}
+.t-manual{background:#F0E7D8;color:#6b5326}
+.t-visit{background:#D9EDE6;color:#1f5249}
+.t-google{background:#D2E3FC;color:#1a4fa0}
+
+/* ---------- calendar ---------- */
+.calbar{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.calbar .mtitle{font-weight:800;font-size:16px;font-family:var(--mono);letter-spacing:.5px;min-width:118px;text-align:center}
+.calnav{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--pine)}
+.calnav:active{transform:scale(.94)}
+.caltoday{height:38px;padding:0 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:13px;color:var(--pine)}
+.calbar .tb-btn.primary{margin-left:auto}
+.calgrid{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.calhead{display:grid;grid-template-columns:repeat(7,1fr);background:var(--surface-2);border-bottom:1px solid var(--line)}
+.calhead div{padding:9px 0;text-align:center;font-size:12px;font-weight:700;color:var(--muted)}
+.calhead .sun{color:#b85c5c}
+.calweeks{display:grid;grid-template-columns:repeat(7,1fr)}
+.calcell{min-height:78px;border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2);padding:5px 4px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.calcell:nth-child(7n){border-right:none}
+.calcell:active{background:var(--surface-2)}
+.calcell.out{background:var(--surface-2)}
+.calcell.out .dn{color:var(--faint)}
+.calcell .dn{font-size:12.5px;font-weight:700;font-family:var(--mono);width:23px;height:21px;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.calcell .dn.sun{color:#b85c5c}
+.calcell.today .dn{background:var(--pine);color:#fff;border-radius:7px}
+.calchip{font-size:10px;font-weight:700;line-height:1.35;padding:1px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.calmore{font-size:9.5px;color:var(--muted);font-weight:700;padding-left:4px}
+.callegend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 4px 0;justify-content:center}
+.callegend .leg{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:600}
+.callegend .leg i{width:11px;height:11px;border-radius:4px;display:block}
+.gcalstatus{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted);cursor:pointer}
+.gcalstatus.on{background:#EAF1FD;color:#1a4fa0;border-color:#C9DDFB;cursor:default}
+@media(max-width:380px){.calcell{min-height:64px}.calchip{font-size:9px;padding:1px 3px}}
+.checkbtn{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:16px}
+.checkbtn:active{border-color:var(--teal)}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:calc(78px + var(--safe-bottom));transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;z-index:80;
+  opacity:0;pointer-events:none;transition:.25s;box-shadow:var(--shadow-lg);max-width:90vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.warn{background:var(--amber);color:#241A06}
+.toast.err{background:var(--danger)}
+
+/* info card (説明) */
+.info{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:13px;box-shadow:var(--shadow)}
+.info h3{margin:0 0 10px;font-size:16px;display:flex;align-items:center;gap:9px}
+.info p{margin:0 0 10px;font-size:14px;color:var(--ink)}
+.info ol,.info ul{margin:0;padding-left:20px;font-size:14px}
+.info li{margin-bottom:7px}
+.steplist{counter-reset:s;list-style:none;padding:0}
+.steplist li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line-2)}
+.steplist li:last-child{border:none}
+.steplist .n{counter-increment:s;font-family:var(--mono);font-weight:700;width:28px;height:28px;border-radius:8px;background:var(--pine);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+.steplist .n::before{content:counter(s)}
+.steplist b{font-size:14.5px}
+.steplist small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+textarea.raw{width:100%;min-height:160px;font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:11px;padding:11px;background:var(--surface-2);line-height:1.5}
+
+/* ---------- mode toggle ---------- */
+.cmode{display:flex;gap:3px;background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:3px}
+.cmode button{height:34px;padding:0 15px;border-radius:8px;font-size:13.5px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.cmode button.on{background:var(--pine);color:#fff}
+.cmode svg{width:15px;height:15px}
+
+/* ---------- kanban board ---------- */
+.board{
+  display:flex;gap:11px;overflow-x:auto;overflow-y:hidden;
+  padding:2px 2px 10px;-webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
+}
+.kcol{
+  flex:0 0 230px;width:230px;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:15px;display:flex;flex-direction:column;
+  max-height:calc(100dvh - 250px);scroll-snap-align:start;transition:background .12s,outline .12s;
+}
+.kcol.drop{outline:2px dashed var(--amber);outline-offset:-2px;background:var(--amber-soft)}
+.kcol-head{
+  padding:11px 13px;display:flex;align-items:center;gap:9px;flex:none;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface-2);
+  border-radius:15px 15px 0 0;z-index:1;
+}
+.kcol-head .num{font-family:var(--mono);font-weight:700;width:25px;height:25px;border-radius:8px;background:var(--pine);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.kcol-head .t{flex:1;min-width:0;font-weight:700;font-size:13.5px;line-height:1.15}
+.kcol-head .t small{display:block;font-weight:500;color:var(--muted);font-size:10px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kcol-head .c{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:1px 8px;flex:none}
+.kcol-body{padding:9px;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;display:flex;flex-direction:column;gap:8px;min-height:56px}
+.kcard{
+  background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:10px 12px;
+  box-shadow:var(--shadow);position:relative;touch-action:auto;cursor:grab;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overflow:hidden;
+}
+.kcard .edge{position:absolute;left:0;top:0;bottom:0;width:4px}
+.kcard h4{margin:0 0 4px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;padding-left:4px}
+.kcard .meta{font-size:11.5px;color:var(--muted);padding-left:4px}
+.kcard.dragging{opacity:.32}
+.kghost{position:fixed;z-index:90;pointer-events:none;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--shadow-lg);cursor:grabbing;margin:0}
+.kempty{color:var(--faint);font-size:12px;text-align:center;padding:18px 6px;border:1px dashed var(--line);border-radius:10px}
+.boardhint{font-size:12px;color:var(--muted);margin:10px 2px 0;display:flex;align-items:center;gap:7px}
+
+.hide{display:none!important}
+.danger-zone{margin-top:26px;padding-top:18px;border-top:1px dashed var(--line)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+ <div class="brand">
+ <b id="brandName">保險客戶資料庫</b>
+ <span>Client Database</span>
+ </div>
+ <div class="topact">
+ <button class="backup" id="backupPill" onclick="exportData()">
+ <i class="dot"></i><span id="backupTxt">已備份</span>
+ </button>
+ <button class="tb-btn icon" onclick="openImport()" title="匯入備份">⤓</button>
+ <button class="tb-btn primary" onclick="openAddMenu()">＋ 新增</button>
+ </div>
+</header>
+
+<main class="wrap" id="main"></main>
+
+<nav class="bottomnav" id="nav">
+ <button class="navbtn on" data-view="clients" onclick="go('clients')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    客戶
+ </button>
+ <button class="navbtn" data-view="reminders" onclick="go('reminders')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M3 9h18M8 2.5v4M16 2.5v4" stroke-linecap="round"/></svg></div>
+    行事曆<span class="badge hide" id="navBadge">0</span>
+ </button>
+ <button class="navbtn" data-view="claims" onclick="go('claims')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h9l5 5v13a0 0 0 010 0H5z" stroke-linejoin="round"/><path d="M14 3v5h5M8.5 13h7M8.5 17h7" stroke-linecap="round"/></svg></div>
+    理賠
+ </button>
+ <button class="navbtn" data-view="grades" onclick="go('grades')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V10M10 19V5M16 19v-6M22 19H2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    分級
+ </button>
+ <button class="navbtn" data-view="marketing" onclick="go('marketing')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v2a1 1 0 001 1h2l4 4V6L6 10H4a1 1 0 00-1 1zM15 8a4 4 0 010 8M18 5a8 8 0 010 14" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    定聯
+ </button>
+ <button class="navbtn" data-view="guide" onclick="go('guide')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8.5h.01" stroke-linecap="round"/></svg></div>
+    說明
+ </button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ===== inlined crypto (verified vs RFC vectors) ===== */
+/* ===== self-contained crypto: SHA-256, HMAC-SHA256, PBKDF2, ChaCha20 ===== */
+const K256=new Uint32Array([
+0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
+
+function sha256(msg){
+  let h0=0x6a09e667,h1=0xbb67ae85,h2=0x3c6ef372,h3=0xa54ff53a,h4=0x510e527f,h5=0x9b05688c,h6=0x1f83d9ab,h7=0x5be0cd19;
+  const l=msg.length, bitHi=Math.floor(l/0x20000000), bitLo=(l<<3)>>>0;
+  const withOne=l+1, k=(56-(withOne%64)+64)%64, total=withOne+k+8;
+  const buf=new Uint8Array(total); buf.set(msg,0); buf[l]=0x80;
+  const dv=new DataView(buf.buffer);
+  dv.setUint32(total-8,bitHi>>>0,false); dv.setUint32(total-4,bitLo>>>0,false);
+  const w=new Uint32Array(64); const ROTR=(n,x)=>((x>>>n)|(x<<(32-n)))>>>0;
+  for(let off=0;off<total;off+=64){
+    for(let i=0;i<16;i++) w[i]=dv.getUint32(off+i*4,false);
+    for(let i=16;i<64;i++){
+      const a=w[i-15],b=w[i-2];
+      const s0=ROTR(7,a)^ROTR(18,a)^(a>>>3);
+      const s1=ROTR(17,b)^ROTR(19,b)^(b>>>10);
+      w[i]=(w[i-16]+s0+w[i-7]+s1)>>>0;
+    }
+    let a=h0,b=h1,c=h2,d=h3,e=h4,f=h5,g=h6,h=h7;
+    for(let i=0;i<64;i++){
+      const S1=ROTR(6,e)^ROTR(11,e)^ROTR(25,e);
+      const ch=(e&f)^((~e)&g);
+      const t1=(h+S1+ch+K256[i]+w[i])>>>0;
+      const S0=ROTR(2,a)^ROTR(13,a)^ROTR(22,a);
+      const maj=(a&b)^(a&c)^(b&c);
+      const t2=(S0+maj)>>>0;
+      h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
+    }
+    h0=(h0+a)>>>0;h1=(h1+b)>>>0;h2=(h2+c)>>>0;h3=(h3+d)>>>0;h4=(h4+e)>>>0;h5=(h5+f)>>>0;h6=(h6+g)>>>0;h7=(h7+h)>>>0;
+  }
+  const out=new Uint8Array(32), odv=new DataView(out.buffer);
+  [h0,h1,h2,h3,h4,h5,h6,h7].forEach((x,i)=>odv.setUint32(i*4,x>>>0,false));
+  return out;
+}
+function concatU8(){ let n=0; for(const a of arguments) n+=a.length; const o=new Uint8Array(n); let p=0; for(const a of arguments){ o.set(a,p); p+=a.length; } return o; }
+function hmacSha256(key,msg){
+  const B=64; if(key.length>B) key=sha256(key);
+  const k=new Uint8Array(B); k.set(key);
+  const ip=new Uint8Array(B), op=new Uint8Array(B);
+  for(let i=0;i<B;i++){ ip[i]=k[i]^0x36; op[i]=k[i]^0x5c; }
+  return sha256(concatU8(op, sha256(concatU8(ip,msg))));
+}
+function pbkdf2(pw,salt,iter,dkLen){
+  const hLen=32, blocks=Math.ceil(dkLen/hLen), out=new Uint8Array(blocks*hLen);
+  for(let b=1;b<=blocks;b++){
+    const ib=new Uint8Array(4); new DataView(ib.buffer).setUint32(0,b,false);
+    let u=hmacSha256(pw,concatU8(salt,ib)); const t=u.slice();
+    for(let i=1;i<iter;i++){ u=hmacSha256(pw,u); for(let j=0;j<hLen;j++) t[j]^=u[j]; }
+    out.set(t,(b-1)*hLen);
+  }
+  return out.slice(0,dkLen);
+}
+function chacha20(key,nonce,counter,data){
+  const out=new Uint8Array(data.length);
+  const le=(a,i)=>((a[i]|(a[i+1]<<8)|(a[i+2]<<16)|(a[i+3]<<24))>>>0);
+  const ROTL=(x,n)=>(((x<<n)|(x>>>(32-n)))>>>0);
+  const s=new Uint32Array(16);
+  s[0]=0x61707865;s[1]=0x3320646e;s[2]=0x79622d32;s[3]=0x6b206574;
+  for(let i=0;i<8;i++) s[4+i]=le(key,i*4);
+  s[13]=le(nonce,0);s[14]=le(nonce,4);s[15]=le(nonce,8);
+  function block(ctr){
+    s[12]=ctr>>>0;
+    const x=Uint32Array.from(s);
+    const QR=(a,b,c,d)=>{
+      x[a]=(x[a]+x[b])>>>0; x[d]=ROTL(x[d]^x[a],16);
+      x[c]=(x[c]+x[d])>>>0; x[b]=ROTL(x[b]^x[c],12);
+      x[a]=(x[a]+x[b])>>>0; x[d]=ROTL(x[d]^x[a],8);
+      x[c]=(x[c]+x[d])>>>0; x[b]=ROTL(x[b]^x[c],7);
+    };
+    for(let i=0;i<10;i++){
+      QR(0,4,8,12);QR(1,5,9,13);QR(2,6,10,14);QR(3,7,11,15);
+      QR(0,5,10,15);QR(1,6,11,12);QR(2,7,8,13);QR(3,4,9,14);
+    }
+    const ks=new Uint8Array(64), dv=new DataView(ks.buffer);
+    for(let i=0;i<16;i++) dv.setUint32(i*4,(x[i]+s[i])>>>0,true);
+    return ks;
+  }
+  let ctr=counter>>>0;
+  for(let off=0;off<data.length;off+=64){
+    const ks=block(ctr++); const n=Math.min(64,data.length-off);
+    for(let i=0;i<n;i++) out[off+i]=data[off+i]^ks[i];
+  }
+  return out;
+}
+function ctEqual(a,b){ if(a.length!==b.length) return false; let r=0; for(let i=0;i<a.length;i++) r|=a[i]^b[i]; return r===0; }
+
+/* ---- helpers ---- */
+const ITER=30000;
+function utf8(s){ return new TextEncoder().encode(s); }
+function utf8dec(u){ return new TextDecoder().decode(u); }
+function randomBytes(n){ const a=new Uint8Array(n);
+  if(typeof crypto!=="undefined" && crypto.getRandomValues) crypto.getRandomValues(a);
+  else for(let i=0;i<n;i++) a[i]=Math.floor(Math.random()*256);
+  return a; }
+function b64(u){ let s=""; for(let i=0;i<u.length;i++) s+=String.fromCharCode(u[i]); return btoa(s); }
+function ub64(str){ const s=atob(str); const u=new Uint8Array(s.length); for(let i=0;i<s.length;i++) u[i]=s.charCodeAt(i); return u; }
+
+// derive enc + mac keys: one PBKDF2 master (32B), then HKDF-style expand (cheap)
+function deriveKeys(pw,salt,iter){
+  const master=pbkdf2(pw,salt,iter,32);
+  const encKey=hmacSha256(master,utf8("insure-crm-enc"));
+  const macKey=hmacSha256(master,utf8("insure-crm-mac"));
+  return {encKey,macKey};
+}
+function encryptPayload(plainStr,password){
+  const salt=randomBytes(16), nonce=randomBytes(12), pw=utf8(password);
+  const {encKey,macKey}=deriveKeys(pw,salt,ITER);
+  const ct=chacha20(encKey,nonce,1,utf8(plainStr));
+  const mac=hmacSha256(macKey,concatU8(salt,nonce,ct));
+  return {app:"insure-crm",enc:1,alg:"chacha20-hmacsha256",kdf:"pbkdf2-sha256-hkdf",iter:ITER,
+          salt:b64(salt),nonce:b64(nonce),ct:b64(ct),mac:b64(mac)};
+}
+function decryptPayload(env,password){
+  const salt=ub64(env.salt),nonce=ub64(env.nonce),ct=ub64(env.ct),mac=ub64(env.mac),pw=utf8(password);
+  const {encKey,macKey}=deriveKeys(pw,salt,env.iter||ITER);
+  if(!ctEqual(mac,hmacSha256(macKey,concatU8(salt,nonce,ct)))) throw new Error("BAD_PASSWORD");
+  return utf8dec(chacha20(encKey,nonce,1,ct));
+}
+function isEncrypted(o){ return o && o.enc===1 && o.alg==="chacha20-hmacsha256" && o.ct && o.mac && o.salt && o.nonce; }
+
+
+/* ============ constants ============ */
+const DEFAULT_SOP = [
+  {n:1, title:"團保／退休規劃", short:"開發", desc:"從團保、退休規劃切入，建立名單來源。"},
+  {n:2, title:"了解需求",       short:"需求", desc:"傾聽、提問，掌握客戶的家庭、財務與保障缺口。"},
+  {n:3, title:"保單檢視／觀念建立", short:"檢視", desc:"檢視既有保單，建立正確的風險與規劃觀念。"},
+  {n:4, title:"成交 or 再經營", short:"成交", desc:"促成投保，或列入再經營名單持續跟進。"},
+  {n:5, title:"追蹤／定聯／理賠／關懷", short:"經營", desc:"定期聯繫、理賠服務與生活關懷，深化信任。"},
+  {n:6, title:"分 ABCD 級客戶", short:"分級", desc:"依貢獻度與潛力，將客戶分為 A／B／C／D 級。"},
+  {n:7, title:"A 級客戶管理",   short:"A級", desc:"高價值客戶，投入最多心力維繫與轉介紹。"},
+  {n:8, title:"BCD 級潛力名單", short:"潛力", desc:"潛力名單，安排節奏性的再經營與升級。"},
+];
+let SOP = DEFAULT_SOP.map(s=>({...s}));
+function loadSOP(){
+  const cfg = DB && DB.meta && DB.meta.sop;
+  if(Array.isArray(cfg) && cfg.length>=3){
+    SOP = cfg.map((s,i)=>({n:i+1, title:s.title||("步驟 "+(i+1)), short:(s.short||(s.title||"").trim().slice(0,3)||("S"+(i+1))), desc:s.desc||""}));
+  } else {
+    SOP = DEFAULT_SOP.map(s=>({...s}));
+  }
+}
+function curStep(c){ return SOP[Math.min(Math.max(c.sopStep||1,1),SOP.length)-1]; }
+
+const DEFAULT_LINE_TPL = [
+  {id:"bday",  title:"生日祝福（溫馨）", body:"親愛的 {姓名}，今天是您的生日 🎂\n願您在新的一歲裡平安順心、被滿滿的愛圍繞。一直以來謝謝您的信任，能成為您的保險夥伴是我的榮幸。生日快樂！\n\n—— {顧問}"},
+  {id:"bday2", title:"生日祝福（簡潔）", body:"{姓名}，生日快樂！🎂 祝您健康平安、笑容不斷，新的一歲一切順利。\n\n—— {顧問}"},
+  {id:"anniv", title:"保單週年／繳費", body:"{姓名} 您好 😊\n您在 {公司} 的保單即將屆滿週年囉！提醒您留意繳費時間，本期保費為 {保費} 元。若需要協助繳費或檢視保障內容，都歡迎隨時告訴我，謝謝您的信任 🙏\n\n—— {顧問}"},
+  {id:"maturity", title:"保單滿期通知", body:"{姓名} 您好 😊\n恭喜！您在 {公司} 的保單即將滿期，滿期金約 {金額} 元。想與您約個時間，說明後續的領取方式與接下來的規劃方向，看看您哪天方便呢？\n\n—— {顧問}"},
+  {id:"festival", title:"節慶問候", body:"{姓名} 您好，祝您與家人佳節愉快、平安順心！🎉 有任何需要我都在。\n\n—— {顧問}"},
+  {id:"newyear", title:"新春賀年", body:"{姓名} 新年快樂！🧧 祝您與家人新的一年平安健康、財源廣進、事事順心！有任何保險上的需要，我都在。\n\n—— {顧問}"},
+  {id:"addcover", title:"加保邀約", body:"{姓名} 您好 😊 最近幫幾位客戶做了保障健檢，想找機會也幫您看看現有規劃有沒有可以加強的地方，約個時間聊聊好嗎？\n\n—— {顧問}"},
+  {id:"review", title:"保單健診邀約", body:"{姓名} 您好 😊 距離上次為您檢視保單已有一段時間，想約個時間幫您做一次免費的保單健診，看看保障是否跟得上現在的生活，您方便嗎？\n\n—— {顧問}"},
+  {id:"claimcare", title:"理賠關懷", body:"{姓名} 您好，得知您近期的狀況，辛苦了 🙏 理賠的部分就交給我來協助處理，需要準備的文件我會一步步陪您完成，請安心。\n\n—— {顧問}"},
+  {id:"paydone", title:"繳費完成感謝", body:"{姓名} 您好，您的保費已順利完成繳納，感謝您對保障的用心與對我的信任 🙏 保單會持續守護著您與家人。\n\n—— {顧問}"},
+  {id:"disaster", title:"天災／颱風關懷", body:"{姓名} 您好，{活動} 期間請務必注意安全 🙏 家中或車輛若有損失，記得先拍照留存，理賠的部分有我協助您。\n\n—— {顧問}"},
+  {id:"referral", title:"轉介紹感謝", body:"{姓名} 您好 😊 謝謝您一直以來的信任與介紹，能被您放心推薦是我最大的肯定。若身邊親友有保險上的需要，我一定用心服務。\n\n—— {顧問}"},
+  {id:"longtime", title:"久未聯絡問候", body:"{姓名} 您好，好一陣子沒聯絡了，一切都好嗎？😊 只是想跟您問聲好，有任何需要隨時找我。\n\n—— {顧問}"},
+  {id:"congrats", title:"喜訊祝賀（新生兒）", body:"{姓名} 恭喜您 🎉 迎接家庭的新成員！在為寶寶準備的同時，也很推薦及早規劃醫療與教育保障，需要的話我很樂意陪您一起看看。\n\n—— {顧問}"},
+];
+let LINE_TPL = DEFAULT_LINE_TPL.map(t=>({...t}));
+function loadLineTemplates(){
+  const cfg = DB && DB.meta && DB.meta.lineTemplates;
+  if(Array.isArray(cfg) && cfg.length>=1){
+    LINE_TPL = cfg.map((t,i)=>({ id:t.id||("tpl"+i), title:t.title||("範本 "+(i+1)), body:t.body||"" }));
+  } else {
+    LINE_TPL = DEFAULT_LINE_TPL.map(t=>({...t}));
+  }
+}
+const GRADES = {
+  A:{label:"A 級", sub:"核心", note:"高貢獻・優先維繫"},
+  B:{label:"B 級", sub:"穩定", note:"穩定往來・定期關懷"},
+  C:{label:"C 級", sub:"培養", note:"潛力培養・節奏經營"},
+  D:{label:"D 級", sub:"觀察", note:"觀察名單・伺機升級"},
+  "":{label:"未分級", sub:"待評", note:"尚未分級"},
+};
+const POLICY_CATEGORIES = ["壽險","醫療","重大（特定）疾（傷）病","癌症","意外","儲蓄／投資","年金","長照","旅平險","團體保險","其他"];
+const PAYFREQ_OPTIONS = ["躉繳","年繳","半年繳","季繳","月繳"];
+const PAYFREQ_MONTHS = {"年繳":12,"半年繳":6,"季繳":3,"月繳":1};
+function nextPaymentDate(startISO, freq){
+  if(!startISO) return "";
+  if(freq==="躉繳") return startISO;
+  const start=new Date(startISO+"T00:00:00");
+  if(isNaN(start.getTime())) return "";
+  const months=PAYFREQ_MONTHS[freq]||12;
+  const t=new Date(); t.setHours(0,0,0,0);
+  let cand=new Date(start);
+  if(cand<t){
+    const diffMonths=(t.getFullYear()-cand.getFullYear())*12+(t.getMonth()-cand.getMonth());
+    let steps=Math.floor(diffMonths/months); if(steps<0) steps=0;
+    cand=new Date(start); cand.setMonth(cand.getMonth()+steps*months);
+    while(cand<t) cand.setMonth(cand.getMonth()+months);
+  }
+  return cand.toLocaleDateString("sv");
+}
+function numVal(s){ return parseFloat(String(s||"").replace(/[, ]/g,""))||0; }
+const POLICY_COMPANIES = ["國泰人壽","富邦人壽","南山人壽","新光人壽","凱基人壽","台灣人壽","三商美邦人壽","全球人壽","遠雄人壽","保誠人壽","宏泰人壽","安聯人壽","元大人壽","第一金人壽","合作金庫人壽","安達國際人壽","友邦人壽","法國巴黎人壽","臺銀人壽","中華郵政（簡易壽險）"];
+
+/* ============ state ============ */
+let DB = { meta:{ brand:"保險客戶資料庫", agent:"", updatedAt:null, schema:2 }, clients:[] };
+let view = "clients";
+let q = "";
+let gradeFilter = "all";
+let tagFilter = [];
+function allTags(){
+  const set=new Set(DB.tagCatalog||[]);
+  DB.clients.forEach(c=>(c.tags||[]).forEach(t=>{ if(t) set.add(t); }));
+  return [...set].sort((a,b)=>a.localeCompare(b,"zh-Hant"));
+}
+function toggleTagFilter(t){
+  const i=tagFilter.indexOf(t);
+  if(i>-1) tagFilter.splice(i,1); else tagFilter.push(t);
+  render();
+}
+function clearTagFilter(){ tagFilter=[]; render(); }
+let lsOK = true;
+let dirty = false;
+let clientMode = "list";   // 'list' | 'board'
+let bd = null;             // board drag state
+let calY=null, calM=null, calMode="month";  // calendar state
+
+/* ---------- Google Calendar sync ---------- */
+const GCAL_SCOPE="https://www.googleapis.com/auth/calendar.events";
+const GCAL_CID_KEY="insure_crm_gcal_cid";
+const GCAL_CONNECTED_KEY="insure_crm_gcal_connected";
+let gcalTokenClient=null;
+let gcalAccessToken=null;
+let gcalTokenExpiry=0;
+let gcalEventsCache={};   // "YYYY-M0" -> array of {id,title,date,time,allDay}
+let gcalLoadingMonth=null;
+function gcalClientId(){ try{ return localStorage.getItem(GCAL_CID_KEY)||""; }catch(e){ return ""; } }
+function gcalSetClientId(id){ try{ localStorage.setItem(GCAL_CID_KEY, id||""); }catch(e){} }
+function gcalIsConnected(){ return !!gcalAccessToken && Date.now()<gcalTokenExpiry; }
+function gcalPushEnabled(){ return DB.meta.gcalPushVisits!==false; }
+function gcalReady(){ return typeof google!=="undefined" && google.accounts && google.accounts.oauth2; }
+
+function gcalConnect(silent){
+  const cid=gcalClientId() || (($("#setGcalCid")||{}).value||"").trim();
+  if(!cid){ if(!silent) toast("請先貼上 Google 用戶端 ID","warn"); return; }
+  gcalSetClientId(cid);
+  if(!gcalReady()){ if(!silent) toast("Google 服務載入中，請稍後再試","warn"); return; }
+  try{
+    gcalTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: cid,
+      scope: GCAL_SCOPE,
+      callback: (resp)=>{
+        if(!resp || resp.error){ if(!silent) toast("Google 授權失敗，請重試","err"); return; }
+        gcalAccessToken = resp.access_token;
+        gcalTokenExpiry = Date.now() + ((resp.expires_in||3500)*1000) - 60000;
+        gcalEventsCache = {};
+        try{ localStorage.setItem(GCAL_CONNECTED_KEY,"1"); }catch(e){}
+        if(!silent) toast("已連接 Google 行事曆");
+        render();
+      }
+    });
+    gcalTokenClient.requestAccessToken({prompt: silent?"":"consent"});
+  }catch(e){ if(!silent) toast("Google 授權初始化失敗","err"); }
+}
+function gcalDisconnect(){
+  try{ if(gcalAccessToken && gcalReady()) google.accounts.oauth2.revoke(gcalAccessToken,()=>{}); }catch(e){}
+  gcalAccessToken=null; gcalTokenExpiry=0; gcalEventsCache={};
+  try{ localStorage.removeItem(GCAL_CONNECTED_KEY); }catch(e){}
+  toast("已中斷 Google 行事曆連接"); render();
+}
+function gcalTogglePush(on){ DB.meta.gcalPushVisits = !!on; commit(); render(); }
+
+async function gcalFetchMonth(y,m0){
+  const key=`${y}-${m0}`;
+  if(!gcalIsConnected() || gcalEventsCache[key] || gcalLoadingMonth===key) return;
+  gcalLoadingMonth=key;
+  try{
+    const start=new Date(y,m0,1), end=new Date(y,m0+1,0,23,59,59);
+    const params=new URLSearchParams({
+      timeMin:start.toISOString(), timeMax:end.toISOString(),
+      singleEvents:"true", orderBy:"startTime", maxResults:"250"
+    });
+    const res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?"+params.toString(),
+      { headers:{ Authorization:"Bearer "+gcalAccessToken } });
+    if(res.status===401){ gcalAccessToken=null; gcalTokenExpiry=0; gcalLoadingMonth=null; render(); return; }
+    const data=await res.json();
+    gcalEventsCache[key]=(data.items||[]).filter(e=>e.status!=="cancelled").map(ev=>({
+      id: ev.id,
+      title: ev.summary||"(無標題)",
+      date: ev.start&&(ev.start.date||(ev.start.dateTime||"").slice(0,10))||"",
+      time: ev.start&&ev.start.dateTime? ev.start.dateTime.slice(11,16) : "",
+      allDay: !!(ev.start&&ev.start.date)
+    })).filter(e=>e.date);
+  }catch(e){ gcalEventsCache[key]=[]; }
+  gcalLoadingMonth=null;
+  if(view==="reminders" && calY===y && calM===m0) render();
+}
+async function gcalPushVisit(cid,rid,title,dateISO,note){
+  if(!gcalIsConnected() || !gcalPushEnabled()) return;
+  try{
+    const res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",{
+      method:"POST",
+      headers:{ Authorization:"Bearer "+gcalAccessToken, "Content-Type":"application/json" },
+      body:JSON.stringify({ summary:title, description:note||"", start:{date:dateISO}, end:{date:dateISO} })
+    });
+    const data=await res.json();
+    if(data.id){
+      const c=DB.clients.find(x=>x.id===cid); const r=c&&(c.reminders||[]).find(x=>x.id===rid);
+      if(r){ r.gcalEventId=data.id; commit(false); }
+      gcalEventsCache={};
+      if(view==="reminders") render();
+    }
+  }catch(e){}
+}
+async function gcalDeleteEvent(eventId){
+  if(!gcalIsConnected() || !eventId) return;
+  try{
+    await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+      { method:"DELETE", headers:{ Authorization:"Bearer "+gcalAccessToken } });
+    gcalEventsCache={};
+  }catch(e){}
+}
+const KEY = "insure_crm_v2";
+
+/* ============ utils ============ */
+const $ = s => document.querySelector(s);
+const esc = s => (s==null?"":String(s)).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const todayISO = () => new Date().toLocaleDateString("sv");  // YYYY-MM-DD local
+function pad(n){return String(n).padStart(2,"0")}
+function fmtDate(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${y}/${m}/${d}`; }
+
+/* ---------- date input: 西元/民國 toggle, manual entry + native picker ---------- */
+let dateCalMode = (function(){ try{ return localStorage.getItem("insure_crm_date_mode")||"AD"; }catch(e){ return "AD"; } })();
+function dtPlaceholder(){ return dateCalMode==="ROC" ? "民國年/月/日，例 113/1/1" : "西元年/月/日，例 2024/1/1"; }
+function isoToDisp(iso){
+  if(!iso) return "";
+  const p=iso.split("-"); if(p.length<3) return "";
+  let y=+p[0], m=+p[1], d=+p[2];
+  if(dateCalMode==="ROC") y=y-1911;
+  return `${y}/${m}/${d}`;
+}
+function dispToISO(str){
+  if(!str||!str.trim()) return "";
+  const t=str.trim().replace(/[年.]/g,"/").replace(/月/g,"/").replace(/日/g,"").replace(/[\/\-]+/g,"/");
+  const parts=t.split("/").map(s=>s.trim()).filter(Boolean);
+  if(parts.length<3) return null;
+  let [y,m,d]=parts.map(Number);
+  if(!y||!m||!d) return null;
+  if(dateCalMode==="ROC") y=y+1911;
+  if(y<1911||y>2100||m<1||m>12||d<1||d>31) return null;
+  const iso=`${y}-${pad(m)}-${pad(d)}`;
+  const chk=new Date(iso+"T00:00:00");
+  if(chk.getFullYear()!==y || chk.getMonth()+1!==m || chk.getDate()!==d) return null;
+  return iso;
+}
+function toggleDateCalMode(){
+  dateCalMode = dateCalMode==="ROC"?"AD":"ROC";
+  try{ localStorage.setItem("insure_crm_date_mode", dateCalMode); }catch(e){}
+  document.querySelectorAll(".datefield").forEach(wrap=>{
+    const hidden=wrap.querySelector('input[type="date"]');
+    const disp=wrap.querySelector(".dtinput");
+    if(!hidden||!disp) return;
+    disp.value = isoToDisp(hidden.value);
+    disp.placeholder = dtPlaceholder();
+    const btn=wrap.querySelector(".dtoggle");
+    if(btn) btn.textContent = dateCalMode==="ROC"?"切換西元":"切換民國";
+  });
+}
+function dtSync(id){
+  const disp=$(`#${id}_disp`), hidden=$(`#${id}`), err=$(`#${id}_err`);
+  if(!disp||!hidden) return;
+  const raw=disp.value;
+  const iso=dispToISO(raw);
+  if(iso===null){ if(err) err.classList.remove("hide"); return; }
+  if(err) err.classList.add("hide");
+  hidden.value=iso;
+  hidden.dispatchEvent(new Event("change"));
+}
+function dtClearErr(id){ const err=$(`#${id}_err`); if(err) err.classList.add("hide"); }
+function dtFromPicker(id){ const hidden=$(`#${id}`), disp=$(`#${id}_disp`), err=$(`#${id}_err`); if(disp) disp.value=isoToDisp(hidden.value); if(err) err.classList.add("hide"); }
+function dtPick(id){ const hidden=$(`#${id}`); if(!hidden) return; if(hidden.showPicker){ try{ hidden.showPicker(); return; }catch(e){} } hidden.focus(); hidden.click(); }
+function dateFieldHtml(id, iso, label, onchangeExpr, hint){
+  return `<div class="field datefield">
+    <label>${label}<button type="button" class="dtoggle" onclick="toggleDateCalMode()">${dateCalMode==="ROC"?"切換西元":"切換民國"}</button></label>
+    <div class="dtrow">
+      <input type="text" inputmode="numeric" autocomplete="off" class="dtinput" id="${id}_disp" placeholder="${dtPlaceholder()}" value="${esc(isoToDisp(iso))}" onchange="dtSync('${id}')" oninput="dtClearErr('${id}')">
+      <button type="button" class="dtpick" onclick="dtPick('${id}')" title="從日曆選擇">📅</button>
+    </div>
+    ${hint?`<div class="hint" style="margin-top:6px">${hint}</div>`:""}
+    <div class="dterr hide" id="${id}_err">日期格式不正確，請確認</div>
+    <input type="date" id="${id}" class="hide" value="${esc(iso||"")}" onchange="dtFromPicker('${id}');${onchangeExpr||""}">
+  </div>`;
+}
+function initial(name){ if(!name) return "？"; return name.trim().slice(-2); }
+function daysBetween(aISO,bISO){ return Math.round((new Date(bISO)-new Date(aISO))/864e5); }
+
+function nextOccur(monthDay){ // monthDay = "MM-DD" -> next YYYY-MM-DD >= today
+  if(!monthDay) return null;
+  const [mm,dd]=monthDay.split("-").map(Number);
+  if(!mm||!dd) return null;
+  const t=new Date(); t.setHours(0,0,0,0);
+  let y=t.getFullYear();
+  let cand=new Date(y, mm-1, dd);
+  if(cand<t){ cand=new Date(y+1, mm-1, dd); }
+  return cand.toLocaleDateString("sv");
+}
+function mdFromISO(iso){ if(!iso) return null; const p=iso.split("-"); return p.length>=3?`${p[1]}-${p[2]}`:null; }
+
+/* ============ storage (file:// safe) ============ */
+function trySaveLocal(){
+  if(!lsOK) return false;
+  try{ localStorage.setItem(KEY, JSON.stringify(DB)); return true; }
+  catch(e){ lsOK=false; return false; }
+}
+function tryLoadLocal(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ DB = migrate(JSON.parse(raw)); return true; }
+    return false;
+  }catch(e){ lsOK=false; return false; }
+}
+function migrate(d){
+  d = d||{};
+  d.meta = Object.assign({brand:"保險客戶資料庫",agent:"",updatedAt:null,schema:2}, d.meta||{});
+  d.clients = Array.isArray(d.clients)?d.clients:[];
+  d.tagCatalog = Array.isArray(d.tagCatalog)?d.tagCatalog:[];
+  d.clients.forEach(c=>{
+    c.policies=c.policies||[]; c.reminders=c.reminders||[]; c.claims=c.claims||[]; c.careLog=c.careLog||[];
+    c.sopStatus=c.sopStatus||{}; if(typeof c.sopStep!=="number") c.sopStep=1;
+    if(c.grade==null) c.grade="";
+    if(!Array.isArray(c.tags)){ c.tags = c.region ? [c.region] : []; }
+    c.tags = c.tags.map(t=>(t||"").trim()).filter(Boolean);
+    delete c.region;
+    c.tags.forEach(t=>{ if(!d.tagCatalog.includes(t)) d.tagCatalog.push(t); });
+    c.policies.forEach(p=>{
+      if(p.mainName==null) p.mainName = p.name!=null ? p.name : "";
+      if(p.category==null) p.category = p.type!=null ? p.type : "";
+      if(p.category==="重大疾病") p.category="重大（特定）疾（傷）病";
+      delete p.name; delete p.type;
+      if(p.payFreq==null) p.payFreq="";
+      if(p.coverage==null) p.coverage="";
+      if(p.term==null) p.term="";
+      if(p.notes==null) p.notes="";
+      p.riders=(p.riders||[]).map(r=>({name:r.name||"",coverage:r.coverage||"",premium:r.premium||"",term:r.term||""}));
+      const total=numVal(p.premium)+p.riders.reduce((s,r)=>s+numVal(r.premium),0);
+      p.totalPremium = total? String(total) : "";
+    });
+  });
+  return d;
+}
+function commit(markDirty=true){
+  DB.meta.updatedAt = new Date().toISOString();
+  const saved = trySaveLocal();
+  if(markDirty){ dirty=true; }
+  renderBackup();
+}
+function markSaved(){ dirty=false; renderBackup(); }
+
+function renderBackup(){
+  const pill=$("#backupPill"), txt=$("#backupTxt");
+  pill.className="backup";
+  if(!lsOK){ pill.classList.add("fail"); txt.textContent="僅記憶體・請匯出"; return; }
+  if(dirty){ pill.classList.add("dirty"); txt.textContent="待匯出備份"; }
+  else { txt.textContent="點此匯出"; }
+}
+
+/* ============ export / import ============ */
+function exportData(){
+  openSheet("匯出備份", `
+    <p style="font-size:13.5px;color:var(--muted);margin:0 0 14px">
+      可設定密碼保護這份備份。設了密碼後，匯入時要輸入相同密碼才能還原——存到 iCloud 或傳給自己都更安全。
+    </p>
+    <div class="field"><label>備份密碼（選填，留空＝不加密）</label>
+      <input type="password" id="expPw" placeholder="設定密碼" autocomplete="new-password"></div>
+    <div class="field"><label>再次輸入密碼</label>
+      <input type="password" id="expPw2" placeholder="再輸入一次" autocomplete="new-password"></div>
+    <button class="btn green full" id="expBtn" onclick="doExport()">匯出備份</button>
+    <p style="font-size:12px;color:var(--muted);margin:10px 0 0">⚠️ 密碼請自行記牢，遺失將無法解開加密備份。</p>
+  `);
+}
+function doExport(){
+  const pw=(($("#expPw")||{}).value||"");
+  const pw2=(($("#expPw2")||{}).value||"");
+  if(pw && pw!==pw2){ toast("兩次密碼不一致","warn"); return; }
+  const btn=$("#expBtn");
+  if(pw){
+    if(btn){ btn.textContent="加密中…"; btn.style.opacity=".65"; }
+    setTimeout(()=>{
+      let text, fname;
+      try{
+        text=JSON.stringify(encryptPayload(JSON.stringify(DB), pw));
+        fname=`客戶資料備份_加密_${todayISO()}.json`;
+      }catch(e){ if(btn){btn.textContent="匯出備份";btn.style.opacity="";} toast("加密失敗","err"); return; }
+      finishExport(text, fname, true);
+    }, 40);
+  } else {
+    finishExport(JSON.stringify(DB,null,2), `客戶資料備份_${todayISO()}.json`, false);
+  }
+}
+async function finishExport(text, fname, encrypted){
+  const blob=new Blob([text],{type:"application/json"});
+  closeSheet();
+  try{
+    const file=new File([blob],fname,{type:"application/json"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:"客戶資料備份"});
+      markSaved(); toast(encrypted?"已加密匯出，選「儲存到檔案」":"已開啟分享，選「儲存到檔案」"); return;
+    }
+  }catch(e){ if(e && e.name==="AbortError"){ return; } }
+  try{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download=fname;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    markSaved(); toast((encrypted?"已加密匯出 ":"已匯出 ")+fname);
+  }catch(e){ openRawExport(text, fname); }
+}
+function openRawExport(text, fname){
+  openSheet(`匯出備份`, `
+    <p style="font-size:13.5px;color:var(--muted);margin:0 0 12px">
+      無法自動下載。請長按下方文字「全選 → 拷貝」，貼到「備忘錄」或「檔案」App 存成 ${esc(fname)}。
+    </p>
+    <textarea class="raw" readonly onclick="this.select()">${esc(text)}</textarea>
+    <button class="btn green full" style="margin-top:12px" onclick="copyRaw(this)">複製全部資料</button>
+  `);
+}
+function copyRaw(btn){
+  const ta=btn.parentElement.querySelector("textarea");
+  ta.select();
+  try{ navigator.clipboard.writeText(ta.value); }catch(e){ document.execCommand("copy"); }
+  markSaved(); toast("已複製，貼到檔案保存即完成");
+}
+function openImport(){
+  openSheet(`匯入備份`, `
+    <p style="font-size:13.5px;color:var(--muted);margin:0 0 14px">
+      從「檔案」選擇先前匯出的備份，或直接貼上資料。匯入會覆蓋目前所有客戶；加密過的備份會要求輸入密碼。
+    </p>
+    <input type="file" id="impFile" accept="application/json,.json"
+      style="width:100%;padding:12px;border:1.5px dashed var(--line);border-radius:11px;background:var(--surface-2)"
+      onchange="importFile(this)">
+    <div class="formsec">或貼上資料</div>
+    <textarea class="raw" id="impPaste" placeholder="在此貼上備份內容（可為加密檔）…"></textarea>
+    <button class="btn green full" style="margin-top:12px" onclick="importPaste()">貼上資料並匯入</button>
+  `);
+}
+function importFile(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>handleImportText(r.result);
+  r.onerror=()=>toast("讀取檔案失敗","err");
+  r.readAsText(f);
+}
+function importPaste(){
+  const v=(($("#impPaste")||{}).value||"").trim();
+  if(!v){ toast("請先貼上資料","warn"); return; }
+  handleImportText(v);
+}
+let _decEnv=null;
+function handleImportText(text){
+  let parsed;
+  try{ parsed=JSON.parse(text); }
+  catch(e){ toast("資料格式錯誤，無法解析","err"); return; }
+  if(isEncrypted(parsed)){ promptDecrypt(parsed); return; }
+  applyImported(parsed);
+}
+function applyImported(parsed){
+  if(!parsed || !Array.isArray(parsed.clients)){ toast("這不是有效的客戶備份檔","err"); return; }
+  DB = migrate(parsed);
+  loadSOP(); loadLineTemplates();
+  trySaveLocal(); markSaved();
+  closeSheet(); render();
+  toast(`已匯入 ${DB.clients.length} 位客戶`);
+}
+function promptDecrypt(env){
+  _decEnv=env;
+  openSheet("輸入備份密碼", `
+    <p style="font-size:13.5px;color:var(--muted);margin:0 0 14px">🔒 這份備份已加密，請輸入當初設定的密碼。</p>
+    <div class="field"><label>密碼</label><input type="password" id="decPw" placeholder="備份密碼" autocomplete="off"></div>
+    <button class="btn green full" id="decBtn" onclick="doDecrypt()">解密並匯入</button>
+  `);
+  setTimeout(()=>{ const i=$("#decPw"); if(i) i.focus(); }, 80);
+}
+function doDecrypt(){
+  if(!_decEnv) return;
+  const pw=(($("#decPw")||{}).value||"");
+  if(!pw){ toast("請輸入密碼","warn"); return; }
+  const btn=$("#decBtn"); if(btn){ btn.textContent="解密中…"; btn.style.opacity=".65"; }
+  setTimeout(()=>{
+    let json;
+    try{ json=decryptPayload(_decEnv, pw); }
+    catch(e){ if(btn){btn.textContent="解密並匯入";btn.style.opacity="";} toast("密碼錯誤，請重新輸入","err"); return; }
+    let parsed; try{ parsed=JSON.parse(json); }catch(e){ toast("備份內容毀損","err"); return; }
+    _decEnv=null;
+    applyImported(parsed);
+  }, 40);
+}
+
+/* ============ reminders (auto derived + manual) ============ */
+function autoReminders(c){
+  const out=[];
+  const bmd = mdFromISO(c.birthday);
+  if(bmd){ const d=nextOccur(bmd); if(d) out.push({date:d, type:"bday", title:"生日關懷", who:c.name, clientId:c.id, auto:true}); }
+  (c.policies||[]).forEach(p=>{
+    const payMd = mdFromISO(p.paymentDate)||mdFromISO(p.startDate);
+    if(payMd){ const d=nextOccur(payMd); if(d) out.push({date:d, type:"pay", title:`${p.mainName||"保單"} 繳費／周年`, who:c.name, clientId:c.id, auto:true}); }
+    if(p.maturityDate && p.maturityDate>=todayISO()){
+      out.push({date:p.maturityDate, type:"mat", title:`${p.mainName||"保單"} 滿期`, who:c.name, clientId:c.id, auto:true});
+    }
+  });
+  return out;
+}
+function allReminders(){
+  const list=[];
+  DB.clients.forEach(c=>{
+    autoReminders(c).forEach(r=>list.push(r));
+    (c.reminders||[]).filter(r=>!r.done).forEach(r=>list.push({date:r.date,type:r.kind||"manual",title:r.title,who:c.name,clientId:c.id,id:r.id,note:r.note}));
+  });
+  return list.sort((a,b)=> a.date<b.date?-1:a.date>b.date?1:0);
+}
+/* events for a given month (recurring birthdays/payments expanded into that month) */
+function eventsInMonth(y, m0){  // m0: 0-11
+  const mm=pad(m0+1); const ev=[];
+  DB.clients.forEach(c=>{
+    const b=mdFromISO(c.birthday);
+    if(b && b.slice(0,2)===mm) ev.push({date:`${y}-${b}`, type:"bday", title:"生日", who:c.name, clientId:c.id});
+    (c.policies||[]).forEach(p=>{
+      const payMd=mdFromISO(p.paymentDate)||mdFromISO(p.startDate);
+      if(payMd && payMd.slice(0,2)===mm) ev.push({date:`${y}-${payMd}`, type:"pay", title:`${p.mainName||"保單"} 繳費／周年`, who:c.name, clientId:c.id});
+      if(p.maturityDate){ const a=p.maturityDate.split("-"); if(+a[0]===y && a[1]===mm) ev.push({date:p.maturityDate, type:"mat", title:`${p.mainName||"保單"} 滿期`, who:c.name, clientId:c.id}); }
+    });
+    (c.reminders||[]).filter(r=>!r.done && r.date).forEach(r=>{ const a=r.date.split("-"); if(+a[0]===y && a[1]===mm) ev.push({date:r.date, type:r.kind||"manual", title:r.title, who:c.name, clientId:c.id, id:r.id, note:r.note}); });
+  });
+  return ev;
+}
+function dueSoonCount(){
+  const t=todayISO();
+  const in7=new Date(); in7.setDate(in7.getDate()+7); const lim=in7.toLocaleDateString("sv");
+  return allReminders().filter(r=> r.date<=lim).length;
+}
+
+/* ============ navigation / render ============ */
+function go(v){ view=v; if(v!=="clients") q=""; window.scrollTo(0,0); render(); }
+function render(){
+  document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("on", b.dataset.view===view));
+  $("#brandName").textContent = DB.meta.brand || "保險客戶資料庫";
+  const badge=$("#navBadge"); const n=dueSoonCount();
+  badge.textContent=n; badge.classList.toggle("hide", n===0);
+  renderBackup();
+  const m=$("#main");
+  if(view==="clients") m.innerHTML=viewClients();
+  else if(view==="reminders") m.innerHTML=viewReminders();
+  else if(view==="claims") m.innerHTML=viewClaims();
+  else if(view==="grades") m.innerHTML=viewGrades();
+  else if(view==="marketing") m.innerHTML=viewMarketing();
+  else if(view==="guide") m.innerHTML=viewGuide();
+  if(view==="clients" && clientMode==="board") bindBoard();
+}
+
+/* ---- clients view ---- */
+function viewClients(){
+  const counts={all:DB.clients.length,A:0,B:0,C:0,D:0,"":0};
+  DB.clients.forEach(c=>counts[c.grade]++);
+  const chip=(key,label,n)=>`<button class="chip ${gradeFilter===key?"on":""}" onclick="setFilter('${key}')">${label}<span class="n">${n}</span></button>`;
+  const icList=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>`;
+  const icBoard=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/></svg>`;
+  const tags=allTags();
+  const noTagN=DB.clients.filter(c=>!(c.tags&&c.tags.length)).length;
+  const tagFilterHtml = (tags.length || noTagN) ? `
+      <div class="tagfilters">
+        <button class="chip ${tagFilter.length===0?"on":""}" onclick="clearTagFilter()">全部標籤</button>
+        ${tags.map(t=>`<button class="chip ${tagFilter.includes(t)?"on":""}" data-tag="${esc(t)}" onclick="toggleTagFilter(this.dataset.tag)">${esc(t)}</button>`).join("")}
+        ${noTagN?`<button class="chip ${tagFilter.includes("__none__")?"on":""}" onclick="toggleTagFilter('__none__')">未分類 (${noTagN})</button>`:""}
+      </div>` : "";
+
+  let head=`
+    <div class="viewhead">
+      <h2>客戶</h2><span class="count mono">${DB.clients.length}</span>
+      <div class="spacer"></div>
+      <div class="cmode">
+        <button class="${clientMode==="list"?"on":""}" onclick="setMode('list')">${icList}清單</button>
+        <button class="${clientMode==="board"?"on":""}" onclick="setMode('board')">${icBoard}看板</button>
+      </div>
+    </div>
+    <div class="viewhead">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+        <input placeholder="搜尋姓名・電話・LINE・標籤" value="${esc(q)}" oninput="onSearch(this.value)">
+      </div>
+    </div>
+    <div class="viewhead" style="margin-top:-4px">
+      <div class="filters">
+        ${chip("all","全部",counts.all)}
+        ${chip("A","A",counts.A)}${chip("B","B",counts.B)}${chip("C","C",counts.C)}${chip("D","D",counts.D)}
+        ${chip("none","未分級",counts[""])}
+      </div>
+    </div>
+    ${tagFilterHtml?`<div class="viewhead" style="margin-top:-6px">${tagFilterHtml}</div>`:""}`;
+
+  if(DB.clients.length===0){
+    return head+`<div class="empty"><div class="big">📇</div><h3>還沒有客戶</h3>
+      <p>新增第一位客戶，開始走你的 SOP 流程。</p>
+      <button class="btn amber" onclick="openAddMenu()">＋ 新增客戶</button>
+      <div style="margin-top:14px"><button class="btn ghost" onclick="openImport()">或匯入舊備份</button></div></div>`;
+  }
+  return head+`<div id="clientResults">${clientResultsHtml()}</div>`;
+}
+function filteredClients(){
+  let list=DB.clients.slice();
+  if(gradeFilter!=="all") list=list.filter(c=>c.grade===(gradeFilter==="none"?"":gradeFilter));
+  if(tagFilter.length) list=list.filter(c=>{ const tags=c.tags||[]; return tagFilter.some(t=>t==="__none__"?tags.length===0:tags.includes(t)); });
+  if(q){ const k=q.toLowerCase().trim(); list=list.filter(c=>(c.name||"").toLowerCase().includes(k)||(c.phone||"").includes(k)||(c.unit||"").toLowerCase().includes(k)||(c.tags||[]).join(" ").toLowerCase().includes(k)); }
+  return list;
+}
+function clientResultsHtml(){
+  const list=filteredClients();
+  if(clientMode==="board") return viewBoard(list);
+  if(list.length===0) return `<div class="empty"><div class="big">🔍</div><h3>沒有符合的客戶</h3><p>換個關鍵字或篩選看看。</p></div>`;
+  list.sort((a,b)=>{ const o={A:0,B:1,C:2,D:3,"":4}; if(o[a.grade]!==o[b.grade]) return o[a.grade]-o[b.grade]; return (a.name||"").localeCompare(b.name||"","zh-Hant"); });
+  return `<div class="clientgrid">${list.map(clientCard).join("")}</div>`;
+}
+function renderClientResults(){
+  const el=$("#clientResults"); if(!el) return;
+  el.innerHTML=clientResultsHtml();
+  if(clientMode==="board") bindBoard();
+}
+function setMode(m){ clientMode=m; render(); }
+
+/* ---- kanban board ---- */
+function viewBoard(list){
+  const sortFn=(a,b)=>{ const o={A:0,B:1,C:2,D:3,"":4}; if(o[a.grade]!==o[b.grade]) return o[a.grade]-o[b.grade]; return (a.name||"").localeCompare(b.name||"","zh-Hant"); };
+  const cols=SOP.map(s=>{
+    const items=list.filter(c=>(c.sopStep||1)===s.n).sort(sortFn);
+    return `<div class="kcol" data-step="${s.n}">
+      <div class="kcol-head"><span class="num">${s.n}</span><span class="t">${esc(s.short)}<small>${esc(s.title)}</small></span><span class="c">${items.length}</span></div>
+      <div class="kcol-body">${items.length?items.map(boardCard).join(""):`<div class="kempty">拖曳客戶到此</div>`}</div>
+    </div>`;
+  }).join("");
+  return `<div class="board" id="board">${cols}</div>
+    <div class="boardhint"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4v16M15 4v16M4 9h16M4 15h16" stroke-linecap="round"/></svg>長按卡片拖曳即可調整 SOP 進度，點一下開啟客戶</div>`;
+}
+function boardCard(c){
+  const g=c.grade||""; const gc=g?("g-"+g):"g-none";
+  const polN=(c.policies||[]).length;
+  return `<div class="kcard" data-id="${c.id}" data-step="${c.sopStep||1}">
+    <div class="edge ${gc}"></div>
+    <h4>${esc(c.name||"未命名")} <span class="gradebadge ${gc}" style="width:18px;height:18px;font-size:10px;border-radius:6px">${g||"–"}</span></h4>
+    <div class="meta">${(c.tags&&c.tags.length)?"🏷️"+c.tags.map(esc).join("、")+" ・ ":""}${polN?`保單 ${polN}`:"尚無保單"}${c.phone?" ・ "+esc(c.phone):""}</div>
+  </div>`;
+}
+function clientCard(c){
+  const g=c.grade||"";
+  const gc = g?("g-"+g):"g-none";
+  const segs=SOP.map(s=>{ const cls = s.n<c.sopStep?"done": s.n===c.sopStep?"cur":""; return `<i class="${cls}"></i>`; }).join("");
+  const cur=curStep(c);
+  const polN=(c.policies||[]).length;
+  return `<div class="card" onclick="openDetail('${c.id}')">
+    <div class="grade-edge ${gc}"></div>
+    <div class="card-top">
+      <div class="avatar">${esc(initial(c.name))}</div>
+      <div style="flex:1;min-width:0">
+        <h3>${esc(c.name||"未命名")} <span class="gradebadge ${gc}">${g||"–"}</span></h3>
+        <div class="sub">
+          ${c.phone?`<span class="mono">${esc(c.phone)}</span>`:""}
+          ${(c.tags||[]).map(t=>`<span class="regiontag">🏷️ ${esc(t)}</span>`).join("")}
+          ${polN?`<span>保單 ${polN}</span>`:`<span style="color:var(--faint)">尚無保單</span>`}
+        </div>
+      </div>
+    </div>
+    <div class="spine-mini">${segs}</div>
+    <div class="steplabel"><span>SOP 進度</span><b>${c.sopStep}. ${esc(cur.short)}</b></div>
+  </div>`;
+}
+function setFilter(k){ gradeFilter=k; render(); }
+let searchT;
+function onSearch(v){ q=v; clearTimeout(searchT); searchT=setTimeout(renderClientResults,140); }
+
+/* ---- board drag controller (touch + mouse, iPad-safe) ---- */
+function bindBoard(){
+  const b=document.getElementById("board");
+  if(!b || b.dataset.bound) return;
+  b.dataset.bound="1";
+  b.addEventListener("touchstart", bdDown, {passive:false});
+  b.addEventListener("touchmove", bdMove, {passive:false});
+  b.addEventListener("touchend", bdUp);
+  b.addEventListener("touchcancel", bdUp);
+  b.addEventListener("mousedown", bdDown);
+}
+function bdDown(e){
+  const card=e.target.closest && e.target.closest(".kcard");
+  if(!card) return;
+  const pt=e.touches?e.touches[0]:e;
+  bd={card, id:card.dataset.id, from:+card.dataset.step, sx:pt.clientX, sy:pt.clientY,
+      lastX:pt.clientX, lastY:pt.clientY, dragging:false, tap:true, drop:null, lp:null, ghost:null, raf:null, off:{x:0,y:0}};
+  if(e.type==="mousedown"){ window.addEventListener("mousemove", bdMove); window.addEventListener("mouseup", bdUp); }
+  else { bd.lp=setTimeout(()=>{ const p={clientX:bd.lastX, clientY:bd.lastY}; bdStart(p); }, 200); }
+}
+function bdStart(pt){
+  if(!bd) return;
+  bd.dragging=true; bd.tap=false;
+  const r=bd.card.getBoundingClientRect();
+  bd.off.x=pt.clientX-r.left; bd.off.y=pt.clientY-r.top;
+  const g=bd.card.cloneNode(true);
+  g.className="kcard kghost";
+  g.style.width=r.width+"px";
+  g.style.left=(pt.clientX-bd.off.x)+"px";
+  g.style.top=(pt.clientY-bd.off.y)+"px";
+  document.body.appendChild(g);
+  bd.ghost=g;
+  bd.card.classList.add("dragging");
+  document.body.style.userSelect="none";
+  try{ if(navigator.vibrate) navigator.vibrate(8); }catch(e){}
+  bdAuto();
+}
+function bdMove(e){
+  if(!bd) return;
+  const pt=e.touches?e.touches[0]:e;
+  bd.lastX=pt.clientX; bd.lastY=pt.clientY;
+  if(!bd.dragging){
+    const dx=Math.abs(pt.clientX-bd.sx), dy=Math.abs(pt.clientY-bd.sy);
+    if(e.type==="mousemove"){ if(dx>5||dy>5) bdStart(pt); }
+    else if(dx>10||dy>10){ clearTimeout(bd.lp); bd.tap=false; }  // treat as scroll
+    return;
+  }
+  if(e.cancelable) e.preventDefault();
+  bd.ghost.style.left=(pt.clientX-bd.off.x)+"px";
+  bd.ghost.style.top=(pt.clientY-bd.off.y)+"px";
+  bd.ghost.style.visibility="hidden";
+  let under=null; try{ under=document.elementFromPoint(pt.clientX, pt.clientY); }catch(_){}
+  bd.ghost.style.visibility="";
+  const col=(under&&under.closest)?under.closest(".kcol"):null;
+  if(col!==bd.drop){ if(bd.drop) bd.drop.classList.remove("drop"); bd.drop=col; if(col) col.classList.add("drop"); }
+}
+function bdUp(){
+  if(!bd) return;
+  if(bd.lp) clearTimeout(bd.lp);
+  window.removeEventListener("mousemove", bdMove);
+  window.removeEventListener("mouseup", bdUp);
+  if(bd.dragging){
+    const target=bd.drop;
+    if(bd.ghost) bd.ghost.remove();
+    if(bd.card) bd.card.classList.remove("dragging");
+    document.body.style.userSelect="";
+    document.querySelectorAll(".kcol.drop").forEach(c=>c.classList.remove("drop"));
+    if(bd.raf) cancelAnimationFrame(bd.raf);
+    if(target){ const ns=+target.dataset.step; if(ns!==bd.from) bdMoveCard(bd.card, target, ns); }
+  } else if(bd.tap){
+    openDetail(bd.id);
+  }
+  bd=null;
+}
+function bdMoveCard(card, col, ns){
+  const fromCol=card.closest(".kcol");
+  col.querySelector(".kcol-body").appendChild(card);
+  card.dataset.step=ns;
+  const c=DB.clients.find(x=>x.id===card.dataset.id);
+  if(c){ c.sopStep=ns; commit(); }
+  [fromCol,col].forEach(refreshCol);
+  toast("已移到 "+ns+". "+SOP[ns-1].short);
+}
+function refreshCol(col){
+  if(!col) return;
+  const body=col.querySelector(".kcol-body");
+  const n=body.querySelectorAll(".kcard").length;
+  col.querySelector(".kcol-head .c").textContent=n;
+  let empty=body.querySelector(".kempty");
+  if(n===0 && !empty){ const e=document.createElement("div"); e.className="kempty"; e.textContent="拖曳客戶到此"; body.appendChild(e); }
+  if(n>0 && empty) empty.remove();
+}
+function bdAuto(){
+  if(!bd || !bd.dragging) return;
+  const b=document.getElementById("board");
+  if(b){
+    const r=b.getBoundingClientRect(); const edge=58, sp=16;
+    if(bd.lastX<r.left+edge) b.scrollLeft-=sp;
+    else if(bd.lastX>r.right-edge) b.scrollLeft+=sp;
+    if(bd.drop){ const body=bd.drop.querySelector(".kcol-body"); if(body){ const br=body.getBoundingClientRect();
+      if(bd.lastY<br.top+edge) body.scrollTop-=sp; else if(bd.lastY>br.bottom-edge) body.scrollTop+=sp; } }
+  }
+  bd.raf=requestAnimationFrame(bdAuto);
+}
+
+/* ---- reminders view ---- */
+const MONTHNAMES=["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+const WEEKDAYS=["日","一","二","三","四","五","六"];
+const EVTYPE={bday:["生日","t-bday"],pay:["繳費","t-pay"],mat:["滿期","t-mat"],visit:["複訪","t-visit"],care:["關懷","t-care"],manual:["待辦","t-manual"],google:["Google","t-google"]};
+
+function viewReminders(){
+  if(calY==null){ const t=new Date(); calY=t.getFullYear(); calM=t.getMonth(); }
+  const icCal=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4" stroke-linecap="round"/></svg>`;
+  const icList=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" stroke-linecap="round"/></svg>`;
+  let head=`<div class="viewhead"><h2>行事曆</h2>
+    <div class="spacer"></div>
+    <div class="cmode">
+      <button class="${calMode==="month"?"on":""}" onclick="setCalMode('month')">${icCal}月曆</button>
+      <button class="${calMode==="list"?"on":""}" onclick="setCalMode('list')">${icList}待辦</button>
+    </div></div>`;
+  return head + (calMode==="list"? reminderListBody() : monthGridBody());
+}
+function setCalMode(m){ calMode=m; render(); }
+function calShift(d){ calM+=d; if(calM<0){calM=11;calY--;} if(calM>11){calM=0;calY++;} render(); }
+function calToday(){ const t=new Date(); calY=t.getFullYear(); calM=t.getMonth(); render(); }
+
+function monthGridBody(){
+  const t=todayISO();
+  if(gcalIsConnected()) gcalFetchMonth(calY,calM);
+  const gkey=`${calY}-${calM}`;
+  const gevs=(gcalIsConnected() && gcalEventsCache[gkey])? gcalEventsCache[gkey].map(g=>({date:g.date,type:"google",title:g.title,who:g.time?`${g.time} ${g.title}`:g.title})) : [];
+  const ev=eventsInMonth(calY,calM).concat(gevs);
+  const byDay={}; ev.forEach(e=>{ const d=+e.date.split("-")[2]; (byDay[d]=byDay[d]||[]).push(e); });
+  const order={mat:0,bday:1,visit:2,pay:3,manual:4,care:5,google:6};
+  Object.values(byDay).forEach(a=>a.sort((x,y)=>(order[x.type]??9)-(order[y.type]??9)));
+  const firstDow=new Date(calY,calM,1).getDay();
+  const daysIn=new Date(calY,calM+1,0).getDate();
+  const prevDays=new Date(calY,calM,0).getDate();
+  const cells=[];
+  for(let i=0;i<42;i++){
+    const dayNum=i-firstDow+1;
+    let inMonth=true, n=dayNum, cy=calY, cm=calM;
+    if(dayNum<1){ inMonth=false; n=prevDays+dayNum; cm=calM-1; if(cm<0){cm=11;cy--;} }
+    else if(dayNum>daysIn){ inMonth=false; n=dayNum-daysIn; cm=calM+1; if(cm>11){cm=0;cy++;} }
+    const iso=`${cy}-${pad(cm+1)}-${pad(n)}`;
+    const evs=inMonth?(byDay[n]||[]):[];
+    const isToday=iso===t;
+    const dow=i%7;
+    let chips="";
+    if(evs.length){
+      chips=evs.slice(0,3).map(e=>{ const [,tc]=EVTYPE[e.type]||["",""]; return `<div class="calchip ${tc}">${esc(e.who||e.title)}</div>`; }).join("");
+      if(evs.length>3) chips+=`<div class="calmore">+${evs.length-3}</div>`;
+    }
+    cells.push(`<div class="calcell ${inMonth?"":"out"} ${isToday?"today":""}" onclick="${inMonth?`openDay('${iso}')`:""}">
+      <div class="dn ${dow===0?"sun":""}">${n}</div>${chips}</div>`);
+  }
+  // legend
+  const legendKeys=[["mat","滿期"],["bday","生日"],["pay","繳費"],["visit","複訪"]];
+  if(gcalIsConnected()) legendKeys.push(["google","Google"]);
+  const legend=legendKeys.map(([k,l])=>{const[,tc]=EVTYPE[k];return `<span class="leg"><i class="${tc}"></i>${l}</span>`;}).join("");
+  const gcalBadge=gcalIsConnected()
+    ? `<span class="gcalstatus on" title="已連接 Google 行事曆">🔗 Google 已連動</span>`
+    : `<span class="gcalstatus" onclick="go('guide')" title="點此前往設定連接">🔗 未連接 Google</span>`;
+  return `<div class="calbar">
+      <button class="calnav" onclick="calShift(-1)">‹</button>
+      <div class="mtitle">${calY} 年 ${MONTHNAMES[calM]}</div>
+      <button class="calnav" onclick="calShift(1)">›</button>
+      <button class="caltoday" onclick="calToday()">今天</button>
+      <button class="tb-btn primary" style="height:38px;color:#241A06" onclick="scheduleVisit(null,null)">＋ 複訪</button>
+    </div>
+    <div class="calgrid">
+      <div class="calhead">${WEEKDAYS.map((d,i)=>`<div class="${i===0?"sun":""}">${d}</div>`).join("")}</div>
+      <div class="calweeks">${cells.join("")}</div>
+    </div>
+    <div class="callegend">${legend}</div>
+    <div style="text-align:center;margin-top:8px">${gcalBadge}</div>`;
+}
+
+function openDay(iso){
+  const [y,m,d]=iso.split("-").map(Number);
+  const evs=eventsInMonth(y,m-1).filter(e=>e.date===iso);
+  const order={mat:0,bday:1,visit:2,pay:3,manual:4,care:5};
+  evs.sort((a,b)=>(order[a.type]??9)-(order[b.type]??9));
+  const gkey=`${y}-${m-1}`;
+  const gevs=(gcalIsConnected() && gcalEventsCache[gkey])? gcalEventsCache[gkey].filter(g=>g.date===iso) : [];
+  const wd=WEEKDAYS[new Date(iso).getDay()];
+  const localRows = evs.length? evs.map(e=>{
+    const [tl,tc]=EVTYPE[e.type]||["",""];
+    const canEdit=(e.type==="visit"||e.type==="manual")&&e.id;
+    return `<div class="remitem" onclick="openDetail('${e.clientId}')" style="cursor:pointer">
+      <span class="type ${tc}" style="flex:none">${tl}</span>
+      <div class="body"><div class="t">${esc(e.title)}</div><div class="who">${esc(e.who)}</div></div>
+      ${canEdit?`<button class="checkbtn" title="完成" onclick="event.stopPropagation();doneEvent('${e.clientId}','${e.id}','${iso}')">✓</button>
+        <button class="checkbtn" title="刪除" style="border-color:var(--danger-soft);color:var(--danger)" onclick="event.stopPropagation();delEvent('${e.clientId}','${e.id}','${iso}')">×</button>`:""}
+    </div>`;
+  }).join("") : "";
+  const gRows = gevs.length? gevs.map(g=>`
+    <div class="remitem">
+      <span class="type t-google" style="flex:none">Google</span>
+      <div class="body"><div class="t">${esc(g.title)}</div><div class="who">${g.allDay?"全天":esc(g.time)}</div></div>
+    </div>`).join("") : "";
+  const rows = (localRows+gRows) || `<div style="color:var(--faint);font-size:14px;text-align:center;padding:18px 0">這天沒有排程</div>`;
+  openSheet(`${m}月${d}日（${wd}）`, `${rows}
+    <button class="btn green full" style="margin-top:14px" onclick="scheduleVisit('${iso}',null)">＋ 在這天排複訪</button>`);
+}
+
+function scheduleVisit(presetDate, presetCid){
+  if(DB.clients.length===0){ toast("請先新增客戶","warn"); return; }
+  const opts=DB.clients.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"","zh-Hant"))
+    .map(c=>`<option value="${c.id}" ${c.id===presetCid?"selected":""}>${esc(c.name)}</option>`).join("");
+  openSheet("排複訪", `
+    <div class="field"><label>客戶</label><select id="vCid">${opts}</select></div>
+    <div class="field"><label>日期</label><input type="date" id="vDate" value="${presetDate||todayISO()}"></div>
+    <div class="field"><label>備註（選填）</label><input id="vNote" placeholder="例：保單健檢、送資料、加保討論"></div>
+    <button class="btn green full" onclick="saveVisit()">排入行事曆</button>`);
+}
+function saveVisit(){
+  const cid=$("#vCid").value; const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const date=$("#vDate").value; if(!date){ toast("請選日期","warn"); return; }
+  const note=$("#vNote").value.trim();
+  c.reminders=c.reminders||[];
+  const rid=uid();
+  const title=note?("複訪："+note):"複訪";
+  c.reminders.push({id:rid, date, title, kind:"visit", note, done:false});
+  commit(); closeSheet();
+  if(view==="reminders"){ render(); } else { go("reminders"); }
+  toast(gcalIsConnected()&&gcalPushEnabled()?"已排入行事曆，同步至 Google…":"已排入行事曆");
+  gcalPushVisit(cid, rid, `${title}（${c.name||""}）`, date, note);
+}
+function doneEvent(cid,id,iso){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const r=(c.reminders||[]).find(x=>x.id===id);
+  if(r){ r.done=true; if(r.gcalEventId){ gcalDeleteEvent(r.gcalEventId); r.gcalEventId=null; } commit(); render(); if(iso) openDay(iso); toast("已完成"); }
+}
+function delEvent(cid,id,iso){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const r=(c.reminders||[]).find(x=>x.id===id);
+  if(r && r.gcalEventId) gcalDeleteEvent(r.gcalEventId);
+  c.reminders=(c.reminders||[]).filter(x=>x.id!==id); commit(); render(); if(iso) openDay(iso); toast("已刪除");
+}
+
+function reminderListBody(){
+  const rs=allReminders();
+  const t=todayISO();
+  const w=new Date(); w.setDate(w.getDate()+7); const week=w.toLocaleDateString("sv");
+  const groups={over:[],today:[],week:[],later:[]};
+  rs.forEach(r=>{ if(r.date<t) groups.over.push(r); else if(r.date===t) groups.today.push(r); else if(r.date<=week) groups.week.push(r); else groups.later.push(r); });
+  if(rs.length===0) return `<div class="empty"><div class="big">🌿</div><h3>目前沒有排程</h3><p>填入客戶生日與保單日期會自動排程；也可在月曆上排複訪。</p>
+    <button class="btn amber" style="margin-top:6px" onclick="scheduleVisit(null,null)">＋ 排複訪</button></div>`;
+  const item=r=>{
+    const [tl,tc]=EVTYPE[r.type]||["",""];
+    const [,mm,dd]=r.date.split("-");
+    const over=r.date<t;
+    const dn = r.date===t? "今天" : (over? `逾 ${Math.abs(daysBetween(r.date,t))} 天` : `${daysBetween(t,r.date)} 天後`);
+    const canEdit=(r.type==="visit"||r.type==="manual")&&r.id;
+    return `<div class="remitem ${over?"over":""}" onclick="openDetail('${r.clientId}')">
+      <div class="date"><b>${dd}</b>${mm}月</div>
+      <div class="body"><div class="t">${esc(r.title)}</div><div class="who">${esc(r.who)} ・ ${dn}</div></div>
+      <span class="type ${tc}">${tl}</span>
+      ${canEdit?`<button class="checkbtn" onclick="event.stopPropagation();doneEvent('${r.clientId}','${r.id}')">✓</button>`:""}
+    </div>`;
+  };
+  const grp=(key,label,cls="")=> groups[key].length? `<div class="remgroup ${cls}"><h4>${label} <span class="mono" style="opacity:.7">${groups[key].length}</span></h4>${groups[key].map(item).join("")}</div>`:"";
+  return grp("over","逾期","over") + grp("today","今天") + grp("week","本週內") + grp("later","之後");
+}
+function doneReminder(cid,rid){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const r=(c.reminders||[]).find(x=>x.id===rid); if(r){ r.done=true; commit(); render(); toast("已完成"); }
+}
+
+/* ---- claims view ---- */
+function viewClaims(){
+  const list=[];
+  DB.clients.forEach(c=>(c.claims||[]).forEach(cl=>list.push(Object.assign({clientId:c.id,who:c.name},cl))));
+  list.sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+  const open=list.filter(x=>x.status!=="已結案").length;
+  let head=`<div class="viewhead"><h2>理賠</h2><span class="count mono">${list.length}</span>
+    ${open?`<span class="count" style="color:var(--danger);border-color:var(--danger-soft);background:var(--danger-soft)">處理中 ${open}</span>`:""}</div>`;
+  if(list.length===0) return head+`<div class="empty"><div class="big">📋</div><h3>沒有理賠紀錄</h3><p>在客戶頁的「理賠服務」可新增與追蹤理賠案件。</p></div>`;
+  const statusColor=s=> s==="已結案"?"var(--ok)": s==="送件中"?"var(--amber)":"var(--muted)";
+  return head+`<div class="clientgrid">${list.map(cl=>`
+    <div class="card" onclick="openDetail('${cl.clientId}')">
+      <div class="card-top" style="margin-bottom:8px">
+        <div class="avatar" style="background:var(--pine)">${esc(initial(cl.who))}</div>
+        <div style="flex:1;min-width:0">
+          <h3>${esc(cl.who)}</h3>
+          <div class="sub"><span class="mono">${esc(fmtDate(cl.date))}</span><span>${esc(cl.type||"理賠")}</span></div>
+        </div>
+        <span class="type" style="background:${statusColor(cl.status)}1f;color:${statusColor(cl.status)}">${esc(cl.status||"待處理")}</span>
+      </div>
+      ${cl.note?`<div style="font-size:13px;color:var(--muted)">${esc(cl.note)}</div>`:""}
+    </div>`).join("")}</div>`;
+}
+
+/* ---- grades view (SOP 6/7/8) ---- */
+function viewGrades(){
+  const by={A:[],B:[],C:[],D:[],"":[]};
+  DB.clients.forEach(c=>by[c.grade].push(c));
+  let html=`<div class="viewhead"><h2>客戶分級</h2><span class="count mono">${DB.clients.length}</span></div>
+    <div class="info" style="padding:14px 16px"><p style="margin:0;font-size:13.5px;color:var(--muted)">SOP 步驟 6–8：把客戶分為 A／B／C／D 級，A 級重點維繫，BCD 級當作潛力名單節奏經營。</p></div>`;
+  const block=(g)=>{
+    const arr=by[g]; const meta=GRADES[g];
+    const gc=g?("g-"+g):"g-none";
+    return `<div class="block">
+      <h4><span class="gradebadge ${gc}">${g||"–"}</span> ${meta.label}・${meta.note}<span class="tag">${arr.length} 位</span></h4>
+      ${arr.length? `<div class="block-body" style="padding:8px 10px">${arr.map(c=>`
+        <div class="kv" style="cursor:pointer;align-items:center" onclick="openDetail('${c.id}')">
+          <span class="k" style="color:var(--ink);font-weight:600">${esc(c.name)}</span>
+          <span class="v" style="font-weight:500;color:var(--muted)">${(c.policies||[]).length} 張保單 ・ SOP ${c.sopStep}</span>
+        </div>`).join("")}</div>`
+      : `<div class="block-body" style="color:var(--faint);font-size:13px">此級別尚無客戶</div>`}
+    </div>`;
+  };
+  return html + ["A","B","C","D",""].map(block).join("");
+}
+
+/* ---- guide view ---- */
+function viewGuide(){
+  return `<div class="viewhead"><h2>說明</h2></div>
+  <div class="info">
+    <h3>🧭 SOP 流程（${SOP.length} 步驟）</h3>
+    <ol class="steplist">
+      ${SOP.map(s=>`<li><span class="n"></span><div><b>${esc(s.title)}</b>${s.desc?`<small>${esc(s.desc)}</small>`:""}</div></li>`).join("")}
+    </ol>
+    <button class="btn green full" style="margin-top:14px" onclick="openSopEditor()">✏️ 自訂 SOP 流程（依你的銷售邏輯）</button>
+  </div>
+  <div class="info">
+    <h3>💾 備份與還原（重要）</h3>
+    <p>這份資料庫存在這台 iPad 上，<b>不會自動上傳雲端</b>。Safari 對本機檔案的儲存並不保證長期保留，所以請養成備份習慣：</p>
+    <ol>
+      <li>右上角狀態鈕變成<b>「待匯出備份」</b>時，點它匯出。</li>
+      <li>iPad 會跳出分享面板 → 選<b>「儲存到檔案」</b>，存到 iCloud 雲碟或「我的 iPad」。</li>
+      <li>換裝置或資料遺失時，用右上角 <b>⤓ 匯入</b> 選回那個 .json 檔即可還原。</li>
+    </ol>
+    <p style="color:var(--muted);font-size:13px;margin:0">建議：每次新增或修改幾位客戶後就匯出一次，存到 iCloud 最安全。匯出時可設定密碼把備份加密，避免個資外洩。</p>
+    <div class="btnrow"><button class="btn green" onclick="exportData()">立即匯出備份</button><button class="btn ghost" onclick="openImport()">匯入備份</button></div>
+  </div>
+  <div class="info">
+    <h3>📅 Google 行事曆同步</h3>
+    <p>連接後，月曆會同時顯示你 Google 行事曆裡的行程，方便一次比對有沒有撞期；新增「複訪」時也會自動同步建立到你的 Google 行事曆。</p>
+    ${gcalIsConnected() ? `
+      <div class="field" style="margin-bottom:10px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:0">
+          <input type="checkbox" id="setGcalPush" ${gcalPushEnabled()?"checked":""} onchange="gcalTogglePush(this.checked)" style="width:auto;height:auto">
+          新增複訪時，自動同步建立到 Google 行事曆
+        </label>
+      </div>
+      <p style="color:var(--ok);font-size:13px;font-weight:700;margin:0 0 10px">✅ 已連接 Google 行事曆</p>
+      <div class="btnrow"><button class="btn ghost" onclick="gcalDisconnect()">中斷連接</button></div>
+    ` : `
+      <div class="field"><label>Google 用戶端 ID（Client ID）</label>
+        <input id="setGcalCid" value="${esc(gcalClientId())}" placeholder="xxxxxxxx.apps.googleusercontent.com">
+      </div>
+      <button class="btn green" onclick="gcalConnect()">連接 Google 行事曆</button>
+      <details style="margin-top:14px">
+        <summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--muted)">還沒有用戶端 ID？點此看設定步驟（約5分鐘，只需做一次）</summary>
+        <ol style="margin-top:10px">
+          <li>前往 <span class="mono">console.cloud.google.com</span>，用你的 Google 帳號建立一個新專案。</li>
+          <li>左側選單「已啟用的API和服務」→「啟用API和服務」，搜尋並啟用 <b>Google Calendar API</b>。</li>
+          <li>左側「OAuth 同意畫面」，使用者類型選<b>「外部」</b>，填寫應用程式名稱與你的 Email 後儲存；在「測試使用者」加入你自己的 Google 帳號。</li>
+          <li>左側「憑證」→「建立憑證」→「OAuth 用戶端 ID」，應用程式類型選<b>「網頁應用程式」</b>。</li>
+          <li>「已授權的 JavaScript 來源」新增：<span class="mono">${esc(location.origin)}</span></li>
+          <li>建立後複製產生的「用戶端 ID」，貼回上面欄位並點「連接 Google 行事曆」。</li>
+        </ol>
+        <p style="color:var(--muted);font-size:12.5px;margin-top:8px">這組 ID 只是用來識別這個網頁應用，不是密碼，可放心貼在這裡；客戶資料仍然只存在你的裝置與你自己的 Google 帳號中，不會經過任何第三方伺服器。</p>
+      </details>
+    `}
+  </div>
+  <div class="info">
+    <h3>⚙️ 設定</h3>
+    <div class="field"><label>資料庫名稱（顯示在左上角）</label><input id="setBrand" value="${esc(DB.meta.brand||"")}" placeholder="例：王小明 客戶資料庫"></div>
+    <div class="field"><label>業務員姓名（用於 LINE 訊息署名）</label><input id="setAgent" value="${esc(DB.meta.agent||"")}" placeholder="例：王小明"></div>
+    <button class="btn green" onclick="saveSettings()">儲存設定</button>
+    <div class="danger-zone">
+      <button class="btn red full" onclick="wipeAll()">清空所有資料</button>
+      <p style="font-size:12px;color:var(--muted);margin:8px 0 0">清空前請先匯出備份。此動作無法復原。</p>
+    </div>
+  </div>`;
+}
+function saveSettings(){
+  DB.meta.brand=$("#setBrand").value.trim()||"保險客戶資料庫";
+  DB.meta.agent=$("#setAgent").value.trim();
+  commit(); render(); toast("設定已儲存");
+}
+
+/* ---- SOP flow editor ---- */
+let _sopEdit=null;
+function openSopEditor(){
+  _sopEdit = SOP.map(s=>({title:s.title, short:s.short, desc:s.desc}));
+  renderSopEditor();
+}
+function renderSopEditor(){
+  const rows=_sopEdit.map((s,i)=>`
+    <div class="subcard">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+        <span style="width:26px;height:26px;border-radius:8px;background:var(--pine);color:#fff;font-family:var(--mono);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none">${i+1}</span>
+        <input value="${esc(s.title)}" oninput="sopSet(${i},'title',this.value)" placeholder="步驟名稱" style="flex:1;height:42px;border:1px solid var(--line);border-radius:10px;padding:0 12px">
+        <button class="sopmini" onclick="sopMove(${i},-1)" ${i===0?"disabled":""}>↑</button>
+        <button class="sopmini" onclick="sopMove(${i},1)" ${i===_sopEdit.length-1?"disabled":""}>↓</button>
+        <button class="sopmini del" onclick="sopDel(${i})">×</button>
+      </div>
+      <div class="field" style="margin-bottom:8px"><label>短標（看板欄位／卡片顯示，2–3 字）</label>
+        <input value="${esc(s.short)}" oninput="sopSet(${i},'short',this.value)" placeholder="例：需求" maxlength="6"></div>
+      <div class="field" style="margin-bottom:0"><label>說明（選填）</label>
+        <textarea oninput="sopSet(${i},'desc',this.value)" placeholder="這個階段要做什麼…" style="min-height:52px">${esc(s.desc)}</textarea></div>
+    </div>`).join("");
+  openSheet("自訂 SOP 流程", `
+    <p style="font-size:13px;color:var(--muted);margin:0 0 14px">
+      依你的銷售邏輯調整每個階段。改完後，看板、進度條、客戶頁、行事曆都會套用這套流程。（${_sopEdit.length} 個步驟，可 3–10 個）
+    </p>
+    ${rows}
+    ${_sopEdit.length<10?`<button class="addrow" onclick="sopAdd()">＋ 新增步驟</button>`:`<p style="font-size:12px;color:var(--muted);text-align:center">已達上限 10 個步驟</p>`}
+    <div class="btnrow" style="margin-top:16px">
+      <button class="btn ghost" style="flex:1" onclick="sopResetDefault()">還原預設</button>
+      <button class="btn green" style="flex:2" onclick="sopSave()">儲存流程</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">建議在開始建立客戶前設定好；日後大幅調整順序，可能改變既有客戶目前所在的階段對應。</p>`);
+}
+function sopSet(i,k,v){ if(_sopEdit[i]) _sopEdit[i][k]=v; }
+function sopMove(i,d){ const j=i+d; if(j<0||j>=_sopEdit.length) return; const t=_sopEdit[i]; _sopEdit[i]=_sopEdit[j]; _sopEdit[j]=t; renderSopEditor(); }
+function sopDel(i){ if(_sopEdit.length<=3){ toast("至少要保留 3 個步驟","warn"); return; } _sopEdit.splice(i,1); renderSopEditor(); }
+function sopAdd(){ if(_sopEdit.length>=10){ toast("最多 10 個步驟","warn"); return; } _sopEdit.push({title:"新步驟",short:"新",desc:""}); renderSopEditor(); }
+function sopResetDefault(){ _sopEdit=DEFAULT_SOP.map(s=>({title:s.title,short:s.short,desc:s.desc})); renderSopEditor(); toast("已載入預設流程（尚未儲存）"); }
+function sopSave(){
+  for(const s of _sopEdit){ if(!(s.title||"").trim()){ toast("每個步驟都要有名稱","warn"); return; } }
+  DB.meta.sop=_sopEdit.map(s=>({title:(s.title||"").trim(), short:((s.short||"").trim()||(s.title||"").trim().slice(0,3)), desc:(s.desc||"").trim()}));
+  loadSOP();
+  DB.clients.forEach(c=>{ if(!c.sopStep||c.sopStep<1) c.sopStep=1; if(c.sopStep>SOP.length) c.sopStep=SOP.length; });
+  commit(); closeSheet();
+  if(view!=="guide") go("guide"); else render();
+  toast("SOP 流程已更新");
+}
+function wipeAll(){
+  openSheet("清空所有資料", `<p style="font-size:14px">這會刪除全部 <b>${DB.clients.length}</b> 位客戶與所有紀錄，無法復原。</p>
+    <p style="font-size:13px;color:var(--muted)">建議先匯出備份再清空。</p>
+    <div class="btnrow"><button class="btn ghost" style="flex:1" onclick="exportData()">先匯出</button>
+    <button class="btn red" style="flex:1" onclick="confirmWipe()">確認清空</button></div>`);
+}
+function confirmWipe(){ DB.clients=[]; commit(); closeSheet(); go("clients"); toast("已清空"); }
+
+/* ============ detail ============ */
+function openDetail(id){
+  const c=DB.clients.find(x=>x.id===id); if(!c) return;
+  const g=c.grade||""; const gc=g?("g-"+g):"g-none"; const meta=GRADES[g];
+  const cur=curStep(c);
+  const polN=(c.policies||[]).length;
+  const openClaims=(c.claims||[]).filter(x=>x.status!=="已結案").length;
+  const upcoming=autoReminders(c).concat((c.reminders||[]).filter(r=>!r.done).map(r=>({date:r.date,title:r.title,type:"manual"}))).sort((a,b)=>a.date<b.date?-1:1)[0];
+
+  const sopRows=SOP.map(s=>{
+    const cls=s.n<c.sopStep?"done":s.n===c.sopStep?"cur":"";
+    const st=(c.sopStatus&&c.sopStatus[s.n])||null;
+    const sub = st&&st.note ? `<small>${esc(st.note)}${st.date?` ・ ${esc(fmtDate(st.date))}`:""}</small>`
+              : s.n===c.sopStep ? `<small>目前所在階段</small>`
+              : `<small style="color:var(--faint)">點此記錄這個階段</small>`;
+    return `<div class="sopstep ${cls}" onclick="editSopStep('${c.id}',${s.n})">
+      <div class="badge">${s.n}</div>
+      <div class="t" style="flex:1">${esc(s.title)}${sub}</div>
+      <svg class="sopedit" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>`;
+  }).join("");
+
+  const policies=(c.policies||[]).length? c.policies.map(p=>`
+    <div class="kv"><span class="k">${esc(p.mainName||"保單")}${p.category?` ・${esc(p.category)}`:""}</span>
+    <span class="v">${p.totalPremium?esc(p.totalPremium)+" 元":(p.premium?esc(p.premium)+" 元":"")}</span></div>
+    <div style="font-size:12px;color:var(--muted);padding:0 0 ${(p.riders&&p.riders.length)?"6px":"8px"};${(p.riders&&p.riders.length)?"":"border-bottom:1px solid var(--line-2)"}">
+      ${p.policyNo?"No. "+esc(p.policyNo)+"　":""}${p.company?esc(p.company)+" ・ ":""}${p.payFreq?esc(p.payFreq)+" ・ ":""}${p.coverage?"保額 "+esc(p.coverage)+" ・ ":""}${p.term?esc(p.term)+" ・ ":""}${p.startDate?"投保 "+fmtDate(p.startDate):""}${p.paymentDate?" ・ 繳費 "+fmtDate(p.paymentDate):""}${p.maturityDate?" ・ 滿期 "+fmtDate(p.maturityDate):""}
+    </div>
+    ${(p.riders&&p.riders.length)?`<div class="riderlist">${p.riders.map(r=>`<div class="rideritem"><span>↳ ${esc(r.name||"附約")}</span><span class="rc">${[r.coverage?"保額 "+esc(r.coverage):"", r.premium?"保費 "+esc(r.premium):"", r.term?esc(r.term):""].filter(Boolean).join("　")}</span></div>`).join("")}</div>`:""}
+    ${p.notes?`<div style="font-size:12px;color:var(--muted);padding:6px 0 8px;border-bottom:1px solid var(--line-2)">📝 ${esc(p.notes)}</div>`:""}`).join("") : `<div style="color:var(--faint);font-size:13px">尚無保單紀錄</div>`;
+
+  const claims=(c.claims||[]).length? c.claims.map(cl=>`
+    <div class="kv"><span class="k">${esc(fmtDate(cl.date))} ${esc(cl.type||"")}</span>
+    <span class="v" style="color:${cl.status==="已結案"?"var(--ok)":"var(--amber)"}">${esc(cl.status||"待處理")}</span></div>
+    ${cl.note?`<div style="font-size:12px;color:var(--muted);padding:0 0 8px">${esc(cl.note)}</div>`:""}`).join("") : `<div style="color:var(--faint);font-size:13px">尚無理賠紀錄</div>`;
+
+  const care=(c.careLog||[]).length? c.careLog.slice().reverse().map(l=>`
+    <div class="kv"><span class="k mono" style="flex:none">${esc(fmtDate(l.date))}</span><span class="v" style="font-weight:500;text-align:left">${esc(l.note)}</span></div>`).join("") : `<div style="color:var(--faint);font-size:13px">尚無聯繫紀錄</div>`;
+
+  const html=`
+    <div class="detail-hero">
+      <div class="top">
+        <div class="avatar" style="width:54px;height:54px;font-size:21px;background:var(--pine)">${esc(initial(c.name))}</div>
+        <div style="flex:1;min-width:0">
+          <h2>${esc(c.name||"未命名")} <span class="gradebadge ${gc}" style="vertical-align:middle">${g||"–"}</span></h2>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">${esc(meta.note)} ・ SOP ${c.sopStep}. ${esc(cur.short)}</div>
+        </div>
+      </div>
+      <div class="meta">
+        ${c.phone?`<a href="tel:${esc(c.phone)}">📞 ${esc(c.phone)}</a>`:""}
+        ${(c.tags||[]).map(t=>`<span class="regiontag">🏷️ ${esc(t)}</span>`).join("")}
+        ${c.unit?`<span>🏢 ${esc(c.unit)}</span>`:""}
+        ${c.birthday?`<span>🎂 ${esc(fmtDate(c.birthday))}</span>`:""}
+        ${c.occupation?`<span>${esc(c.occupation)}</span>`:""}
+        ${c.email?`<a href="mailto:${esc(c.email)}">✉️ ${esc(c.email)}</a>`:""}
+        ${c.address?`<span>🏠 ${esc(c.address)}</span>`:""}
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="v">${polN}</div><div class="l">保單</div></div>
+      <div class="kpi"><div class="v">${openClaims}</div><div class="l">理賠處理中</div></div>
+      <div class="kpi"><div class="v">${upcoming?fmtDate(upcoming.date).slice(5):"–"}</div><div class="l">下次提醒</div></div>
+    </div>
+
+    <div class="block"><h4>🧭 SOP 進度<span class="tag">點步驟記錄／設為目前</span></h4><div class="sopfull">${sopRows}</div></div>
+
+    ${c.needs?`<div class="block"><h4>📝 需求重點</h4><div class="block-body" style="font-size:14px;line-height:1.6">${esc(c.needs)}</div></div>`:""}
+
+    <div class="block"><h4>🛡️ 保單<span class="tag">${polN} 張</span></h4><div class="block-body">${policies}</div></div>
+
+    <div class="block"><h4>📞 定聯／關懷紀錄</h4><div class="block-body">${care}
+      <button class="addrow" style="margin-top:10px" onclick="addCare('${c.id}')">＋ 記一筆聯繫</button></div></div>
+
+    <div class="block"><h4>📋 理賠服務</h4><div class="block-body">${claims}
+      <button class="addrow" style="margin-top:10px" onclick="addClaim('${c.id}')">＋ 新增理賠案件</button></div></div>
+
+    ${c.notes?`<div class="block"><h4>🗒️ 備註</h4><div class="block-body" style="font-size:14px;line-height:1.6">${esc(c.notes)}</div></div>`:""}
+
+    <div class="btnrow" style="margin:6px 0 4px">
+      <button class="btn green" style="flex:1" onclick="editClient('${c.id}')">編輯客戶</button>
+      <button class="btn ghost" onclick="scheduleVisit(null,'${c.id}')">排複訪</button>
+      <button class="btn red" onclick="delClient('${c.id}')">刪除</button>
+    </div>`;
+  openSheet(esc(c.name||"客戶"), html);
+}
+
+function tplSnippet(body){ return (body||"").replace(/\{[^}]+\}/g,"…").replace(/\s+/g," ").trim().slice(0,20); }
+
+/* ============ marketing view (LINE 關懷訊息中心) ============ */
+function viewMarketing(){
+  const cards=LINE_TPL.map(t=>`
+    <div class="card" style="padding:14px 16px">
+      <h3 style="font-size:15px;margin:0 0 7px;display:flex;align-items:center;gap:7px">💬 ${esc(t.title)}</h3>
+      <div style="font-size:12.5px;color:var(--muted);white-space:pre-wrap;line-height:1.55;max-height:60px;overflow:hidden">${esc(t.body.replace(/\n{2,}/g,"\n"))}</div>
+      <div class="btnrow" style="margin-top:12px">
+        <button class="btn green" style="flex:1;height:44px" onclick="marketingUse('${t.id}')">指定客戶使用</button>
+        <button class="btn ghost" style="height:44px;padding:0 14px" onclick="copyTplRaw('${t.id}')">複製原文</button>
+      </div>
+    </div>`).join("");
+  return `<div class="viewhead"><h2>定聯訊息</h2><span class="count mono">${LINE_TPL.length}</span>
+      <div class="spacer"></div>
+      <button class="tb-btn primary" style="height:38px;color:#241A06" onclick="openLineTplEditor()">＋ 範本</button>
+    </div>
+    <div class="info" style="padding:13px 16px;margin-bottom:12px"><p style="margin:0;font-size:13px;color:var(--muted);line-height:1.7">
+      LINE 關懷訊息集中在這裡管理與取用。<b>指定客戶使用</b>：選一位客戶，自動帶入姓名與保單資料後複製；<b>複製原文</b>：複製範本本身（適合貼到 LINE 群發後再編輯）。</p></div>
+    <div style="display:grid;gap:11px">${cards}</div>
+    <button class="btn ghost full" style="margin:14px 0 4px" onclick="openLineTplEditor()">✏️ 編輯／新增範本</button>`;
+}
+function marketingUse(tid){
+  if(DB.clients.length===0){ toast("尚無客戶，可先用「複製原文」或到客戶頁新增","warn"); return; }
+  const rows=DB.clients.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"","zh-Hant"))
+    .map(c=>`<div class="remitem mktpick" data-k="${esc(((c.name||"")+" "+(c.phone||"")+" "+(c.unit||"")).toLowerCase())}" style="cursor:pointer" onclick="lineComposeFromMkt('${c.id}','${tid}')">
+      <div class="avatar" style="width:38px;height:38px;font-size:15px;border-radius:11px">${esc(initial(c.name))}</div>
+      <div class="body"><div class="t">${esc(c.name||"未命名")}</div>${c.phone?`<div class="who mono">${esc(c.phone)}</div>`:""}</div></div>`).join("");
+  openSheet("選擇客戶", `
+    <div class="search" style="margin-bottom:12px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+      <input placeholder="搜尋客戶姓名／電話" oninput="filterMktPick(this.value)"></div>
+    <div id="mktList" style="display:flex;flex-direction:column;gap:8px">${rows}</div>`);
+}
+function filterMktPick(q){ q=(q||"").toLowerCase().trim();
+  document.querySelectorAll("#mktList .mktpick").forEach(el=>{ el.style.display=(!q||el.dataset.k.includes(q))?"":"none"; }); }
+function lineComposeFromMkt(cid,tid){ closeSheet(); lineCompose(cid,tid); }
+function copyTplRaw(tid){
+  const t=LINE_TPL.find(x=>x.id===tid); if(!t) return;
+  const agent=(DB.meta.agent||"").trim();
+  let body=t.body.split("{顧問}").join(agent);
+  if(!agent) body=body.replace(/\n*——\s*$/,"");
+  body=body.trim();
+  try{ navigator.clipboard.writeText(body); }
+  catch(e){ const ta=document.createElement("textarea");ta.value=body;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove(); }
+  toast("已複製範本原文，貼到 LINE 再編輯即可");
+}
+
+function lineTemplates(c){
+  const chev=`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const btns=LINE_TPL.map(t=>`<button class="linebtn" onclick="lineCompose('${c.id}','${t.id}')">
+    <span class="ic">💬</span><span style="flex:1">${esc(t.title)}<small>${esc(tplSnippet(t.body))}</small></span>${chev}</button>`).join("");
+  return btns + `<button class="btn ghost full" style="margin-top:6px" onclick="openLineTplEditor()">✏️ 編輯／新增 LINE 訊息範本</button>`;
+}
+
+let lc=null;  // line composer state
+const AUTO_VARS=["姓名","顧問"];
+const POLICY_VARS={"公司":"company","保費":"premium","保單":"mainName"};
+function lineCompose(cid, tid){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const tpl=LINE_TPL.find(t=>t.id===tid)||LINE_TPL[0]; if(!tpl) return;
+  const tokens=[...new Set((tpl.body.match(/\{([^}]+)\}/g)||[]).map(s=>s.slice(1,-1)))];
+  const fields=tokens.filter(t=>!AUTO_VARS.includes(t));
+  lc={cid, tid:tpl.id, fields};
+  const pol=(c.policies||[])[0]||{};
+  const prefill=t=>{ const k=POLICY_VARS[t]; return k?(pol[k]||""):""; };
+  const usesPolicy=fields.some(t=>POLICY_VARS[t]);
+  const polPick = ((c.policies||[]).length && usesPolicy)
+    ? `<div class="field"><label>從保單帶入（選填）</label>
+        <select id="lfPick" onchange="lineFillPolicy()"><option value="">選擇保單自動填入…</option>
+        ${c.policies.map((p,i)=>`<option value="${i}">${esc(p.mainName||("保單 "+(i+1)))}${p.company?" ・"+esc(p.company):""}</option>`).join("")}</select></div>` : "";
+  const inputs = fields.map((t,i)=>`<div class="field"><label>${esc(t)}</label>
+     <input id="lf${i}" value="${esc(prefill(t))}" oninput="lineRender()" placeholder="填入${esc(t)}"></div>`).join("");
+  openSheet(esc(tpl.title), `
+    ${polPick}${inputs}
+    <div class="formsec">預覽</div>
+    <div class="linepreview" id="linePreview"></div>
+    <button class="linebtn" style="margin-top:14px;justify-content:center" onclick="copyLine()">
+      <span class="ic">💬</span><span style="font-weight:700">複製訊息，貼到 LINE 傳送</span></button>
+    <button class="btn ghost full" style="margin-top:10px" onclick="openLineTplEditor('${tpl.id}')">✏️ 編輯這則範本</button>`);
+  lineRender();
+}
+function lineFillPolicy(){
+  const c=DB.clients.find(x=>x.id===lc.cid); if(!c) return;
+  const i=$("#lfPick").value; if(i==="") return;
+  const p=(c.policies||[])[+i]||{};
+  lc.fields.forEach((t,idx)=>{ const el=$("#lf"+idx); if(!el) return; const k=POLICY_VARS[t]; if(k&&p[k]) el.value=p[k]; });
+  lineRender();
+}
+function buildLineMsg(){
+  if(!lc) return "";
+  const c=DB.clients.find(x=>x.id===lc.cid); const tpl=LINE_TPL.find(t=>t.id===lc.tid);
+  if(!c||!tpl) return "";
+  const agent=(DB.meta.agent||"").trim();
+  let body=tpl.body.split("{姓名}").join(c.name||"").split("{顧問}").join(agent);
+  lc.fields.forEach((t,i)=>{ const v=(($("#lf"+i)||{}).value||""); body=body.split("{"+t+"}").join(v); });
+  if(!agent) body=body.replace(/\n*——\s*$/,"");
+  return body.replace(/[ \t]+\n/g,"\n").trim();
+}
+function lineRender(){ const el=$("#linePreview"); if(el) el.textContent=buildLineMsg(); }
+function copyLine(){
+  const txt=buildLineMsg();
+  try{ navigator.clipboard.writeText(txt); }
+  catch(e){ const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove(); }
+  toast("已複製，貼到 LINE 即可傳送");
+}
+
+/* ---- LINE template library editor ---- */
+let _tplEdit=null;
+function openLineTplEditor(focusId){
+  _tplEdit=LINE_TPL.map(t=>({id:t.id,title:t.title,body:t.body}));
+  renderLineTplEditor(focusId);
+}
+function renderLineTplEditor(focusId){
+  const rows=_tplEdit.map((t,i)=>`
+    <div class="subcard" ${t.id===focusId?'style="border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)"':''}>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+        <span style="font-size:11px;font-weight:800;color:var(--muted)">#${i+1}</span>
+        <input value="${esc(t.title)}" oninput="tplSet(${i},'title',this.value)" placeholder="範本名稱（如：過年祝福）" style="flex:1;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 12px">
+        <button class="sopmini" onclick="tplMove(${i},-1)" ${i===0?"disabled":""}>↑</button>
+        <button class="sopmini" onclick="tplMove(${i},1)" ${i===_tplEdit.length-1?"disabled":""}>↓</button>
+        <button class="sopmini del" onclick="tplDel(${i})">×</button>
+      </div>
+      <textarea oninput="tplSet(${i},'body',this.value)" placeholder="訊息內容…" style="min-height:88px;width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.6;font-family:var(--sans)">${esc(t.body)}</textarea>
+    </div>`).join("");
+  openSheet("LINE 訊息範本", `
+    <div style="background:var(--teal-soft);border-radius:11px;padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#1f5249;line-height:1.7">
+      用<b>大括號</b>插入自動帶入的變數：<br>
+      <b>{姓名}</b> 客戶姓名　<b>{顧問}</b> 你的署名（設定裡填）<br>
+      <b>{公司}</b> <b>{保費}</b> <b>{保單}</b> <b>{金額}</b> 傳送時填入（保單相關會自動帶）<br>
+      也可自訂任意變數，例如 <b>{活動}</b>，傳送時會出現填寫欄。
+    </div>
+    ${rows}
+    ${_tplEdit.length<20?`<button class="addrow" onclick="tplAdd()">＋ 新增範本</button>`:""}
+    <div class="btnrow" style="margin-top:16px">
+      <button class="btn ghost" style="flex:1" onclick="tplResetDefault()">還原預設</button>
+      <button class="btn green" style="flex:2" onclick="tplSave()">儲存範本</button>
+    </div>`);
+}
+function tplSet(i,k,v){ if(_tplEdit[i]) _tplEdit[i][k]=v; }
+function tplMove(i,d){ const j=i+d; if(j<0||j>=_tplEdit.length) return; const t=_tplEdit[i]; _tplEdit[i]=_tplEdit[j]; _tplEdit[j]=t; renderLineTplEditor(); }
+function tplDel(i){ if(_tplEdit.length<=1){ toast("至少保留 1 則範本","warn"); return; } _tplEdit.splice(i,1); renderLineTplEditor(); }
+function tplAdd(){ _tplEdit.push({id:uid(), title:"新範本", body:"{姓名} 您好 😊\n\n—— {顧問}"}); renderLineTplEditor(); }
+function tplResetDefault(){ _tplEdit=DEFAULT_LINE_TPL.map(t=>({id:t.id,title:t.title,body:t.body})); renderLineTplEditor(); toast("已載入預設範本（尚未儲存）"); }
+function tplSave(){
+  for(const t of _tplEdit){ if(!(t.title||"").trim()){ toast("每則範本都要有名稱","warn"); return; } if(!(t.body||"").trim()){ toast("範本內容不可空白","warn"); return; } }
+  DB.meta.lineTemplates=_tplEdit.map(t=>({id:t.id||uid(), title:t.title.trim(), body:t.body}));
+  loadLineTemplates(); commit(); closeSheet(); toast("LINE 範本已儲存");
+}
+
+/* ---- SOP step editor ---- */
+function editSopStep(cid, n){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const s=SOP[n-1];
+  const st=(c.sopStatus&&c.sopStatus[n])||{};
+  const isCur=c.sopStep===n;
+  const done=n<c.sopStep;
+  const state = isCur?`<span style="color:var(--amber);font-weight:700">● 目前進度</span>` : done?`<span style="color:var(--teal);font-weight:700">✓ 已通過</span>` : `<span style="color:var(--faint)">尚未進行</span>`;
+  openSheet(`${n}. ${esc(s.short)}`, `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div class="badge" style="width:36px;height:36px;border-radius:10px;background:${isCur?'var(--amber)':done?'var(--teal)':'var(--line)'};color:${isCur||done?'#fff':'var(--muted)'};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:16px">${n}</div>
+      <div><div style="font-weight:700;font-size:15px">${esc(s.title)}</div><div style="font-size:12px;margin-top:2px">${state}</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin:0 0 16px">${esc(s.desc)}</p>
+
+    <div class="field"><label>這個階段的紀錄</label>
+      <textarea id="sopNote" placeholder="記下這一步做了什麼、客戶反應、下一步打算…">${esc(st.note||"")}</textarea></div>
+    <div class="field"><label>日期</label><input type="date" id="sopDate" value="${esc(st.date||"")}"></div>
+
+    ${isCur
+      ? `<div style="background:var(--amber-soft);color:#7a5410;font-size:13px;font-weight:600;padding:11px 13px;border-radius:11px;text-align:center">這位客戶目前就在第 ${n} 步</div>`
+      : `<button class="btn amber full" onclick="setSopCurrent('${cid}',${n})">設為目前進度（移到第 ${n} 步）</button>`}
+    <button class="btn green full" style="margin-top:10px" onclick="saveSopStep('${cid}',${n})">儲存紀錄</button>
+    ${(st.note||st.date)?`<button class="btn ghost full" style="margin-top:8px;color:var(--danger)" onclick="clearSopStep('${cid}',${n})">清除此階段紀錄</button>`:""}
+  `);
+}
+function setSopCurrent(cid,n){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  // keep whatever note is being typed
+  const note=($("#sopNote")||{}).value, date=($("#sopDate")||{}).value;
+  if(note!=null && (note.trim()||date)){ c.sopStatus=c.sopStatus||{}; c.sopStatus[n]={note:note.trim(),date:date||""}; }
+  c.sopStep=n; commit(); editSopStep(cid,n); toast("已設為第 "+n+" 步："+SOP[n-1].short);
+}
+function saveSopStep(cid,n){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  c.sopStatus=c.sopStatus||{};
+  const note=$("#sopNote").value.trim(), date=$("#sopDate").value;
+  if(note||date) c.sopStatus[n]={note,date}; else delete c.sopStatus[n];
+  commit(); openDetail(cid); toast("已儲存階段紀錄");
+}
+function clearSopStep(cid,n){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  if(c.sopStatus) delete c.sopStatus[n];
+  commit(); openDetail(cid); toast("已清除");
+}
+
+/* quick adds */
+function addCare(cid){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  openSheet("記一筆聯繫", `
+    <div class="field"><label>日期</label><input type="date" id="careDate" value="${todayISO()}"></div>
+    <div class="field"><label>聯繫內容</label><textarea id="careNote" placeholder="例：電話關懷，提醒車險到期，客戶詢問醫療險加保…"></textarea></div>
+    <button class="btn green full" onclick="saveCare('${cid}')">儲存紀錄</button>`);
+}
+function saveCare(cid){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const note=$("#careNote").value.trim(); if(!note){ toast("請填寫內容","warn"); return; }
+  c.careLog.push({date:$("#careDate").value||todayISO(), note});
+  commit(); openDetail(cid); toast("已記錄");
+}
+function addClaim(cid){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  openSheet("新增理賠案件", `
+    <div class="row2">
+      <div class="field"><label>申請日期</label><input type="date" id="clDate" value="${todayISO()}"></div>
+      <div class="field"><label>狀態</label><select id="clStatus"><option>待處理</option><option>送件中</option><option>已結案</option></select></div>
+    </div>
+    <div class="field"><label>理賠類型</label><input id="clType" placeholder="例：醫療住院、意外、重大疾病"></div>
+    <div class="field"><label>相關保單</label><input id="clPolicy" placeholder="保單名稱（選填）"></div>
+    <div class="field"><label>金額（選填）</label><input id="clAmt" inputmode="numeric" placeholder="理賠金額"></div>
+    <div class="field"><label>備註</label><textarea id="clNote" placeholder="處理進度、需補件項目…"></textarea></div>
+    <button class="btn green full" onclick="saveClaim('${cid}')">儲存理賠</button>`);
+}
+function saveClaim(cid){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  c.claims.push({id:uid(),date:$("#clDate").value||todayISO(),status:$("#clStatus").value,type:$("#clType").value.trim(),policyName:$("#clPolicy").value.trim(),amount:$("#clAmt").value.trim(),note:$("#clNote").value.trim()});
+  commit(); openDetail(cid); toast("已新增理賠案件");
+}
+function delClient(id){
+  openSheet("刪除客戶", `<p style="font-size:14px">確定要刪除這位客戶與其所有紀錄嗎？</p>
+    <p style="font-size:13px;color:var(--muted)">建議先匯出備份。此動作無法復原。</p>
+    <div class="btnrow"><button class="btn ghost" style="flex:1" onclick="openDetail('${id}')">取消</button>
+    <button class="btn red" style="flex:1" onclick="confirmDel('${id}')">確認刪除</button></div>`);
+}
+function confirmDel(id){ DB.clients=DB.clients.filter(c=>c.id!==id); commit(); closeSheet(); go("clients"); toast("已刪除"); }
+
+/* ============ edit client ============ */
+/* ============ add menu + smart import ============ */
+function openAddMenu(){
+  openSheet("新增客戶", `
+    <button class="btn green full" style="height:54px" onclick="closeSheet();editClient(null)">✍️ 手動輸入</button>
+    <button class="btn amber full" style="height:54px;margin-top:12px" onclick="openSmartImport()">⚡ 截圖／文字快速建檔</button>
+    <p style="font-size:12.5px;color:var(--muted);margin:14px 2px 0;line-height:1.6">
+      快速建檔：在 iPad「照片」長按截圖上的文字 →「拷貝」，回到這裡貼上，系統會自動辨識欄位；也可匯入聯絡人檔（.vcf）。
+    </p>`);
+}
+let _smartPrefill=null, _smartBulk=null;
+function openSmartImport(prefill){
+  openSheet("快速建檔", `
+    <button class="btn amber full" style="height:52px" onclick="pickOcrImage()">📷 選截圖／照片，自動辨識文字</button>
+    <p style="font-size:11.5px;color:var(--muted);margin:8px 2px 14px">選一張截圖或名片照片，系統會自動讀出文字並帶到下方。需連網，第一次會下載辨識模組。</p>
+    <input type="file" id="siImg" accept="image/*" style="display:none" onchange="ocrImage(this)">
+    <div class="formsec">辨識到的文字（可修改）</div>
+    <textarea class="raw" id="siText" style="min-height:130px;font-family:var(--sans);font-size:14px" placeholder="也可自行貼上文字…&#10;例：&#10;王小明&#10;0912-345-678&#10;生日 1990/03/15&#10;公司：○○科技">${prefill?esc(prefill):""}</textarea>
+    <button class="btn green full" style="margin-top:10px" onclick="parseSmart()">辨識欄位並預覽</button>
+    <div class="formsec">或匯入聯絡人檔</div>
+    <input type="file" id="siFile" accept=".vcf,.txt,text/plain,text/vcard,text/x-vcard"
+      style="width:100%;padding:12px;border:1.5px dashed var(--line);border-radius:11px;background:var(--surface-2)"
+      onchange="smartFile(this)">
+    <p style="font-size:12px;color:var(--muted);margin:8px 2px 0">支援 .vcf（可一次匯入多位）與 .txt。</p>`);
+}
+function pickOcrImage(){ const el=$("#siImg"); if(el) el.click(); }
+let _tessLoading=null;
+function loadTesseract(){
+  if(window.Tesseract) return Promise.resolve();
+  if(_tessLoading) return _tessLoading;
+  _tessLoading=new Promise((res,rej)=>{
+    const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+    s.onload=()=>res(); s.onerror=()=>{ _tessLoading=null; rej(new Error("load fail")); };
+    document.head.appendChild(s);
+  });
+  return _tessLoading;
+}
+function ocrStatusZh(s){
+  return ({"loading tesseract core":"載入辨識引擎…","initializing tesseract":"初始化…","loading language traineddata":"下載中文辨識模組…","initializing api":"準備中…","recognizing text":"辨識中…"})[s]||"處理中…";
+}
+async function ocrImage(input){
+  const f=input.files&&input.files[0]; if(!f){ return; }
+  input.value="";
+  openSheet("辨識截圖", `<div style="text-align:center;padding:26px 10px">
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px">正在辨識截圖文字…</div>
+    <div style="font-size:14px;color:var(--pine);font-weight:700" id="ocrPct">載入辨識引擎…</div>
+    <div style="height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 20px 0">
+      <div id="ocrBar" style="height:100%;width:5%;background:var(--amber);transition:width .3s"></div></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:18px">第一次使用需連網下載辨識模組（約數 MB），請稍候；之後會快很多。</p>
+  </div>`);
+  try{
+    await loadTesseract();
+    const worker = await Tesseract.createWorker(["chi_tra","eng"], 1, {
+      logger:m=>{
+        const pct=$("#ocrPct"), bar=$("#ocrBar");
+        if(m.status==="recognizing text"){ const p=Math.round((m.progress||0)*100); if(pct) pct.textContent="辨識中 "+p+"%"; if(bar) bar.style.width=Math.max(8,p)+"%"; }
+        else { if(pct) pct.textContent=ocrStatusZh(m.status); if(bar) bar.style.width=(m.status==="loading language traineddata"?"45":"25")+"%"; }
+      }
+    });
+    const { data } = await worker.recognize(f);
+    await worker.terminate();
+    const text=((data&&data.text)||"").replace(/\n{3,}/g,"\n\n").trim();
+    if(!text){ toast("沒辨識到文字，請換清楚一點的截圖，或改用貼上","warn"); openSmartImport(); return; }
+    openSmartImport(text);
+    toast("已辨識，請確認文字後按「辨識欄位並預覽」");
+  }catch(e){
+    openSmartImport();
+    toast("辨識失敗（可能沒網路）。可改用 iPad 長按截圖文字→拷貝→貼上","err");
+  }
+}
+function smartFile(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    const text=String(r.result||"");
+    if(/BEGIN:VCARD/i.test(text)){
+      const list=parseVCards(text);
+      if(list.length===0){ toast("檔案沒有可用的聯絡人","warn"); return; }
+      showSmartPreview(list);
+    } else {
+      showSmartPreview([extractFields(text)]);
+    }
+  };
+  r.onerror=()=>toast("讀取檔案失敗","err");
+  r.readAsText(f);
+}
+function parseSmart(){
+  const t=($("#siText").value||"").trim();
+  if(!t){ toast("請先貼上文字","warn"); return; }
+  showSmartPreview([extractFields(t)]);
+}
+function extractFields(text){
+  const f={};
+  const em=text.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/); if(em) f.email=em[0];
+  let ph=text.match(/09\d{2}[\s\-.]?\d{3}[\s\-.]?\d{3}/);
+  if(!ph) ph=text.match(/0\d{1,2}[\s\-.]?\d{3,4}[\s\-.]?\d{4}/);
+  if(ph){ let dg=ph[0].replace(/\D/g,""); if(/^09\d{8}$/.test(dg)) dg=dg.replace(/(\d{4})(\d{3})(\d{3})/,"$1-$2-$3"); f.phone=dg; }
+  let un=text.match(/(?:單位|服務單位|公司|任職於|服務於|任職公司|工作單位)\s*[：:]\s*([^\n\r，,]{2,20})/);
+  if(un) f.unit=un[1].trim();
+  f.birthday=extractBirthday(text);
+  let nm=text.match(/(?:姓名|名字|客戶|稱呼|名稱|聯絡人|Name)\s*[：:]\s*([\u4e00-\u9fa5]{2,5}|[A-Za-z][A-Za-z .]{1,20}[A-Za-z])/);
+  if(nm){ f.name=nm[1].trim(); }
+  else {
+    const lines=text.split(/[\s\n\r、，,]+/).map(s=>s.trim()).filter(Boolean);
+    for(const L of lines){
+      if(/^[\u4e00-\u9fa5]{2,4}$/.test(L) && !/保險|公司|地址|電話|手機|行動|生日|出生|職業|先生|小姐|女士|備註|聯絡|資料/.test(L)){ f.name=L; break; }
+    }
+  }
+  let oc=text.match(/(?:職業|工作|任職|職稱)\s*[：:]\s*([^\n\r，,]{1,16})/); if(oc) f.occupation=oc[1].trim();
+  let ad=text.match(/(?:地址|住址|戶籍|通訊地址)\s*[：:]\s*([^\n\r]{4,40})/); if(ad) f.address=ad[1].trim();
+  const region=detectRegion(f.address||text); if(region) f.tags=[region];
+  return f;
+}
+const TW_REGIONS=["台北市","臺北市","新北市","桃園市","台中市","臺中市","台南市","臺南市","高雄市","基隆市","新竹市","新竹縣","苗栗縣","彰化縣","南投縣","雲林縣","嘉義市","嘉義縣","屏東縣","宜蘭縣","花蓮縣","台東縣","臺東縣","澎湖縣","金門縣","連江縣"];
+function detectRegion(text){
+  if(!text) return "";
+  for(const r of TW_REGIONS){ if(text.includes(r)) return r.replace("臺","台"); }
+  return "";
+}
+function extractBirthday(text){
+  let m=text.match(/((?:19|20)\d{2})\s*[\/\-.年]\s*(\d{1,2})\s*[\/\-.月]\s*(\d{1,2})/);
+  if(m) return `${m[1]}-${pad(+m[2])}-${pad(+m[3])}`;
+  m=text.match(/民國\s*(\d{2,3})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})/);
+  if(m) return `${1911+ +m[1]}-${pad(+m[2])}-${pad(+m[3])}`;
+  m=text.match(/(?:生日|出生)[^0-9]{0,6}(\d{2,3})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{1,2})/);
+  if(m){ let y=+m[1]; if(y<200) y=1911+y; if(y>1900&&y<2100) return `${y}-${pad(+m[2])}-${pad(+m[3])}`; }
+  return "";
+}
+function parseVCards(text){
+  const blocks=text.split(/BEGIN:VCARD/i).slice(1);
+  return blocks.map(raw=>{
+    const b="\n"+raw.replace(/\r/g,"");
+    const get=re=>{ const m=b.match(re); return m?m[1].trim():""; };
+    let name=get(/\nFN[^:\n]*:(.+)/i);
+    if(!name){ const n=get(/\nN[^:\n]*:(.+)/i); if(n){ const p=n.split(";"); name=((p[1]||"")+(p[0]||"")).trim()||p.join("").trim(); } }
+    let tel=get(/\nTEL[^:\n]*:(.+)/i); if(tel){ let dg=tel.replace(/[^\d+]/g,""); const mob=dg.replace(/^\+886/,"0"); if(/^09\d{8}$/.test(mob)) dg=mob.replace(/(\d{4})(\d{3})(\d{3})/,"$1-$2-$3"); tel=dg; }
+    let bday=get(/\nBDAY[^:\n]*:(.+)/i); if(bday){ const m=bday.match(/(\d{4})-?(\d{2})-?(\d{2})/); bday=m?`${m[1]}-${m[2]}-${m[3]}`:""; }
+    const email=get(/\nEMAIL[^:\n]*:(.+)/i);
+    const org=get(/\nORG[^:\n]*:(.+)/i).replace(/;+/g," ").trim();
+    const title=get(/\nTITLE[^:\n]*:(.+)/i);
+    const adr=get(/\nADR[^:\n]*:(.+)/i).replace(/;+/g," ").trim();
+    const region=detectRegion(adr);
+    return {name, phone:tel, birthday:bday, email, occupation:title, unit:org, address:adr, tags: region?[region]:[]};
+  }).filter(c=>c.name||c.phone);
+}
+function fieldRow(label,val){ return `<div class="kv"><span class="k">${label}</span><span class="v">${val?esc(val):`<span style="color:var(--faint);font-weight:400">未偵測</span>`}</span></div>`; }
+function showSmartPreview(list){
+  if(!list || !list.length){ toast("沒有辨識到資料","warn"); return; }
+  if(list.length===1){
+    _smartPrefill=list[0]; const f=list[0];
+    const any=f.name||f.phone||f.birthday||f.email||f.unit;
+    openSheet("辨識結果", `
+      <p style="font-size:13px;color:var(--muted);margin:0 0 12px">${any?"請確認辨識結果，下一步可再編輯後儲存。":"沒辨識到明確欄位，仍可手動補上。"}</p>
+      <div class="block"><div class="block-body">
+        ${fieldRow("姓名",f.name)}${fieldRow("電話",f.phone)}${fieldRow("生日",f.birthday)}${fieldRow("單位公司",f.unit)}${fieldRow("Email",f.email)}${fieldRow("職業",f.occupation)}${fieldRow("地址",f.address)}${fieldRow("標籤",(f.tags||[]).join("、"))}
+      </div></div>
+      <button class="btn green full" onclick="confirmSmart()">下一步：填入表單</button>
+      <button class="btn ghost full" style="margin-top:10px" onclick="openSmartImport()">重新貼上</button>`);
+  } else {
+    _smartBulk=list;
+    openSheet("匯入聯絡人", `
+      <p style="font-size:13.5px;margin:0 0 12px">偵測到 <b>${list.length}</b> 位聯絡人，將各自建立客戶（含姓名、電話、生日等），建立後可再補資料。</p>
+      <div class="block"><div class="block-body" style="max-height:260px;overflow:auto">
+        ${list.map(c=>`<div class="kv"><span class="k" style="color:var(--ink);font-weight:600">${esc(c.name||"(無名)")}</span><span class="v" style="font-weight:500;color:var(--muted)">${esc(c.phone||"")}</span></div>`).join("")}
+      </div></div>
+      <button class="btn green full" onclick="confirmBulk()">全部匯入 ${list.length} 位</button>`);
+  }
+}
+function confirmSmart(){ const f=_smartPrefill||{}; closeSheet(); editClient(null, f); }
+function confirmBulk(){
+  let n=0;
+  (_smartBulk||[]).forEach(c=>{ if(!(c.name||c.phone)) return;
+    DB.clients.push(Object.assign({id:uid(),reminders:[],claims:[],careLog:[],sopStatus:{},sopStep:1,grade:"",policies:[],createdAt:new Date().toISOString()},
+      {name:c.name||"(未命名)",phone:c.phone||"",birthday:c.birthday||"",email:c.email||"",unit:c.unit||"",occupation:c.occupation||"",address:c.address||"",tags:c.tags||[]}));
+    n++;
+  });
+  _smartBulk=null; commit(); closeSheet(); go("clients"); toast(`已匯入 ${n} 位客戶`);
+}
+
+let editingPolicies=[];
+let editFormOpen=false;
+let editingTags=[];
+function editClient(id, prefill){
+  const c = id? DB.clients.find(x=>x.id===id) : null;
+  const src = c || prefill || null;
+  editingPolicies = (src && src.policies)? JSON.parse(JSON.stringify(src.policies)) : [];
+  editingTags = (src && Array.isArray(src.tags)) ? src.tags.slice() : (src && src.region ? [src.region] : []);
+  const v=(k,d="")=>src?esc(src[k]??d):d;
+  const grade=src?(src.grade||""):"";
+  const step=(src&&src.sopStep)?src.sopStep:1;
+
+  const gradeBtns=["A","B","C","D",""].map(g=>{
+    const m=GRADES[g]; const sel=g===grade?`sel s-${g||"none"}`:"";
+    return `<button type="button" class="${sel}" data-g="${g}" onclick="pickGrade(this,'${g}')">${g||"未"}<small>${g?m.sub:"分級"}</small></button>`;
+  }).join("");
+  const sopBtns=SOP.map(s=>{
+    const cls=s.n<step?"done":s.n===step?"cur":"";
+    return `<button type="button" class="${cls}" data-n="${s.n}" onclick="pickStep(this,${s.n})"><span class="num">${s.n}</span><small>${esc(s.short)}</small></button>`;
+  }).join("");
+
+  openSheet(c?"編輯客戶":"新增客戶", `
+    <input type="hidden" id="edId" value="${c?c.id:""}">
+    <div class="field"><label>姓名 *</label><input id="edName" value="${v("name")}" placeholder="客戶姓名"></div>
+    <div class="row2">
+      <div class="field"><label>電話</label><input id="edPhone" inputmode="tel" value="${v("phone")}" placeholder="0912-345-678"></div>
+      <div class="field"><label>單位公司名稱</label><input id="edUnit" value="${v("unit")}" placeholder="服務單位／公司"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>生日</label><input type="date" id="edBday" value="${v("birthday")}"></div>
+      <div class="field"><label>職業</label><input id="edJob" value="${v("occupation")}" placeholder="職業"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Email</label><input id="edEmail" inputmode="email" value="${v("email")}" placeholder="電子郵件"></div>
+      <div class="field"><label>地址</label><input id="edAddr" value="${v("address")}" placeholder="地址"></div>
+    </div>
+    <div class="field"><label>標籤分類</label>
+      <div class="tagpicker" id="tagPicker">${tagPickerHtml()}</div>
+      <details class="tagdrop">
+        <summary>從既有標籤選擇（可複選）</summary>
+        <div class="tagoptions" id="tagOptions">${tagOptionsHtml()}</div>
+      </details>
+      <div class="tagaddrow">
+        <input id="edTagInput" list="tagList" placeholder="輸入標籤名稱，Enter 或按＋新增" onkeydown="if(event.key==='Enter'){event.preventDefault();addEditTag();}">
+        <datalist id="tagList">${allTags().map(t=>`<option value="${esc(t)}">`).join("")}</datalist>
+        <button type="button" class="btn ghost" onclick="addEditTag()">＋ 新增標籤</button>
+      </div>
+    </div>
+
+    <div class="formsec">客戶分級</div>
+    <input type="hidden" id="edGrade" value="${grade}">
+    <div class="gradepick">${gradeBtns}</div>
+
+    <div class="formsec">SOP 目前階段</div>
+    <input type="hidden" id="edStep" value="${step}">
+    <div class="soppick">${sopBtns}</div>
+
+    <div class="formsec">了解需求</div>
+    <div class="field"><textarea id="edNeeds" placeholder="家庭結構、財務狀況、最在意的保障缺口…">${v("needs")}</textarea></div>
+
+    <div class="formsec">保單</div>
+    <div id="polList"></div>
+    <button type="button" class="addrow" onclick="addPolicyRow()">＋ 新增保單</button>
+
+    <div class="formsec">備註</div>
+    <div class="field"><textarea id="edNotes" placeholder="其他要記住的事…">${v("notes")}</textarea></div>
+
+    <button class="btn green full" style="margin-top:18px;height:52px" onclick="saveClient()">${c?"儲存變更":"新增客戶"}</button>
+  `);
+  renderPolicyRows();
+  editFormOpen = true;
+}
+function pickGrade(btn,g){
+  document.querySelectorAll(".gradepick button").forEach(b=>b.className="");
+  btn.className=`sel s-${g||"none"}`; $("#edGrade").value=g;
+}
+function pickStep(btn,n){
+  $("#edStep").value=n;
+  document.querySelectorAll(".soppick button").forEach(b=>{ const bn=+b.dataset.n; b.className= bn<n?"done":bn===n?"cur":""; });
+}
+function tagPickerHtml(){
+  if(!editingTags.length) return `<span class="empty-hint">尚未加入標籤，可在下方輸入後新增</span>`;
+  return editingTags.map((t,i)=>`<span class="tagpill">${esc(t)}<button type="button" onclick="rmEditTag(${i})">×</button></span>`).join("");
+}
+function renderTagPicker(){ const el=$("#tagPicker"); if(el) el.innerHTML=tagPickerHtml(); const op=$("#tagOptions"); if(op) op.innerHTML=tagOptionsHtml(); }
+function tagOptionsHtml(){
+  const tags=allTags();
+  if(!tags.length) return `<span class="empty-hint">尚無既有標籤，請在下方手動新增</span>`;
+  return tags.map(t=>`<button type="button" class="tagopt ${editingTags.includes(t)?"on":""}" data-tag="${esc(t)}" onclick="toggleEditTag(this.dataset.tag)">${editingTags.includes(t)?"✓ ":""}${esc(t)}</button>`).join("");
+}
+function toggleEditTag(t){
+  const i=editingTags.indexOf(t);
+  if(i>-1) editingTags.splice(i,1); else editingTags.push(t);
+  renderTagPicker();
+}
+function addEditTag(){
+  const inp=$("#edTagInput"); if(!inp) return;
+  const t=inp.value.trim();
+  if(!t){ inp.focus(); return; }
+  if(!editingTags.includes(t)) editingTags.push(t);
+  inp.value="";
+  renderTagPicker();
+  inp.focus();
+}
+function rmEditTag(i){ editingTags.splice(i,1); renderTagPicker(); }
+function renderPolicyRows(){
+  const box=$("#polList"); if(!box) return;
+  box.innerHTML = editingPolicies.map((p,i)=>{
+    const total = numVal(p.premium)+(p.riders||[]).reduce((s,r)=>s+numVal(r.premium),0);
+    p.totalPremium = total? String(total) : "";
+    return `
+    <div class="subcard">
+      <button class="del" onclick="rmPolicy(${i})">×</button>
+      <div class="row2">
+        <div class="field" style="margin-bottom:10px"><label>規劃分類</label>
+          <select onchange="polSet(${i},'category',this.value)">
+            <option value="">選擇</option>
+            ${POLICY_CATEGORIES.map(t=>`<option ${p.category===t?"selected":""}>${t}</option>`).join("")}
+          </select></div>
+        <div class="field" style="margin-bottom:10px"><label>保險公司</label>
+          <select onchange="polCompanySel(${i},this.value)">
+            <option value="">選擇</option>
+            ${POLICY_COMPANIES.map(c=>`<option ${p.company===c?"selected":""}>${c}</option>`).join("")}
+            <option value="__other__" ${(p.company&&!POLICY_COMPANIES.includes(p.company))?"selected":""}>其他（自行輸入）</option>
+          </select>
+          ${(p.company&&!POLICY_COMPANIES.includes(p.company))?`<input style="margin-top:8px" value="${esc(p.company)}" oninput="polSet(${i},'company',this.value)" placeholder="輸入保險公司名稱">`:""}
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field" style="margin-bottom:10px"><label>總保費（元）</label><input readonly id="pol_${i}_total" value="${total?total.toLocaleString("en-US"):""}" placeholder="自動加總主約＋附約"></div>
+        <div class="field" style="margin-bottom:10px"><label>繳別</label>
+          <select onchange="polSet(${i},'payFreq',this.value)">
+            <option value="">選擇</option>
+            ${PAYFREQ_OPTIONS.map(t=>`<option ${p.payFreq===t?"selected":""}>${t}</option>`).join("")}
+          </select></div>
+      </div>
+      <div class="row2">
+        ${dateFieldHtml(`pol_${i}_startDate`, p.startDate||"", "投保日", `polSet(${i},'startDate',this.value)`)}
+        ${dateFieldHtml(`pol_${i}_maturityDate`, p.maturityDate||"", "滿期日", `polSet(${i},'maturityDate',this.value)`)}
+      </div>
+      ${dateFieldHtml(`pol_${i}_paymentDate`, p.paymentDate||"", "繳費日", `polSet(${i},'paymentDate',this.value)`, "系統依投保日＋繳別自動推算下次繳費日，也可手動調整")}
+      <div class="field" style="margin-bottom:10px"><label>主約名稱</label><input value="${esc(p.mainName||"")}" oninput="polSet(${i},'mainName',this.value)" placeholder="例：終身醫療"></div>
+      <div class="row2">
+        <div class="field" style="margin-bottom:10px"><label>保單號碼</label><input value="${esc(p.policyNo||"")}" oninput="polSet(${i},'policyNo',this.value)" placeholder="保單號碼（選填）"></div>
+        <div class="field" style="margin-bottom:10px"><label>保額</label><input inputmode="numeric" value="${esc(p.coverage||"")}" oninput="polSet(${i},'coverage',this.value)" placeholder="主約保額"></div>
+      </div>
+      <div class="row2">
+        <div class="field" style="margin-bottom:10px"><label>年期</label><input inputmode="numeric" value="${esc(p.term||"")}" oninput="polSet(${i},'term',this.value)" placeholder="例：20年期"></div>
+        <div class="field" style="margin-bottom:10px"><label>主約保費（元）</label><input inputmode="numeric" value="${esc(p.premium||"")}" oninput="polSet(${i},'premium',this.value)" placeholder="主約保費"></div>
+      </div>
+      <div class="riders">
+        <div class="riders-h">附約（附加險）</div>
+        ${(p.riders||[]).map((r,ri)=>`
+          <div class="riderrow">
+            <div class="rtop">
+              <input class="rn" value="${esc(r.name||"")}" oninput="riderSet(${i},${ri},'name',this.value)" placeholder="附約名稱，如：住院日額">
+              <button class="rx" onclick="rmRider(${i},${ri})">×</button>
+            </div>
+            <div class="rbot">
+              <input class="rc" inputmode="numeric" value="${esc(r.coverage||"")}" oninput="riderSet(${i},${ri},'coverage',this.value)" placeholder="保額">
+              <input class="rp" inputmode="numeric" value="${esc(r.premium||"")}" oninput="riderSet(${i},${ri},'premium',this.value)" placeholder="保費（元）">
+              <input class="rt" value="${esc(r.term||"")}" oninput="riderSet(${i},${ri},'term',this.value)" placeholder="年期">
+            </div>
+          </div>`).join("")}
+        <button class="addrider" onclick="addRider(${i})">＋ 附約</button>
+      </div>
+      <div class="field" style="margin-top:12px;margin-bottom:0"><label>保單特別記事</label><textarea oninput="polSet(${i},'notes',this.value)" placeholder="這張保單需要留意或記住的事項">${esc(p.notes||"")}</textarea></div>
+    </div>`;
+  }).join("");
+}
+function polRecalcTotal(i){
+  const p=editingPolicies[i]; if(!p) return;
+  const total=numVal(p.premium)+(p.riders||[]).reduce((s,r)=>s+numVal(r.premium),0);
+  p.totalPremium = total? String(total) : "";
+  const el=$(`#pol_${i}_total`);
+  if(el) el.value = total? total.toLocaleString("en-US") : "";
+}
+function addRider(i){ if(!editingPolicies[i]) return; if(!editingPolicies[i].riders) editingPolicies[i].riders=[]; editingPolicies[i].riders.push({name:"",coverage:"",premium:"",term:""}); renderPolicyRows(); }
+function rmRider(i,ri){ if(editingPolicies[i]&&editingPolicies[i].riders){ editingPolicies[i].riders.splice(ri,1); renderPolicyRows(); polRecalcTotal(i); } }
+function riderSet(i,ri,k,v){ const p=editingPolicies[i]; if(p&&p.riders&&p.riders[ri]){ p.riders[ri][k]=v; if(k==="premium") polRecalcTotal(i); } }
+function addPolicyRow(){ editingPolicies.push({id:uid(),mainName:"",policyNo:"",category:"",company:"",premium:"",totalPremium:"",payFreq:"",coverage:"",term:"",startDate:"",paymentDate:"",maturityDate:"",notes:"",riders:[]}); renderPolicyRows(); }
+function rmPolicy(i){ editingPolicies.splice(i,1); renderPolicyRows(); }
+function polSet(i,k,v){
+  const p=editingPolicies[i]; if(!p) return;
+  p[k]=v;
+  if(k==="startDate"||k==="payFreq"){
+    p.paymentDate = nextPaymentDate(p.startDate, p.payFreq);
+    const hidden=$(`#pol_${i}_paymentDate`), disp=$(`#pol_${i}_paymentDate_disp`);
+    if(hidden) hidden.value=p.paymentDate;
+    if(disp) disp.value=isoToDisp(p.paymentDate);
+  }
+  if(k==="premium") polRecalcTotal(i);
+}
+function polCompanySel(i,v){
+  if(!editingPolicies[i]) return;
+  if(v==="__other__"){ editingPolicies[i].company=""; renderPolicyRows(); return; }
+  polSet(i,"company",v);
+}
+
+function saveClient(auto){
+  const nameEl=$("#edName"); if(!nameEl) return;
+  const name=nameEl.value.trim();
+  if(!name){ if(!auto){ toast("請填寫姓名","warn"); nameEl.focus(); } return; }
+  const pendingTag=($("#edTagInput")||{}).value?.trim();
+  if(pendingTag && !editingTags.includes(pendingTag)) editingTags.push(pendingTag);
+  const idEl=$("#edId"); const id=idEl.value;
+  const data={
+    name, phone:$("#edPhone").value.trim(), unit:$("#edUnit").value.trim(),
+    birthday:$("#edBday").value, occupation:$("#edJob").value.trim(),
+    email:($("#edEmail")||{}).value?.trim()||"", address:($("#edAddr")||{}).value?.trim()||"",
+    tags: editingTags.slice(),
+    grade:$("#edGrade").value, sopStep:+$("#edStep").value||1,
+    needs:$("#edNeeds").value.trim(), notes:$("#edNotes").value.trim(),
+    policies:editingPolicies
+      .map(p=>{
+        const riders=(p.riders||[]).filter(r=>(r.name||"").trim()||(r.coverage||"").trim()||(r.premium||"").trim()||(r.term||"").trim());
+        const total=numVal(p.premium)+riders.reduce((s,r)=>s+numVal(r.premium),0);
+        return {...p, riders, totalPremium: total? String(total) : ""};
+      })
+      .filter(p=>p.mainName||p.category||p.company||p.premium||p.policyNo||(p.riders&&p.riders.length)),
+  };
+  DB.tagCatalog = DB.tagCatalog||[];
+  data.tags.forEach(t=>{ if(t && !DB.tagCatalog.includes(t)) DB.tagCatalog.push(t); });
+  if(id){
+    const c=DB.clients.find(x=>x.id===id);
+    Object.assign(c,data);
+  }else{
+    const newId=uid();
+    DB.clients.push(Object.assign({id:newId,reminders:[],claims:[],careLog:[],sopStatus:{},createdAt:new Date().toISOString()},data));
+    idEl.value=newId;
+  }
+  commit();
+  if(auto){ toast("已自動存檔"); return; }
+  closeSheet();
+  if(id){ openDetail(id); } else { go("clients"); }
+  toast(id?"已儲存變更":"已新增客戶");
+}
+
+/* ============ sheet / toast ============ */
+function openSheet(title, body){
+  const s=$("#scrim");
+  s.innerHTML=`<div class="sheet"><div class="sheet-head"><h2>${title}</h2><button class="x" onclick="closeSheet()">×</button></div><div class="sheet-body">${body}</div></div>`;
+  s.classList.add("show");
+  s.onclick=(e)=>{ if(e.target===s) closeSheet(); };
+  document.body.style.overflow="hidden";
+}
+function closeSheet(){ editFormOpen=false; const s=$("#scrim"); s.classList.remove("show"); s.innerHTML=""; document.body.style.overflow=""; }
+let toastT;
+function toast(msg,kind=""){
+  const t=$("#toast"); t.textContent=msg; t.className="toast show "+kind;
+  clearTimeout(toastT); toastT=setTimeout(()=>t.className="toast "+kind,2600);
+}
+
+/* ============ boot ============ */
+window.addEventListener("beforeunload",(e)=>{ if(dirty){ e.preventDefault(); e.returnValue=""; } });
+(function init(){
+  const had=tryLoadLocal();
+  loadSOP(); loadLineTemplates();
+  if(!lsOK){ /* file:// blocked localStorage */ }
+  render();
+  if(!lsOK){
+    setTimeout(()=>toast("此頁無法自動暫存資料，請務必用右上角匯出備份","warn"),700);
+  } else if(!had){
+    // first run, nothing stored yet
+  }
+  try{
+    if(localStorage.getItem(GCAL_CONNECTED_KEY)==="1" && gcalClientId()){
+      let tries=0;
+      const tryConn=()=>{ tries++; if(gcalReady()){ gcalConnect(true); } else if(tries<20){ setTimeout(tryConn,250); } };
+      setTimeout(tryConn,300);
+    }
+  }catch(e){}
+  setInterval(()=>{ if(editFormOpen) saveClient(true); }, 5*60*1000);
+})();
+</script>
+</body>
+</html>
