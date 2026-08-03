@@ -1585,7 +1585,7 @@ function scheduleVisit(presetDate, presetCid){
     .map(c=>`<option value="${c.id}" ${c.id===presetCid?"selected":""}>${esc(c.name)}</option>`).join("");
   openSheet("排複訪", `
     <div class="field"><label>客戶</label><select id="vCid">${opts}</select></div>
-    <div class="field"><label>日期</label><input type="date" id="vDate" value="${presetDate||todayISO()}"></div>
+    ${dateFieldHtml("vDate", presetDate||todayISO(), "日期")}
     <div class="field"><label>備註（選填）</label><input id="vNote" placeholder="例：保單健檢、送資料、加保討論"></div>
     <button class="btn green full" onclick="saveVisit()">排入行事曆</button>`);
 }
@@ -1654,7 +1654,7 @@ function viewClaims(){
   if(list.length===0) return head+`<div class="empty"><div class="big">📋</div><h3>沒有理賠紀錄</h3><p>在客戶頁的「理賠服務」可新增與追蹤理賠案件。</p></div>`;
   const statusColor=s=> s==="已結案"?"var(--ok)": s==="送件中"?"var(--amber)":"var(--muted)";
   return head+`<div class="clientgrid">${list.map(cl=>`
-    <div class="card" onclick="openDetail('${cl.clientId}')">
+    <div class="card" onclick="editClaim('${cl.clientId}','${cl.id}')">
       <div class="card-top" style="margin-bottom:8px">
         <div class="avatar" style="background:var(--pine)">${esc(initial(cl.who))}</div>
         <div style="flex:1;min-width:0">
@@ -1850,9 +1850,11 @@ function openDetail(id){
     ${p.notes?`<div style="font-size:12px;color:var(--muted);padding:6px 0 8px;border-bottom:1px solid var(--line-2)">📝 ${esc(p.notes)}</div>`:""}`).join("") : `<div style="color:var(--faint);font-size:13px">尚無保單紀錄</div>`;
 
   const claims=(c.claims||[]).length? c.claims.map(cl=>`
-    <div class="kv"><span class="k">${esc(fmtDate(cl.date))} ${esc(cl.type||"")}</span>
-    <span class="v" style="color:${cl.status==="已結案"?"var(--ok)":"var(--amber)"}">${esc(cl.status||"待處理")}</span></div>
-    ${cl.note?`<div style="font-size:12px;color:var(--muted);padding:0 0 8px">${esc(cl.note)}</div>`:""}`).join("") : `<div style="color:var(--faint);font-size:13px">尚無理賠紀錄</div>`;
+    <div style="cursor:pointer" onclick="editClaim('${c.id}','${cl.id}')">
+      <div class="kv"><span class="k">${esc(fmtDate(cl.date))} ${esc(cl.type||"")}</span>
+      <span class="v" style="color:${cl.status==="已結案"?"var(--ok)":"var(--amber)"}">${esc(cl.status||"待處理")}</span></div>
+      ${cl.note?`<div style="font-size:12px;color:var(--muted);padding:0 0 8px">${esc(cl.note)}</div>`:""}
+    </div>`).join("") : `<div style="color:var(--faint);font-size:13px">尚無理賠紀錄</div>`;
 
   const care=(c.careLog||[]).length? c.careLog.slice().reverse().map(l=>`
     <div class="kv"><span class="k mono" style="flex:none">${esc(fmtDate(l.date))}</span><span class="v" style="font-weight:500;text-align:left">${esc(l.note)}</span></div>`).join("") : `<div style="color:var(--faint);font-size:13px">尚無聯繫紀錄</div>`;
@@ -2072,7 +2074,7 @@ function editSopStep(cid, n){
 
     <div class="field"><label>這個階段的紀錄</label>
       <textarea id="sopNote" placeholder="記下這一步做了什麼、客戶反應、下一步打算…">${esc(st.note||"")}</textarea></div>
-    <div class="field"><label>日期</label><input type="date" id="sopDate" value="${esc(st.date||"")}"></div>
+    ${dateFieldHtml("sopDate", st.date||"", "日期")}
 
     ${isCur
       ? `<div style="background:var(--amber-soft);color:#7a5410;font-size:13px;font-weight:600;padding:11px 13px;border-radius:11px;text-align:center">這位客戶目前就在第 ${n} 步</div>`
@@ -2105,7 +2107,7 @@ function clearSopStep(cid,n){
 function addCare(cid){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   openSheet("記一筆聯繫", `
-    <div class="field"><label>日期</label><input type="date" id="careDate" value="${todayISO()}"></div>
+    ${dateFieldHtml("careDate", todayISO(), "日期")}
     <div class="field"><label>聯繫內容</label><textarea id="careNote" placeholder="例：電話關懷，提醒車險到期，客戶詢問醫療險加保…"></textarea></div>
     <button class="btn green full" onclick="saveCare('${cid}')">儲存紀錄</button>`);
 }
@@ -2119,7 +2121,7 @@ function addClaim(cid){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   openSheet("新增理賠案件", `
     <div class="row2">
-      <div class="field"><label>申請日期</label><input type="date" id="clDate" value="${todayISO()}"></div>
+      ${dateFieldHtml("clDate", todayISO(), "申請日期")}
       <div class="field"><label>狀態</label><select id="clStatus"><option>待處理</option><option>送件中</option><option>已結案</option></select></div>
     </div>
     <div class="field"><label>理賠類型</label><input id="clType" placeholder="例：醫療住院、意外、重大疾病"></div>
@@ -2132,6 +2134,43 @@ function saveClaim(cid){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   c.claims.push({id:uid(),date:$("#clDate").value||todayISO(),status:$("#clStatus").value,type:$("#clType").value.trim(),policyName:$("#clPolicy").value.trim(),amount:$("#clAmt").value.trim(),note:$("#clNote").value.trim()});
   commit(); openDetail(cid); toast("已新增理賠案件");
+}
+function editClaim(cid,id){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const cl=(c.claims||[]).find(x=>x.id===id); if(!cl) return;
+  openSheet("編輯理賠案件", `
+    <div class="row2">
+      ${dateFieldHtml("clEditDate", cl.date||todayISO(), "申請日期")}
+      <div class="field"><label>狀態</label><select id="clEditStatus">
+        ${["待處理","送件中","已結案"].map(s=>`<option ${cl.status===s?"selected":""}>${s}</option>`).join("")}
+      </select></div>
+    </div>
+    <div class="field"><label>理賠類型</label><input id="clEditType" value="${esc(cl.type||"")}" placeholder="例：醫療住院、意外、重大疾病"></div>
+    <div class="field"><label>相關保單</label><input id="clEditPolicy" value="${esc(cl.policyName||"")}" placeholder="保單名稱（選填）"></div>
+    <div class="field"><label>金額（選填）</label><input id="clEditAmt" inputmode="numeric" value="${esc(cl.amount||"")}" placeholder="理賠金額"></div>
+    <div class="field"><label>備註</label><textarea id="clEditNote" placeholder="處理進度、需補件項目…">${esc(cl.note||"")}</textarea></div>
+    <button class="btn green full" onclick="saveClaimEdit('${cid}','${id}')">更新理賠進度</button>
+    <button class="btn ghost full" style="margin-top:10px;color:var(--danger);border-color:var(--danger-soft)" onclick="delClaim('${cid}','${id}')">🗑 刪除這筆理賠紀錄</button>`);
+}
+function saveClaimEdit(cid,id){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const cl=(c.claims||[]).find(x=>x.id===id); if(!cl) return;
+  cl.date=$("#clEditDate").value||todayISO();
+  cl.status=$("#clEditStatus").value;
+  cl.type=$("#clEditType").value.trim();
+  cl.policyName=$("#clEditPolicy").value.trim();
+  cl.amount=$("#clEditAmt").value.trim();
+  cl.note=$("#clEditNote").value.trim();
+  commit();
+  if(view==="claims"){ closeSheet(); render(); } else { openDetail(cid); }
+  toast("已更新理賠進度");
+}
+function delClaim(cid,id){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  c.claims=(c.claims||[]).filter(x=>x.id!==id);
+  commit();
+  if(view==="claims"){ closeSheet(); render(); } else { openDetail(cid); }
+  toast("已刪除理賠紀錄");
 }
 function delClient(id){
   openSheet("刪除客戶", `<p style="font-size:14px">確定要刪除這位客戶與其所有紀錄嗎？</p>
@@ -2350,7 +2389,7 @@ function editClient(id, prefill){
       <div class="field"><label>單位公司名稱</label><input id="edUnit" value="${v("unit")}" placeholder="服務單位／公司"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>生日</label><input type="date" id="edBday" value="${v("birthday")}"></div>
+      ${dateFieldHtml("edBday", v("birthday"), "生日")}
       <div class="field"><label>職業</label><input id="edJob" value="${v("occupation")}" placeholder="職業"></div>
     </div>
     <div class="row2">
@@ -2443,10 +2482,10 @@ function renderPolicyRows(){
         <div class="field" style="margin-bottom:10px"><label>保險公司</label>
           <select onchange="polCompanySel(${i},this.value)">
             <option value="">選擇</option>
-            ${POLICY_COMPANIES.map(c=>`<option ${p.company===c?"selected":""}>${c}</option>`).join("")}
-            <option value="__other__" ${(p.company&&!POLICY_COMPANIES.includes(p.company))?"selected":""}>其他（自行輸入）</option>
+            ${POLICY_COMPANIES.map(c=>`<option ${(!(p.companyOther||(p.company&&!POLICY_COMPANIES.includes(p.company)))&&p.company===c)?"selected":""}>${c}</option>`).join("")}
+            <option value="__other__" ${(p.companyOther||(p.company&&!POLICY_COMPANIES.includes(p.company)))?"selected":""}>其他（自行輸入）</option>
           </select>
-          ${(p.company&&!POLICY_COMPANIES.includes(p.company))?`<input style="margin-top:8px" value="${esc(p.company)}" oninput="polSet(${i},'company',this.value)" placeholder="輸入保險公司名稱">`:""}
+          ${(p.companyOther||(p.company&&!POLICY_COMPANIES.includes(p.company)))?`<input style="margin-top:8px" value="${esc(p.company)}" oninput="polSet(${i},'company',this.value)" placeholder="輸入保險公司名稱">`:""}
         </div>
       </div>
       <div class="row2">
@@ -2516,7 +2555,8 @@ function polSet(i,k,v){
 }
 function polCompanySel(i,v){
   if(!editingPolicies[i]) return;
-  if(v==="__other__"){ editingPolicies[i].company=""; renderPolicyRows(); return; }
+  if(v==="__other__"){ editingPolicies[i].companyOther=true; editingPolicies[i].company=""; renderPolicyRows(); return; }
+  editingPolicies[i].companyOther=false;
   polSet(i,"company",v);
 }
 
