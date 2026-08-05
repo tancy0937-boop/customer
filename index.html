@@ -109,12 +109,17 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .tagopt{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}
 .tagopt.on{background:var(--teal-soft);color:#1f5249;border-color:transparent;font-weight:700}
 .tagmanage{display:flex;flex-direction:column;gap:8px}
-.tmrow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:var(--surface)}
+.tmrow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:var(--surface);position:relative}
+.tmhandle{cursor:grab;touch-action:none;color:var(--faint);font-size:17px;padding:0 2px;flex:none;user-select:none;line-height:1}
+.tmrow.dragging{box-shadow:0 8px 18px rgba(0,0,0,.14);background:var(--surface-2);z-index:5}
 .tmname{font-weight:700;font-size:13.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tmcount{font-size:11.5px;color:var(--muted);background:var(--surface-2);padding:2px 9px;border-radius:999px;flex:none;font-weight:700}
 .tmcount.zero{color:var(--danger);background:var(--danger-soft)}
 .tmbtn{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--teal);font-size:12px;font-weight:700;padding:6px 10px;border-radius:9px;cursor:pointer}
 .tmbtn.danger{color:var(--danger);border-color:var(--danger-soft)}
+.reflinked{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);font-size:13.5px;font-weight:600;flex-wrap:wrap}
+.reflinked .sp{flex:1}
+.reflink{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .tagaddrow input{flex:1}
 .tagaddrow .btn{white-space:nowrap;padding:0 16px;height:42px}
 .chip{
@@ -467,6 +472,16 @@ textarea.raw{width:100%;min-height:160px;font-family:var(--mono);font-size:12px;
 .kghost{position:fixed;z-index:90;pointer-events:none;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--shadow-lg);cursor:grabbing;margin:0}
 .kempty{color:var(--faint);font-size:12px;text-align:center;padding:18px 6px;border:1px dashed var(--line);border-radius:10px}
 .boardhint{font-size:12px;color:var(--muted);margin:10px 2px 0;display:flex;align-items:center;gap:7px}
+.reflead{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.reflead-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-bottom:8px}
+.reflead-h .live{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--ok);background:#DCEFE9;padding:2px 8px;border-radius:999px;letter-spacing:.3px}
+.reflead-list{display:flex;flex-wrap:wrap;gap:4px 18px}
+.reflead-row{display:flex;align-items:center;gap:9px;padding:6px 4px;border-radius:9px;cursor:pointer;width:calc(50% - 9px);min-width:160px}
+.reflead-row:active{background:var(--surface-2)}
+.reflead-row .rank{width:22px;height:22px;border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;font-family:var(--mono)}
+.reflead-row .rank.top{background:var(--amber);color:#fff}
+.reflead-row .nm{flex:1;min-width:0;font-weight:600;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reflead-row .ct{font-size:12px;color:var(--muted);font-weight:700;flex:none;font-family:var(--mono)}
 
 .hide{display:none!important}
 .danger-zone{margin-top:26px;padding-top:18px;border-top:1px dashed var(--line)}
@@ -502,6 +517,10 @@ textarea.raw{width:100%;min-height:160px;font-family:var(--mono);font-size:12px;
  <button class="navbtn" data-view="claims" onclick="go('claims')">
  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h9l5 5v13a0 0 0 010 0H5z" stroke-linejoin="round"/><path d="M14 3v5h5M8.5 13h7M8.5 17h7" stroke-linecap="round"/></svg></div>
     理賠
+ </button>
+ <button class="navbtn" data-view="servicing" onclick="go('servicing')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 3.9 4.3.6-3.1 3 .7 4.3L12 12.8 8.2 14.8l.7-4.3-3.1-3 4.3-.6L12 3z" stroke-linejoin="round"/><path d="M5 20h14" stroke-linecap="round"/></svg></div>
+    保全
  </button>
  <button class="navbtn" data-view="grades" onclick="go('grades')">
  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V10M10 19V5M16 19v-6M22 19H2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -709,6 +728,7 @@ const GRADES = {
   "":{label:"未分級", sub:"待評", note:"尚未分級"},
 };
 const POLICY_CATEGORIES = ["壽險","醫療","重大（特定）疾（傷）病","癌症","意外","儲蓄／投資","年金","長照","旅平險","團體保險","其他"];
+const INSURED_RELATIONS = ["本人","配偶","子女","父母","其他"];
 const PAYFREQ_OPTIONS = ["躉繳","年繳","半年繳","季繳","月繳"];
 const PAYFREQ_MONTHS = {"年繳":12,"半年繳":6,"季繳":3,"月繳":1};
 function nextPaymentDate(startISO, freq){
@@ -737,9 +757,9 @@ let q = "";
 let gradeFilter = "all";
 let tagFilter = [];
 function allTags(){
-  const set=new Set(DB.tagCatalog||[]);
+  const set=new Set((DB.tagCatalog||[]).filter(Boolean));
   DB.clients.forEach(c=>(c.tags||[]).forEach(t=>{ if(t) set.add(t); }));
-  return [...set].sort((a,b)=>a.localeCompare(b,"zh-Hant"));
+  return [...set];
 }
 function toggleTagFilter(t){
   const i=tagFilter.indexOf(t);
@@ -757,18 +777,63 @@ function tagUsageCounts(){
 }
 function tagManageListHtml(){
   const counts=tagUsageCounts();
-  const tags=Object.keys(counts).sort((a,b)=> counts[b]-counts[a] || a.localeCompare(b,"zh-Hant"));
+  const tags=allTags();
   if(!tags.length) return `<div style="color:var(--faint);font-size:13px">尚無標籤，先到客戶編輯畫面新增幾個標籤吧。</div>`;
-  return `<div class="tagmanage">${tags.map(t=>`
-    <div class="tmrow">
+  return `<div class="tagmanage" id="tagManageDrag">${tags.map(t=>`
+    <div class="tmrow" data-tag="${esc(t)}">
+      <span class="tmhandle" onpointerdown="tmDragStart(event, this.closest('.tmrow'))" title="拖曳調整順序">⠿</span>
       <span class="tmname">${esc(t)}</span>
       <span class="tmcount ${counts[t]===0?"zero":""}">${counts[t]} 筆</span>
       <button type="button" class="tmbtn" data-tag="${esc(t)}" onclick="renameTagPrompt(this.dataset.tag)">重新命名</button>
       <button type="button" class="tmbtn danger" data-tag="${esc(t)}" onclick="deleteTagPrompt(this.dataset.tag)">刪除</button>
-    </div>`).join("")}</div>`;
+    </div>`).join("")}</div>
+    <p style="color:var(--muted);font-size:12px;margin-top:8px">拖曳左側 ⠿ 可調整順序，這個順序會對應到客戶編輯畫面「標籤分類」選單裡的出現順序。</p>`;
 }
 function refreshTagManageList(){ const el=$("#tagManageList"); if(el) el.innerHTML=tagManageListHtml(); }
 let tagBeingRenamed=null, tagBeingDeleted=null;
+
+/* ---------- tag drag reorder ---------- */
+let tmDragEl=null;
+function tmDragStart(e, el){
+  if(!el) return;
+  e.preventDefault();
+  tmDragEl=el;
+  el.classList.add("dragging");
+  try{ el.setPointerCapture(e.pointerId); }catch(err){}
+  el.addEventListener("pointermove", tmDragMove);
+  el.addEventListener("pointerup", tmDragEnd);
+  el.addEventListener("pointercancel", tmDragEnd);
+}
+function tmDragMove(e){
+  if(!tmDragEl) return;
+  const container=tmDragEl.parentElement; if(!container) return;
+  const rows=[...container.children].filter(r=>r!==tmDragEl);
+  let insertBefore=null;
+  for(const r of rows){
+    const rect=r.getBoundingClientRect();
+    if(e.clientY < rect.top+rect.height/2){ insertBefore=r; break; }
+  }
+  if(insertBefore){ if(insertBefore!==tmDragEl.nextSibling) container.insertBefore(tmDragEl, insertBefore); }
+  else { if(container.lastElementChild!==tmDragEl) container.appendChild(tmDragEl); }
+  const rect=tmDragEl.getBoundingClientRect();
+  const offset=e.clientY-(rect.top+rect.height/2);
+  tmDragEl.style.transform=`translateY(${offset}px)`;
+}
+function tmDragEnd(e){
+  if(!tmDragEl) return;
+  try{ tmDragEl.releasePointerCapture(e.pointerId); }catch(err){}
+  tmDragEl.removeEventListener("pointermove", tmDragMove);
+  tmDragEl.removeEventListener("pointerup", tmDragEnd);
+  tmDragEl.removeEventListener("pointercancel", tmDragEnd);
+  tmDragEl.style.transform="";
+  tmDragEl.classList.remove("dragging");
+  const container=tmDragEl.parentElement;
+  tmDragEl=null;
+  if(!container) return;
+  const newOrder=[...container.querySelectorAll(".tmrow")].map(r=>r.dataset.tag);
+  DB.tagCatalog=newOrder;
+  commit();
+}
 function renameTagPrompt(t){
   tagBeingRenamed=t;
   openSheet("重新命名標籤", `
@@ -815,6 +880,100 @@ function doDeleteTag(){
   commit(); closeSheet();
   toast("已刪除標籤");
   if(view==="guide") refreshTagManageList(); else render();
+}
+
+/* ---------- 保全：保單變更要保人 ---------- */
+let pcuSourceId="", pcuPolicyId="", pcuTargetId="", pcuProceeding=false;
+function viewServicing(){
+  const src=DB.clients.find(x=>x.id===pcuSourceId);
+  return `<div class="viewhead"><h2>保全</h2></div>
+    <div class="info">
+      <h3>🔄 保單變更要保人</h3>
+      <p>如果保單的要保人整個換人了（例如過戶給子女），用這個工具把單一保單完整搬到新要保人的客戶資料裡，不會動到原本客戶的其他資料。</p>
+      ${src?`<div class="reflinked" style="margin-bottom:10px"><span>① 目前要保人：${esc(src.name)}</span><span class="sp"></span><button type="button" class="tmbtn danger" onclick="pcuReset()">重新選擇</button></div>`
+        :`<div class="field"><label>① 目前的要保人（搜尋客戶）</label>
+        <input id="pcuSearch" placeholder="輸入姓名搜尋…" oninput="pcuSearchClient()" autocomplete="off">
+        <div id="pcuSearchResult" style="margin-top:6px"></div>
+      </div>`}
+      <div id="pcuPolicyPick">${pcuPolicyPickHtml()}</div>
+      <div id="pcuConfirmArea">${pcuConfirmAreaHtml()}</div>
+    </div>`;
+}
+function pcuSearchClient(){
+  const q=($("#pcuSearch")||{}).value.trim().toLowerCase();
+  const box=$("#pcuSearchResult"); if(!box) return;
+  if(!q){ box.innerHTML=""; return; }
+  const matches=DB.clients.filter(c=>(c.name||"").toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = matches.length? matches.map(c=>`<button type="button" class="tmbtn" style="display:block;width:100%;text-align:left;margin-bottom:6px" data-id="${c.id}" onclick="pcuPickSource(this.dataset.id)">${esc(c.name)}${c.phone?` <small style="color:var(--muted)">${esc(c.phone)}</small>`:""}</button>`).join("") : `<div style="color:var(--faint);font-size:12.5px">找不到符合的客戶</div>`;
+}
+function pcuPickSource(id){
+  const c=DB.clients.find(x=>x.id===id); if(!c) return;
+  pcuSourceId=id; pcuPolicyId=""; pcuTargetId=""; pcuProceeding=false;
+  render();
+}
+function pcuPolicyPickHtml(){
+  const c=DB.clients.find(x=>x.id===pcuSourceId);
+  if(!c) return "";
+  const pols=c.policies||[];
+  if(!pols.length) return `<p style="color:var(--faint);font-size:13px;margin-top:14px">「${esc(c.name)}」目前沒有保單。</p>`;
+  return `<div class="field" style="margin-top:14px"><label>② 選擇要變更的保單</label>
+    <div class="tagmanage">
+      ${pols.map(p=>`<div class="tmrow" style="cursor:pointer;${pcuPolicyId===p.id?"border-color:var(--teal);background:var(--teal-soft)":""}" data-pid="${p.id}" onclick="pcuPickPolicy(this.dataset.pid)">
+        <span class="tmname">${esc(p.mainName||"保單")}${p.category?` ・${esc(p.category)}`:""}</span>
+        <span class="tmcount">${p.company?esc(p.company):""}</span>
+      </div>`).join("")}
+    </div>
+  </div>`;
+}
+function pcuPickPolicy(pid){
+  pcuPolicyId=pid; pcuTargetId=""; pcuProceeding=false;
+  render();
+}
+function pcuConfirmAreaHtml(){
+  if(!pcuSourceId||!pcuPolicyId) return "";
+  const src=DB.clients.find(x=>x.id===pcuSourceId);
+  const p=src&&(src.policies||[]).find(x=>x.id===pcuPolicyId);
+  if(!src||!p) return "";
+  if(!pcuProceeding) return `<button type="button" class="btn green full" style="margin-top:16px" onclick="pcuProceedClick()">③ 確認進行變更</button>`;
+  const tgt=DB.clients.find(x=>x.id===pcuTargetId);
+  let html=`<div class="field" style="margin-top:16px"><label>④ 新的要保人（搜尋客戶）</label>
+      <input id="pcuTargetSearch" placeholder="輸入姓名搜尋…" oninput="pcuSearchTarget()" autocomplete="off">
+      <div id="pcuTargetResult" style="margin-top:6px"></div>
+    </div>`;
+  if(tgt){
+    html+=`<div style="font-size:13px;color:var(--muted);line-height:1.7;margin:4px 0 10px">
+        將把「${esc(src.name)}」的保單「<b>${esc(p.mainName||"保單")}</b>」變更要保人為「<b>${esc(tgt.name)}</b>」，這張保單會從「${esc(src.name)}」移到「${esc(tgt.name)}」名下，保單內容（附約、日期、備註）都會完整保留。
+      </div>
+      <button type="button" class="btn" style="background:var(--danger);color:#fff;width:100%" onclick="pcuExecute()">確定變更要保人</button>`;
+  }
+  return html;
+}
+function pcuProceedClick(){ pcuProceeding=true; render(); }
+function pcuSearchTarget(){
+  const q=($("#pcuTargetSearch")||{}).value.trim().toLowerCase();
+  const box=$("#pcuTargetResult"); if(!box) return;
+  if(!q){ box.innerHTML=""; return; }
+  const matches=DB.clients.filter(c=>c.id!==pcuSourceId && (c.name||"").toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = matches.length? matches.map(c=>`<button type="button" class="tmbtn" style="display:block;width:100%;text-align:left;margin-bottom:6px" data-id="${c.id}" onclick="pcuPickTarget(this.dataset.id)">${esc(c.name)}${c.phone?` <small style="color:var(--muted)">${esc(c.phone)}</small>`:""}</button>`).join("") : `<div style="color:var(--faint);font-size:12.5px">找不到符合的客戶，可以先到「客戶」頁新增這位新要保人</div>`;
+}
+function pcuPickTarget(id){ pcuTargetId=id; render(); }
+function pcuExecute(){
+  const src=DB.clients.find(x=>x.id===pcuSourceId);
+  const tgt=DB.clients.find(x=>x.id===pcuTargetId);
+  if(!src||!tgt) return;
+  const idx=(src.policies||[]).findIndex(x=>x.id===pcuPolicyId);
+  if(idx<0) return;
+  const [p]=src.policies.splice(idx,1);
+  tgt.policies=tgt.policies||[];
+  tgt.policies.push(p);
+  pcuSourceId=""; pcuPolicyId=""; pcuTargetId=""; pcuProceeding=false;
+  commit();
+  toast("已變更要保人");
+  render();
+}
+function pcuReset(){
+  pcuSourceId=""; pcuPolicyId=""; pcuTargetId=""; pcuProceeding=false;
+  render();
 }
 let lsOK = true;
 let dirty = false;
@@ -1031,12 +1190,16 @@ function migrate(d){
     c.tags = c.tags.map(t=>(t||"").trim()).filter(Boolean);
     delete c.region;
     c.tags.forEach(t=>{ if(!d.tagCatalog.includes(t)) d.tagCatalog.push(t); });
+    if(c.referrerId==null) c.referrerId="";
+    if(c.referrerName==null) c.referrerName="";
     c.policies.forEach(p=>{
       if(p.mainName==null) p.mainName = p.name!=null ? p.name : "";
       if(p.category==null) p.category = p.type!=null ? p.type : "";
       if(p.category==="重大疾病") p.category="重大（特定）疾（傷）病";
       delete p.name; delete p.type;
       if(p.payFreq==null) p.payFreq="";
+      if(p.insured==null) p.insured="";
+      if(p.insuredRel==null) p.insuredRel="";
       if(p.coverage==null) p.coverage="";
       if(p.term==null) p.term="";
       if(p.notes==null) p.notes="";
@@ -1249,6 +1412,7 @@ function render(){
   if(view==="clients") m.innerHTML=viewClients();
   else if(view==="reminders") m.innerHTML=viewReminders();
   else if(view==="claims") m.innerHTML=viewClaims();
+  else if(view==="servicing") m.innerHTML=viewServicing();
   else if(view==="grades") m.innerHTML=viewGrades();
   else if(view==="marketing") m.innerHTML=viewMarketing();
   else if(view==="guide") m.innerHTML=viewGuide();
@@ -1334,8 +1498,28 @@ function viewBoard(list){
       <div class="kcol-body">${items.length?items.map(boardCard).join(""):`<div class="kempty">拖曳客戶到此</div>`}</div>
     </div>`;
   }).join("");
-  return `<div class="board" id="board">${cols}</div>
+  return `${referralLeaderboardHtml()}<div class="board" id="board">${cols}</div>
     <div class="boardhint"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4v16M15 4v16M4 9h16M4 15h16" stroke-linecap="round"/></svg>長按卡片拖曳即可調整 SOP 進度，點一下開啟客戶</div>`;
+}
+function referralLeaderboardHtml(){
+  const counts={};
+  DB.clients.forEach(c=>{ if(c.referrerId) counts[c.referrerId]=(counts[c.referrerId]||0)+1; });
+  const ranked=Object.entries(counts)
+    .map(([id,n])=>({c:DB.clients.find(x=>x.id===id), n}))
+    .filter(x=>x.c)
+    .sort((a,b)=>b.n-a.n)
+    .slice(0,10);
+  if(!ranked.length) return "";
+  return `<div class="reflead">
+    <div class="reflead-h">🏆 客戶轉介排行榜<span class="live">即時</span></div>
+    <div class="reflead-list">
+      ${ranked.map((r,i)=>`<div class="reflead-row" onclick="openDetail('${r.c.id}')">
+        <span class="rank ${i<3?"top":""}">${i+1}</span>
+        <span class="nm">${esc(r.c.name)}</span>
+        <span class="ct">${r.n} 位</span>
+      </div>`).join("")}
+    </div>
+  </div>`;
 }
 function boardCard(c){
   const g=c.grade||""; const gc=g?("g-"+g):"g-none";
@@ -1825,6 +2009,7 @@ function openDetail(id){
   const cur=curStep(c);
   const polN=(c.policies||[]).length;
   const openClaims=(c.claims||[]).filter(x=>x.status!=="已結案").length;
+  const referred=DB.clients.filter(x=>x.referrerId===c.id);
   const upcoming=autoReminders(c).concat((c.reminders||[]).filter(r=>!r.done).map(r=>({date:r.date,title:r.title,type:"manual"}))).sort((a,b)=>a.date<b.date?-1:1)[0];
 
   const sopRows=SOP.map(s=>{
@@ -1843,6 +2028,7 @@ function openDetail(id){
   const policies=(c.policies||[]).length? c.policies.map(p=>`
     <div class="kv"><span class="k">${esc(p.mainName||"保單")}${p.category?` ・${esc(p.category)}`:""}</span>
     <span class="v">${p.totalPremium?esc(p.totalPremium)+" 元":(p.premium?esc(p.premium)+" 元":"")}</span></div>
+    ${p.insured?`<div style="font-size:12px;color:var(--amber);font-weight:700;padding:2px 0 4px">🧍 被保險人：${esc(p.insured)}${p.insuredRel?`（${esc(p.insuredRel)}）`:""}</div>`:""}
     <div style="font-size:12px;color:var(--muted);padding:0 0 ${(p.riders&&p.riders.length)?"6px":"8px"};${(p.riders&&p.riders.length)?"":"border-bottom:1px solid var(--line-2)"}">
       ${p.policyNo?"No. "+esc(p.policyNo)+"　":""}${p.company?esc(p.company)+" ・ ":""}${p.payFreq?esc(p.payFreq)+" ・ ":""}${p.coverage?"保額 "+esc(p.coverage)+" ・ ":""}${p.term?esc(p.term)+" ・ ":""}${p.startDate?"投保 "+fmtDate(p.startDate):""}${p.paymentDate?" ・ 繳費 "+fmtDate(p.paymentDate):""}${p.maturityDate?" ・ 滿期 "+fmtDate(p.maturityDate):""}
     </div>
@@ -1876,6 +2062,7 @@ function openDetail(id){
         ${c.occupation?`<span>${esc(c.occupation)}</span>`:""}
         ${c.email?`<a href="mailto:${esc(c.email)}">✉️ ${esc(c.email)}</a>`:""}
         ${c.address?`<span>🏠 ${esc(c.address)}</span>`:""}
+        ${referrerMetaHtml(c)}
       </div>
     </div>
 
@@ -1890,6 +2077,10 @@ function openDetail(id){
     ${c.needs?`<div class="block"><h4>📝 需求重點</h4><div class="block-body" style="font-size:14px;line-height:1.6">${esc(c.needs)}</div></div>`:""}
 
     <div class="block"><h4>🛡️ 保單<span class="tag">${polN} 張</span></h4><div class="block-body">${policies}</div></div>
+
+    ${referred.length?`<div class="block"><h4>🤝 由此人轉介的客戶<span class="tag">${referred.length} 位</span></h4><div class="block-body">
+      ${referred.map(rc=>`<div class="kv" style="cursor:pointer" onclick="openDetail('${rc.id}')"><span class="k">${esc(rc.name)}</span><span class="v" style="color:var(--muted);font-weight:500">${rc.phone?esc(rc.phone):""}</span></div>`).join("")}
+    </div></div>`:""}
 
     <div class="block"><h4>📞 定聯／關懷紀錄</h4><div class="block-body">${care}
       <button class="addrow" style="margin-top:10px" onclick="addCare('${c.id}')">＋ 記一筆聯繫</button></div></div>
@@ -2363,11 +2554,14 @@ function confirmBulk(){
 let editingPolicies=[];
 let editFormOpen=false;
 let editingTags=[];
+let editingReferrerId="", editingReferrerName="";
 function editClient(id, prefill){
   const c = id? DB.clients.find(x=>x.id===id) : null;
   const src = c || prefill || null;
   editingPolicies = (src && src.policies)? JSON.parse(JSON.stringify(src.policies)) : [];
   editingTags = (src && Array.isArray(src.tags)) ? src.tags.slice() : (src && src.region ? [src.region] : []);
+  editingReferrerId = (src && src.referrerId) || "";
+  editingReferrerName = (src && src.referrerName) || "";
   const v=(k,d="")=>src?esc(src[k]??d):d;
   const grade=src?(src.grade||""):"";
   const step=(src&&src.sopStep)?src.sopStep:1;
@@ -2407,6 +2601,21 @@ function editClient(id, prefill){
         <datalist id="tagList">${allTags().map(t=>`<option value="${esc(t)}">`).join("")}</datalist>
         <button type="button" class="btn ghost" onclick="addEditTag()">＋ 新增標籤</button>
       </div>
+    </div>
+
+    <div class="field"><label>轉介來源</label>
+      <div id="refBox">${referrerBoxHtml()}</div>
+      <details class="tagdrop" id="refPickerDrop">
+        <summary>搜尋既有客戶／手動輸入</summary>
+        <div style="padding:2px 12px 12px">
+          <input id="refSearch" placeholder="輸入姓名搜尋既有客戶…" oninput="refSearchInput()">
+          <div id="refSearchResults" style="margin-top:8px"></div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <input id="refFreeText" placeholder="或直接輸入不在系統裡的轉介人姓名">
+            <button type="button" class="btn ghost" onclick="setReferrerFreeText()">套用</button>
+          </div>
+        </div>
+      </details>
     </div>
 
     <div class="formsec">客戶分級</div>
@@ -2465,6 +2674,56 @@ function addEditTag(){
   inp.focus();
 }
 function rmEditTag(i){ editingTags.splice(i,1); renderTagPicker(); }
+
+/* ---------- referrer (转介来源) picker ---------- */
+function referrerMetaHtml(c){
+  if(c.referrerId){
+    const rc=DB.clients.find(x=>x.id===c.referrerId);
+    if(rc) return `<span class="reflink" onclick="event.stopPropagation();openDetail('${rc.id}')">👤 轉介來源：${esc(rc.name)}</span>`;
+    return `<span>👤 轉介來源：(客戶已刪除)</span>`;
+  }
+  if(c.referrerName) return `<span>👤 轉介來源：${esc(c.referrerName)}</span>`;
+  return "";
+}
+function referrerBoxHtml(){
+  if(editingReferrerId){
+    const rc=DB.clients.find(x=>x.id===editingReferrerId);
+    const label=rc?rc.name:"(客戶已刪除)";
+    return `<div class="reflinked"><span>🔗 ${esc(label)}</span><span class="sp"></span><button type="button" class="tmbtn" onclick="openReferrerPicker()">變更</button><button type="button" class="tmbtn danger" onclick="clearReferrer()">清除</button></div>`;
+  }
+  if(editingReferrerName){
+    return `<div class="reflinked"><span>${esc(editingReferrerName)} <small style="color:var(--faint);font-weight:400">（非既有客戶）</small></span><span class="sp"></span><button type="button" class="tmbtn" onclick="openReferrerPicker()">變更</button><button type="button" class="tmbtn danger" onclick="clearReferrer()">清除</button></div>`;
+  }
+  return `<button type="button" class="btn ghost full" onclick="openReferrerPicker()">＋ 選擇轉介來源</button>`;
+}
+function refreshReferrerBox(){
+  const box=$("#refBox"); if(box) box.innerHTML=referrerBoxHtml();
+  const d=$("#refPickerDrop"); if(d) d.open=false;
+  const s=$("#refSearch"); if(s) s.value="";
+  const r=$("#refSearchResults"); if(r) r.innerHTML="";
+  const f=$("#refFreeText"); if(f) f.value="";
+}
+function openReferrerPicker(){ const d=$("#refPickerDrop"); if(d) d.open=true; const s=$("#refSearch"); if(s) s.focus(); }
+function refSearchInput(){
+  const q=($("#refSearch")||{}).value.trim().toLowerCase();
+  const box=$("#refSearchResults"); if(!box) return;
+  if(!q){ box.innerHTML=""; return; }
+  const myId=($("#edId")||{}).value;
+  const matches=DB.clients.filter(c=>c.id!==myId && (c.name||"").toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = matches.length? matches.map(c=>`<button type="button" class="tmbtn" style="display:block;width:100%;text-align:left;margin-bottom:6px" data-id="${c.id}" onclick="pickReferrer(this.dataset.id)">${esc(c.name)}${c.phone?` <small style="color:var(--muted)">${esc(c.phone)}</small>`:""}</button>`).join("") : `<div style="color:var(--faint);font-size:12.5px">找不到符合的客戶</div>`;
+}
+function pickReferrer(id){
+  const rc=DB.clients.find(x=>x.id===id); if(!rc) return;
+  editingReferrerId=id; editingReferrerName="";
+  refreshReferrerBox();
+}
+function setReferrerFreeText(){
+  const t=($("#refFreeText")||{}).value.trim();
+  if(!t) return;
+  editingReferrerId=""; editingReferrerName=t;
+  refreshReferrerBox();
+}
+function clearReferrer(){ editingReferrerId=""; editingReferrerName=""; refreshReferrerBox(); }
 function renderPolicyRows(){
   const box=$("#polList"); if(!box) return;
   box.innerHTML = editingPolicies.map((p,i)=>{
@@ -2503,6 +2762,14 @@ function renderPolicyRows(){
       ${dateFieldHtml(`pol_${i}_paymentDate`, p.paymentDate||"", "繳費日", `polSet(${i},'paymentDate',this.value)`, "系統依投保日＋繳別自動推算下次繳費日，也可手動調整")}
       <div class="field" style="margin-bottom:10px"><label>主約名稱</label><input value="${esc(p.mainName||"")}" oninput="polSet(${i},'mainName',this.value)" placeholder="例：終身醫療"></div>
       <div class="row2">
+        <div class="field" style="margin-bottom:10px"><label>被保險人</label><input value="${esc(p.insured||"")}" oninput="polSet(${i},'insured',this.value)" placeholder="留空預設為本人"></div>
+        <div class="field" style="margin-bottom:10px"><label>與要保人關係</label>
+          <select onchange="polSet(${i},'insuredRel',this.value)">
+            <option value="">選擇</option>
+            ${INSURED_RELATIONS.map(r=>`<option ${p.insuredRel===r?"selected":""}>${r}</option>`).join("")}
+          </select></div>
+      </div>
+      <div class="row2">
         <div class="field" style="margin-bottom:10px"><label>保單號碼</label><input value="${esc(p.policyNo||"")}" oninput="polSet(${i},'policyNo',this.value)" placeholder="保單號碼（選填）"></div>
         <div class="field" style="margin-bottom:10px"><label>保額</label><input inputmode="numeric" value="${esc(p.coverage||"")}" oninput="polSet(${i},'coverage',this.value)" placeholder="主約保額"></div>
       </div>
@@ -2540,7 +2807,7 @@ function polRecalcTotal(i){
 function addRider(i){ if(!editingPolicies[i]) return; if(!editingPolicies[i].riders) editingPolicies[i].riders=[]; editingPolicies[i].riders.push({name:"",coverage:"",premium:"",term:""}); renderPolicyRows(); }
 function rmRider(i,ri){ if(editingPolicies[i]&&editingPolicies[i].riders){ editingPolicies[i].riders.splice(ri,1); renderPolicyRows(); polRecalcTotal(i); } }
 function riderSet(i,ri,k,v){ const p=editingPolicies[i]; if(p&&p.riders&&p.riders[ri]){ p.riders[ri][k]=v; if(k==="premium") polRecalcTotal(i); } }
-function addPolicyRow(){ editingPolicies.push({id:uid(),mainName:"",policyNo:"",category:"",company:"",premium:"",totalPremium:"",payFreq:"",coverage:"",term:"",startDate:"",paymentDate:"",maturityDate:"",notes:"",riders:[]}); renderPolicyRows(); }
+function addPolicyRow(){ editingPolicies.push({id:uid(),mainName:"",policyNo:"",category:"",company:"",premium:"",totalPremium:"",payFreq:"",insured:"",insuredRel:"",coverage:"",term:"",startDate:"",paymentDate:"",maturityDate:"",notes:"",riders:[]}); renderPolicyRows(); }
 function rmPolicy(i){ editingPolicies.splice(i,1); renderPolicyRows(); }
 function polSet(i,k,v){
   const p=editingPolicies[i]; if(!p) return;
@@ -2566,12 +2833,15 @@ function saveClient(auto){
   if(!name){ if(!auto){ toast("請填寫姓名","warn"); nameEl.focus(); } return; }
   const pendingTag=($("#edTagInput")||{}).value?.trim();
   if(pendingTag && !editingTags.includes(pendingTag)) editingTags.push(pendingTag);
+  const pendingRef=($("#refFreeText")||{}).value?.trim();
+  if(pendingRef && !editingReferrerId && !editingReferrerName) editingReferrerName=pendingRef;
   const idEl=$("#edId"); const id=idEl.value;
   const data={
     name, phone:$("#edPhone").value.trim(), unit:$("#edUnit").value.trim(),
     birthday:$("#edBday").value, occupation:$("#edJob").value.trim(),
     email:($("#edEmail")||{}).value?.trim()||"", address:($("#edAddr")||{}).value?.trim()||"",
     tags: editingTags.slice(),
+    referrerId: editingReferrerId||"", referrerName: editingReferrerId?"":(editingReferrerName||""),
     grade:$("#edGrade").value, sopStep:+$("#edStep").value||1,
     needs:$("#edNeeds").value.trim(), notes:$("#edNotes").value.trim(),
     policies:editingPolicies
