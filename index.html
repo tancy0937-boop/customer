@@ -92,11 +92,12 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 
 .filters{display:flex;gap:7px;flex-wrap:wrap}
 .regiontag{background:var(--teal-soft);color:#1f5249;font-weight:600;padding:1px 8px;border-radius:999px;font-size:11.5px;display:inline-flex;align-items:center;gap:2px}
-.tagfilters{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.tagfilters{display:flex;gap:9px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .tagfilters::-webkit-scrollbar{height:7px}
 .tagfilters::-webkit-scrollbar-track{background:transparent}
 .tagfilters::-webkit-scrollbar-thumb{background:var(--line);border-radius:999px}
 .tagfilters::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+.tagfilters .chip{height:auto;padding:10px 18px;font-size:14px;flex:none}
 .tagpicker{display:flex;flex-wrap:wrap;gap:7px;min-height:22px;padding:10px;border:1px solid var(--line);background:var(--surface);border-radius:12px}
 .tagpicker .empty-hint{color:var(--faint);font-size:12.5px}
 .tagpill{display:inline-flex;align-items:center;gap:3px;background:var(--teal-soft);color:#1f5249;font-weight:600;padding:4px 4px 4px 11px;border-radius:999px;font-size:12.5px}
@@ -1050,6 +1051,7 @@ let calY=null, calM=null, calMode="month";  // calendar state
 /* ---------- Google Calendar sync ---------- */
 const GCAL_SCOPE="https://www.googleapis.com/auth/calendar.events";
 const GCAL_CID_KEY="insure_crm_gcal_cid";
+const GCAL_WORK_CID_KEY="insure_crm_gcal_work_cid";
 const GCAL_CONNECTED_KEY="insure_crm_gcal_connected";
 let gcalTokenClient=null;
 let gcalAccessToken=null;
@@ -1058,6 +1060,8 @@ let gcalEventsCache={};   // "YYYY-M0" -> array of {id,title,date,time,allDay}
 let gcalLoadingMonth=null;
 function gcalClientId(){ try{ return localStorage.getItem(GCAL_CID_KEY)||""; }catch(e){ return ""; } }
 function gcalSetClientId(id){ try{ localStorage.setItem(GCAL_CID_KEY, id||""); }catch(e){} }
+function gcalWorkCalId(){ try{ return localStorage.getItem(GCAL_WORK_CID_KEY)||""; }catch(e){ return ""; } }
+function gcalSetWorkCalId(id){ try{ localStorage.setItem(GCAL_WORK_CID_KEY, id||""); }catch(e){} }
 function gcalIsConnected(){ return !!gcalAccessToken && Date.now()<gcalTokenExpiry; }
 function gcalPushEnabled(){ return DB.meta.gcalPushVisits!==false; }
 function gcalReady(){ return typeof google!=="undefined" && google.accounts && google.accounts.oauth2; }
@@ -1092,6 +1096,7 @@ function gcalDisconnect(){
   toast("已中斷 Google 行事曆連接"); render();
 }
 function gcalTogglePush(on){ DB.meta.gcalPushVisits = !!on; commit(); render(); }
+function gcalSaveWorkCalId(v){ gcalSetWorkCalId((v||"").trim()); gcalEventsCache={}; toast("已儲存工作行事曆設定"); if(view==="reminders") render(); }
 
 async function gcalFetchMonth(y,m0){
   const key=`${y}-${m0}`;
@@ -1103,25 +1108,43 @@ async function gcalFetchMonth(y,m0){
       timeMin:start.toISOString(), timeMax:end.toISOString(),
       singleEvents:"true", orderBy:"startTime", maxResults:"250"
     });
-    const res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?"+params.toString(),
-      { headers:{ Authorization:"Bearer "+gcalAccessToken } });
-    if(res.status===401){ gcalAccessToken=null; gcalTokenExpiry=0; gcalLoadingMonth=null; render(); return; }
-    const data=await res.json();
-    gcalEventsCache[key]=(data.items||[]).filter(e=>e.status!=="cancelled").map(ev=>({
-      id: ev.id,
-      title: ev.summary||"(無標題)",
-      date: ev.start&&(ev.start.date||(ev.start.dateTime||"").slice(0,10))||"",
-      time: ev.start&&ev.start.dateTime? ev.start.dateTime.slice(11,16) : "",
-      allDay: !!(ev.start&&ev.start.date)
-    })).filter(e=>e.date);
+    const calIds=["primary"];
+    const workCid=gcalWorkCalId();
+    if(workCid && workCid!=="primary") calIds.push(workCid);
+    const results=await Promise.all(calIds.map(async cid=>{
+      try{
+        const res=await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cid)}/events?`+params.toString(),
+          { headers:{ Authorization:"Bearer "+gcalAccessToken } });
+        if(res.status===401) return {auth401:true, items:[]};
+        const data=await res.json();
+        return {items:data.items||[]};
+      }catch(e){ return {items:[]}; }
+    }));
+    if(results.some(r=>r.auth401)){ gcalAccessToken=null; gcalTokenExpiry=0; gcalLoadingMonth=null; render(); return; }
+    const merged=[];
+    results.forEach(r=>{
+      (r.items||[]).filter(e=>e.status!=="cancelled").forEach(ev=>{
+        const date=ev.start&&(ev.start.date||(ev.start.dateTime||"").slice(0,10))||"";
+        if(!date) return;
+        merged.push({
+          id: ev.id,
+          title: ev.summary||"(無標題)",
+          date,
+          time: ev.start&&ev.start.dateTime? ev.start.dateTime.slice(11,16) : "",
+          allDay: !!(ev.start&&ev.start.date)
+        });
+      });
+    });
+    gcalEventsCache[key]=merged;
   }catch(e){ gcalEventsCache[key]=[]; }
   gcalLoadingMonth=null;
   if(view==="reminders" && calY===y && calM===m0) render();
 }
 async function gcalPushVisit(cid,rid,title,dateISO,note){
   if(!gcalIsConnected() || !gcalPushEnabled()) return;
+  const targetCal=gcalWorkCalId()||"primary";
   try{
-    const res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",{
+    const res=await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(targetCal)}/events`,{
       method:"POST",
       headers:{ Authorization:"Bearer "+gcalAccessToken, "Content-Type":"application/json" },
       body:JSON.stringify({ summary:title, description:note||"", start:{date:dateISO}, end:{date:dateISO} })
@@ -1129,16 +1152,16 @@ async function gcalPushVisit(cid,rid,title,dateISO,note){
     const data=await res.json();
     if(data.id){
       const c=DB.clients.find(x=>x.id===cid); const r=c&&(c.reminders||[]).find(x=>x.id===rid);
-      if(r){ r.gcalEventId=data.id; commit(false); }
+      if(r){ r.gcalEventId=data.id; r.gcalCalId=targetCal; commit(false); }
       gcalEventsCache={};
       if(view==="reminders") render();
     }
   }catch(e){}
 }
-async function gcalDeleteEvent(eventId){
+async function gcalDeleteEvent(eventId, calId){
   if(!gcalIsConnected() || !eventId) return;
   try{
-    await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+    await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId||"primary")}/events/${eventId}`,
       { method:"DELETE", headers:{ Authorization:"Bearer "+gcalAccessToken } });
     gcalEventsCache={};
   }catch(e){}
@@ -1857,12 +1880,12 @@ function saveVisit(){
 function doneEvent(cid,id,iso){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   const r=(c.reminders||[]).find(x=>x.id===id);
-  if(r){ r.done=true; if(r.gcalEventId){ gcalDeleteEvent(r.gcalEventId); r.gcalEventId=null; } commit(); render(); if(iso) openDay(iso); toast("已完成"); }
+  if(r){ r.done=true; if(r.gcalEventId){ gcalDeleteEvent(r.gcalEventId, r.gcalCalId); r.gcalEventId=null; r.gcalCalId=null; } commit(); render(); if(iso) openDay(iso); toast("已完成"); }
 }
 function delEvent(cid,id,iso){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   const r=(c.reminders||[]).find(x=>x.id===id);
-  if(r && r.gcalEventId) gcalDeleteEvent(r.gcalEventId);
+  if(r && r.gcalEventId) gcalDeleteEvent(r.gcalEventId, r.gcalCalId);
   c.reminders=(c.reminders||[]).filter(x=>x.id!==id); commit(); render(); if(iso) openDay(iso); toast("已刪除");
 }
 
@@ -1976,6 +1999,14 @@ function viewGuide(){
     <h3>📅 Google 行事曆同步</h3>
     <p>連接後，月曆會同時顯示你 Google 行事曆裡的行程，方便一次比對有沒有撞期；新增「複訪」時也會自動同步建立到你的 Google 行事曆。</p>
     ${gcalIsConnected() ? `
+      <div class="field">
+        <label>工作行事曆 ID（選填）</label>
+        <input id="setGcalWorkCid" value="${esc(gcalWorkCalId())}" placeholder="留空表示只使用主要行事曆" onchange="gcalSaveWorkCalId(this.value)">
+      </div>
+      <p style="color:var(--muted);font-size:12.5px;margin:-6px 0 14px">
+        填了之後：月曆會<b>同時顯示</b>主要行事曆與這個工作行事曆的行程；新增「複訪」則<b>只會建立在這個工作行事曆</b>裡，不會建到主要行事曆。<br>
+        行事曆 ID 在 Google 日曆網頁版：該行事曆右邊「⋮」→「設定與共用」→ 拉到「整合行事曆」區塊，「行事曆 ID」那一長串就是，複製貼上即可（通常長得像一串英數字加 <span class="mono">@group.calendar.google.com</span>）。
+      </p>
       <div class="field" style="margin-bottom:10px">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:0">
           <input type="checkbox" id="setGcalPush" ${gcalPushEnabled()?"checked":""} onchange="gcalTogglePush(this.checked)" style="width:auto;height:auto">
