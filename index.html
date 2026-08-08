@@ -92,8 +92,11 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 
 .filters{display:flex;gap:7px;flex-wrap:wrap}
 .regiontag{background:var(--teal-soft);color:#1f5249;font-weight:600;padding:1px 8px;border-radius:999px;font-size:11.5px;display:inline-flex;align-items:center;gap:2px}
-.tagfilters{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.tagfilters::-webkit-scrollbar{display:none}
+.tagfilters{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.tagfilters::-webkit-scrollbar{height:7px}
+.tagfilters::-webkit-scrollbar-track{background:transparent}
+.tagfilters::-webkit-scrollbar-thumb{background:var(--line);border-radius:999px}
+.tagfilters::-webkit-scrollbar-thumb:hover{background:var(--muted)}
 .tagpicker{display:flex;flex-wrap:wrap;gap:7px;min-height:22px;padding:10px;border:1px solid var(--line);background:var(--surface);border-radius:12px}
 .tagpicker .empty-hint{color:var(--faint);font-size:12.5px}
 .tagpill{display:inline-flex;align-items:center;gap:3px;background:var(--teal-soft);color:#1f5249;font-weight:600;padding:4px 4px 4px 11px;border-radius:999px;font-size:12.5px}
@@ -105,8 +108,13 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .tagdrop summary::-webkit-details-marker{display:none}
 .tagdrop summary::before{content:"▸";font-size:11px;transition:transform .15s}
 .tagdrop[open] summary::before{transform:rotate(90deg)}
-.tagoptions{display:flex;flex-wrap:wrap;gap:7px;padding:2px 12px 12px}
-.tagopt{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}
+.tagoptions{display:flex;flex-wrap:nowrap;gap:9px;padding:4px 12px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.tagoptions::-webkit-scrollbar{height:7px}
+.tagoptions::-webkit-scrollbar-track{background:transparent}
+.tagoptions::-webkit-scrollbar-thumb{background:var(--line);border-radius:999px}
+.tagoptions::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+.tagopt{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-size:13.5px;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer;white-space:nowrap;flex:none}
+.scrollhint{text-align:center;font-size:11px;color:var(--faint);padding:0 12px 10px}
 .tagopt.on{background:var(--teal-soft);color:#1f5249;border-color:transparent;font-weight:700}
 .tagmanage{display:flex;flex-direction:column;gap:8px}
 .tmrow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:var(--surface);position:relative}
@@ -793,7 +801,7 @@ function refreshTagManageList(){ const el=$("#tagManageList"); if(el) el.innerHT
 let tagBeingRenamed=null, tagBeingDeleted=null;
 
 /* ---------- tag drag reorder ---------- */
-let tmDragEl=null;
+let tmDragEl=null, tmDragRAF=null, tmDragLastY=0;
 function tmDragStart(e, el){
   if(!el) return;
   e.preventDefault();
@@ -806,21 +814,30 @@ function tmDragStart(e, el){
 }
 function tmDragMove(e){
   if(!tmDragEl) return;
+  tmDragLastY=e.clientY;
+  if(tmDragRAF) return;
+  tmDragRAF=requestAnimationFrame(tmDragFrame);
+}
+function tmDragFrame(){
+  tmDragRAF=null;
+  if(!tmDragEl) return;
+  const clientY=tmDragLastY;
   const container=tmDragEl.parentElement; if(!container) return;
   const rows=[...container.children].filter(r=>r!==tmDragEl);
   let insertBefore=null;
   for(const r of rows){
     const rect=r.getBoundingClientRect();
-    if(e.clientY < rect.top+rect.height/2){ insertBefore=r; break; }
+    if(clientY < rect.top+rect.height/2){ insertBefore=r; break; }
   }
   if(insertBefore){ if(insertBefore!==tmDragEl.nextSibling) container.insertBefore(tmDragEl, insertBefore); }
   else { if(container.lastElementChild!==tmDragEl) container.appendChild(tmDragEl); }
   const rect=tmDragEl.getBoundingClientRect();
-  const offset=e.clientY-(rect.top+rect.height/2);
+  const offset=clientY-(rect.top+rect.height/2);
   tmDragEl.style.transform=`translateY(${offset}px)`;
 }
 function tmDragEnd(e){
   if(!tmDragEl) return;
+  if(tmDragRAF){ cancelAnimationFrame(tmDragRAF); tmDragRAF=null; }
   try{ tmDragEl.releasePointerCapture(e.pointerId); }catch(err){}
   tmDragEl.removeEventListener("pointermove", tmDragMove);
   tmDragEl.removeEventListener("pointerup", tmDragEnd);
@@ -897,6 +914,9 @@ function viewServicing(){
       </div>`}
       <div id="pcuPolicyPick">${pcuPolicyPickHtml()}</div>
       <div id="pcuConfirmArea">${pcuConfirmAreaHtml()}</div>
+    </div>
+    <div class="block"><h4>🗂️ 要保人變更紀錄<span class="tag">${(DB.ownerChangeLog||[]).length} 筆</span></h4>
+      <div class="block-body" id="ownerChangeLogList">${ownerChangeLogHtml()}</div>
     </div>`;
 }
 function pcuSearchClient(){
@@ -941,8 +961,10 @@ function pcuConfirmAreaHtml(){
       <div id="pcuTargetResult" style="margin-top:6px"></div>
     </div>`;
   if(tgt){
-    html+=`<div style="font-size:13px;color:var(--muted);line-height:1.7;margin:4px 0 10px">
-        將把「${esc(src.name)}」的保單「<b>${esc(p.mainName||"保單")}</b>」變更要保人為「<b>${esc(tgt.name)}</b>」，這張保單會從「${esc(src.name)}」移到「${esc(tgt.name)}」名下，保單內容（附約、日期、備註）都會完整保留。
+    html+=dateFieldHtml("pcuChangeDate", todayISO(), "變更日期");
+    html+=`<div class="field"><label>備註（選填）</label><input id="pcuChangeNote" placeholder="例：過戶原因、經辦人員…"></div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.7;margin:4px 0 10px">
+        將把「${esc(src.name)}」的保單「<b>${esc(p.mainName||"保單")}</b>」變更要保人為「<b>${esc(tgt.name)}</b>」，這張保單會從「${esc(src.name)}」移到「${esc(tgt.name)}」名下，保單內容（附約、日期、備註）都會完整保留，這筆變更也會記錄在下方的變更紀錄裡。
       </div>
       <button type="button" class="btn" style="background:var(--danger);color:#fff;width:100%" onclick="pcuExecute()">確定變更要保人</button>`;
   }
@@ -966,6 +988,15 @@ function pcuExecute(){
   const [p]=src.policies.splice(idx,1);
   tgt.policies=tgt.policies||[];
   tgt.policies.push(p);
+  const changeDate=(($("#pcuChangeDate")||{}).value)||todayISO();
+  const changeNote=(($("#pcuChangeNote")||{}).value||"").trim();
+  DB.ownerChangeLog=DB.ownerChangeLog||[];
+  DB.ownerChangeLog.push({
+    id:uid(), date:changeDate,
+    policyId:p.id, policyName:p.mainName||"保單", policyNo:p.policyNo||"", category:p.category||"",
+    fromClientId:src.id, fromName:src.name, toClientId:tgt.id, toName:tgt.name,
+    note:changeNote
+  });
   pcuSourceId=""; pcuPolicyId=""; pcuTargetId=""; pcuProceeding=false;
   commit();
   toast("已變更要保人");
@@ -974,6 +1005,41 @@ function pcuExecute(){
 function pcuReset(){
   pcuSourceId=""; pcuPolicyId=""; pcuTargetId=""; pcuProceeding=false;
   render();
+}
+function ownerChangeLogHtml(){
+  const log=(DB.ownerChangeLog||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  if(!log.length) return `<div style="color:var(--faint);font-size:13px">尚無變更紀錄。</div>`;
+  return log.map(x=>`
+    <div style="cursor:pointer" onclick="editOwnerChange('${x.id}')">
+      <div class="kv"><span class="k">${esc(fmtDate(x.date))} ${esc(x.policyName||"保單")}</span>
+      <span class="v" style="color:var(--muted);font-weight:500">${esc(x.fromName)} → ${esc(x.toName)}</span></div>
+      ${x.note?`<div style="font-size:12px;color:var(--muted);padding:0 0 8px">${esc(x.note)}</div>`:""}
+    </div>`).join("");
+}
+function refreshOwnerChangeLog(){ const el=$("#ownerChangeLogList"); if(el) el.innerHTML=ownerChangeLogHtml(); }
+function editOwnerChange(id){
+  const x=(DB.ownerChangeLog||[]).find(y=>y.id===id); if(!x) return;
+  openSheet("編輯變更紀錄", `
+    ${dateFieldHtml("ocEditDate", x.date||todayISO(), "變更日期")}
+    <div class="field"><label>保單</label><input value="${esc(x.policyName||"")}" disabled></div>
+    <div class="field"><label>原要保人 → 新要保人</label><input value="${esc(x.fromName)} → ${esc(x.toName)}" disabled></div>
+    <div class="field"><label>備註</label><textarea id="ocEditNote" placeholder="例：過戶原因、經辦人員…">${esc(x.note||"")}</textarea></div>
+    <button class="btn green full" onclick="saveOwnerChangeEdit('${id}')">儲存</button>
+    <button class="btn ghost full" style="margin-top:10px;color:var(--danger);border-color:var(--danger-soft)" onclick="delOwnerChange('${id}')">🗑 刪除這筆紀錄</button>`);
+}
+function saveOwnerChangeEdit(id){
+  const x=(DB.ownerChangeLog||[]).find(y=>y.id===id); if(!x) return;
+  x.date=($("#ocEditDate")||{}).value||x.date;
+  x.note=($("#ocEditNote")||{}).value.trim();
+  commit(); closeSheet();
+  if(view==="servicing") refreshOwnerChangeLog();
+  toast("已更新變更紀錄");
+}
+function delOwnerChange(id){
+  DB.ownerChangeLog=(DB.ownerChangeLog||[]).filter(y=>y.id!==id);
+  commit(); closeSheet();
+  if(view==="servicing") refreshOwnerChangeLog();
+  toast("已刪除這筆紀錄");
 }
 let lsOK = true;
 let dirty = false;
@@ -1182,6 +1248,7 @@ function migrate(d){
   d.meta = Object.assign({brand:"保險客戶資料庫",agent:"",updatedAt:null,schema:2}, d.meta||{});
   d.clients = Array.isArray(d.clients)?d.clients:[];
   d.tagCatalog = Array.isArray(d.tagCatalog)?d.tagCatalog:[];
+  d.ownerChangeLog = Array.isArray(d.ownerChangeLog)?d.ownerChangeLog:[];
   d.clients.forEach(c=>{
     c.policies=c.policies||[]; c.reminders=c.reminders||[]; c.claims=c.claims||[]; c.careLog=c.careLog||[];
     c.sopStatus=c.sopStatus||{}; if(typeof c.sopStep!=="number") c.sopStep=1;
@@ -1433,7 +1500,8 @@ function viewClients(){
         <button class="chip ${tagFilter.length===0?"on":""}" onclick="clearTagFilter()">全部標籤</button>
         ${tags.map(t=>`<button class="chip ${tagFilter.includes(t)?"on":""}" data-tag="${esc(t)}" onclick="toggleTagFilter(this.dataset.tag)">${esc(t)}</button>`).join("")}
         ${noTagN?`<button class="chip ${tagFilter.includes("__none__")?"on":""}" onclick="toggleTagFilter('__none__')">未分類 (${noTagN})</button>`:""}
-      </div>` : "";
+      </div>
+      <div class="scrollhint">← 左右滑動查看所有標籤 →</div>` : "";
 
   let head=`
     <div class="viewhead">
@@ -1887,6 +1955,11 @@ function viewGuide(){
     <h3>🏷️ 標籤整理</h3>
     <p>目前各標籤的使用筆數如下，可以重新命名（跟現有標籤同名即自動合併）或刪除少用的標籤，方便歸整。</p>
     <div id="tagManageList">${tagManageListHtml()}</div>
+  </div>
+  <div class="info">
+    <h3>👤 轉介來源比對</h3>
+    <p>新增客戶時系統會自動檢查有沒有其他客戶的「轉介來源」寫的剛好是這位新客戶的名字，主動問你要不要連結起來。如果你想手動補掃一次舊資料（或當時跳出提示時選了先不用），可以按下面這顆按鈕。</p>
+    <button class="btn green full" onclick="scanReferrerMatches()">掃描比對轉介來源</button>
   </div>
   <div class="info">
     <h3>💾 備份與還原（重要）</h3>
@@ -2595,6 +2668,7 @@ function editClient(id, prefill){
       <details class="tagdrop">
         <summary>從既有標籤選擇（可複選）</summary>
         <div class="tagoptions" id="tagOptions">${tagOptionsHtml()}</div>
+        <div class="scrollhint">← 左右滑動查看所有標籤 →</div>
       </details>
       <div class="tagaddrow">
         <input id="edTagInput" list="tagList" placeholder="輸入標籤名稱，Enter 或按＋新增" onkeydown="if(event.key==='Enter'){event.preventDefault();addEditTag();}">
@@ -2684,6 +2758,65 @@ function referrerMetaHtml(c){
   }
   if(c.referrerName) return `<span>👤 轉介來源：${esc(c.referrerName)}</span>`;
   return "";
+}
+function checkReferrerMatches(newClientId){
+  const nc=DB.clients.find(x=>x.id===newClientId); if(!nc) return;
+  const nm=(nc.name||"").trim().toLowerCase(); if(!nm) return;
+  const matches=DB.clients.filter(c=>c.id!==newClientId && !c.referrerId && (c.referrerName||"").trim().toLowerCase()===nm);
+  if(!matches.length) return;
+  openSheet("發現可能相符的轉介來源", `
+    <p style="font-size:14px;line-height:1.7">系統發現以下 <b>${matches.length}</b> 位客戶的轉介來源欄位寫的是「<b>${esc(nc.name)}</b>」，跟你剛新增的這位客戶同名。要把他們的轉介來源改成連結到這位新客戶嗎？</p>
+    <div class="tagmanage" style="margin:12px 0">
+      ${matches.map(c=>`<div class="tmrow"><span class="tmname">${esc(c.name)}</span></div>`).join("")}
+    </div>
+    <div class="btnrow">
+      <button class="btn ghost" onclick="closeSheet()">先不用</button>
+      <button class="btn green" onclick="applyReferrerMatches('${newClientId}')">全部連結</button>
+    </div>
+  `);
+}
+function applyReferrerMatches(newClientId){
+  const nc=DB.clients.find(x=>x.id===newClientId); if(!nc) return;
+  const nm=(nc.name||"").trim().toLowerCase();
+  let n=0;
+  DB.clients.forEach(c=>{
+    if(c.id!==newClientId && !c.referrerId && (c.referrerName||"").trim().toLowerCase()===nm){
+      c.referrerId=newClientId; c.referrerName=""; n++;
+    }
+  });
+  commit(); closeSheet();
+  toast(`已連結 ${n} 筆客戶的轉介來源`);
+  render();
+}
+let scanReferrerResults=[];
+function scanReferrerMatches(){
+  const results=[];
+  DB.clients.forEach(c=>{
+    if(c.referrerId || !(c.referrerName||"").trim()) return;
+    const nm=c.referrerName.trim().toLowerCase();
+    const rc=DB.clients.find(x=>x.id!==c.id && (x.name||"").trim().toLowerCase()===nm);
+    if(rc) results.push({cid:c.id, cname:c.name, rid:rc.id, rname:rc.name});
+  });
+  scanReferrerResults=results;
+  if(!results.length){ toast("目前沒有找到可以自動連結的轉介來源"); return; }
+  openSheet("掃描結果：可自動連結的轉介來源", `
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:10px">找到 ${results.length} 筆，轉介來源欄位的文字跟某位既有客戶同名：</p>
+    <div class="tagmanage" style="margin-bottom:14px">
+      ${results.map(r=>`<div class="tmrow"><span class="tmname">${esc(r.cname)}</span><span class="tmcount">→ ${esc(r.rname)}</span></div>`).join("")}
+    </div>
+    <div class="btnrow">
+      <button class="btn ghost" onclick="closeSheet()">先不用</button>
+      <button class="btn green" onclick="applyScanReferrerMatches()">全部連結</button>
+    </div>
+  `);
+}
+function applyScanReferrerMatches(){
+  const results=scanReferrerResults||[];
+  results.forEach(r=>{ const c=DB.clients.find(x=>x.id===r.cid); if(c){ c.referrerId=r.rid; c.referrerName=""; } });
+  scanReferrerResults=[];
+  commit(); closeSheet();
+  toast(`已連結 ${results.length} 筆`);
+  render();
 }
 function referrerBoxHtml(){
   if(editingReferrerId){
@@ -2836,6 +2969,7 @@ function saveClient(auto){
   const pendingRef=($("#refFreeText")||{}).value?.trim();
   if(pendingRef && !editingReferrerId && !editingReferrerName) editingReferrerName=pendingRef;
   const idEl=$("#edId"); const id=idEl.value;
+  const wasNew=!id;
   const data={
     name, phone:$("#edPhone").value.trim(), unit:$("#edUnit").value.trim(),
     birthday:$("#edBday").value, occupation:$("#edJob").value.trim(),
@@ -2867,6 +3001,7 @@ function saveClient(auto){
   closeSheet();
   if(id){ openDetail(id); } else { go("clients"); }
   toast(id?"已儲存變更":"已新增客戶");
+  if(wasNew) checkReferrerMatches(idEl.value);
 }
 
 /* ============ sheet / toast ============ */
