@@ -381,7 +381,7 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .t-mat{background:#E7E0F0;color:#503b78}
 .t-care{background:#E9EDEB;color:#475550}
 .t-manual{background:#F0E7D8;color:#6b5326}
-.t-visit{background:#D9EDE6;color:#1f5249}
+.t-visit{background:#E0623F;color:#fff;font-weight:800}
 .t-google{background:#D2E3FC;color:#1a4fa0}
 
 /* ---------- calendar ---------- */
@@ -1140,14 +1140,23 @@ async function gcalFetchMonth(y,m0){
   gcalLoadingMonth=null;
   if(view==="reminders" && calY===y && calM===m0) render();
 }
-async function gcalPushVisit(cid,rid,title,dateISO,note){
+function gcalEventBody(title,note,dateISO,startTime,endTime){
+  if(startTime){
+    const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return { summary:title, description:note||"",
+      start:{dateTime:`${dateISO}T${startTime}:00`, timeZone:tz},
+      end:{dateTime:`${dateISO}T${endTime||startTime}:00`, timeZone:tz} };
+  }
+  return { summary:title, description:note||"", start:{date:dateISO}, end:{date:dateISO} };
+}
+async function gcalPushVisit(cid,rid,title,dateISO,note,startTime,endTime){
   if(!gcalIsConnected() || !gcalPushEnabled()) return;
   const targetCal=gcalWorkCalId()||"primary";
   try{
     const res=await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(targetCal)}/events`,{
       method:"POST",
       headers:{ Authorization:"Bearer "+gcalAccessToken, "Content-Type":"application/json" },
-      body:JSON.stringify({ summary:title, description:note||"", start:{date:dateISO}, end:{date:dateISO} })
+      body:JSON.stringify(gcalEventBody(title,note,dateISO,startTime,endTime))
     });
     const data=await res.json();
     if(data.id){
@@ -1156,6 +1165,19 @@ async function gcalPushVisit(cid,rid,title,dateISO,note){
       gcalEventsCache={};
       if(view==="reminders") render();
     }
+  }catch(e){}
+}
+async function gcalUpdateVisitEvent(r, clientName){
+  if(!gcalIsConnected() || !r || !r.gcalEventId) return;
+  const calId=r.gcalCalId||"primary";
+  const title=`${r.title||"複訪"}（${clientName||""}）`;
+  try{
+    await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events/${r.gcalEventId}`,{
+      method:"PATCH",
+      headers:{ Authorization:"Bearer "+gcalAccessToken, "Content-Type":"application/json" },
+      body:JSON.stringify(gcalEventBody(title, r.note, r.date, r.startTime, r.endTime))
+    });
+    gcalEventsCache={};
   }catch(e){}
 }
 async function gcalDeleteEvent(eventId, calId){
@@ -1465,7 +1487,7 @@ function allReminders(){
   const list=[];
   DB.clients.forEach(c=>{
     autoReminders(c).forEach(r=>list.push(r));
-    (c.reminders||[]).filter(r=>!r.done).forEach(r=>list.push({date:r.date,type:r.kind||"manual",title:r.title,who:c.name,clientId:c.id,id:r.id,note:r.note}));
+    (c.reminders||[]).filter(r=>!r.done).forEach(r=>list.push({date:r.date,type:r.kind||"manual",title:r.title,who:c.name,clientId:c.id,id:r.id,note:r.note,startTime:r.startTime,endTime:r.endTime}));
   });
   return list.sort((a,b)=> a.date<b.date?-1:a.date>b.date?1:0);
 }
@@ -1836,12 +1858,17 @@ function openDay(iso){
   const wd=WEEKDAYS[new Date(iso).getDay()];
   const localRows = evs.length? evs.map(e=>{
     const [tl,tc]=EVTYPE[e.type]||["",""];
+    const isVisit=e.type==="visit"&&e.id;
     const canEdit=(e.type==="visit"||e.type==="manual")&&e.id;
-    return `<div class="remitem" onclick="openDetail('${e.clientId}')" style="cursor:pointer">
+    const vc=isVisit? DB.clients.find(x=>x.id===e.clientId) : null;
+    const vr=vc? (vc.reminders||[]).find(x=>x.id===e.id) : null;
+    const clickAction=isVisit?`editVisit('${e.clientId}','${e.id}')`:`openDetail('${e.clientId}')`;
+    const timeLabel=(vr&&vr.startTime)? `${vr.startTime}${vr.endTime?"–"+vr.endTime:""} ・ ` : "";
+    return `<div class="remitem" onclick="${clickAction}" style="cursor:pointer">
       <span class="type ${tc}" style="flex:none">${tl}</span>
-      <div class="body"><div class="t">${esc(e.title)}</div><div class="who">${esc(e.who)}</div></div>
+      <div class="body"><div class="t">${esc(e.title)}</div><div class="who">${esc(timeLabel)}${esc(e.who)}</div></div>
       ${canEdit?`<button class="checkbtn" title="完成" onclick="event.stopPropagation();doneEvent('${e.clientId}','${e.id}','${iso}')">✓</button>
-        <button class="checkbtn" title="刪除" style="border-color:var(--danger-soft);color:var(--danger)" onclick="event.stopPropagation();delEvent('${e.clientId}','${e.id}','${iso}')">×</button>`:""}
+        ${isVisit?"":`<button class="checkbtn" title="刪除" style="border-color:var(--danger-soft);color:var(--danger)" onclick="event.stopPropagation();delEvent('${e.clientId}','${e.id}','${iso}')">×</button>`}`:""}
     </div>`;
   }).join("") : "";
   const gRows = gevs.length? gevs.map(g=>`
@@ -1861,21 +1888,53 @@ function scheduleVisit(presetDate, presetCid){
   openSheet("排複訪", `
     <div class="field"><label>客戶</label><select id="vCid">${opts}</select></div>
     ${dateFieldHtml("vDate", presetDate||todayISO(), "日期")}
+    <div class="row2">
+      <div class="field"><label>預定開始時間（選填）</label><input type="time" id="vStart"></div>
+      <div class="field"><label>預定結束時間（選填）</label><input type="time" id="vEnd"></div>
+    </div>
     <div class="field"><label>備註（選填）</label><input id="vNote" placeholder="例：保單健檢、送資料、加保討論"></div>
     <button class="btn green full" onclick="saveVisit()">排入行事曆</button>`);
 }
 function saveVisit(){
   const cid=$("#vCid").value; const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   const date=$("#vDate").value; if(!date){ toast("請選日期","warn"); return; }
+  const startTime=($("#vStart")||{}).value||"";
+  const endTime=($("#vEnd")||{}).value||"";
   const note=$("#vNote").value.trim();
   c.reminders=c.reminders||[];
   const rid=uid();
   const title=note?("複訪："+note):"複訪";
-  c.reminders.push({id:rid, date, title, kind:"visit", note, done:false});
+  c.reminders.push({id:rid, date, title, kind:"visit", note, startTime, endTime, done:false});
   commit(); closeSheet();
   if(view==="reminders"){ render(); } else { go("reminders"); }
   toast(gcalIsConnected()&&gcalPushEnabled()?"已排入行事曆，同步至 Google…":"已排入行事曆");
-  gcalPushVisit(cid, rid, `${title}（${c.name||""}）`, date, note);
+  gcalPushVisit(cid, rid, `${title}（${c.name||""}）`, date, note, startTime, endTime);
+}
+function editVisit(cid,id){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const r=(c.reminders||[]).find(x=>x.id===id); if(!r) return;
+  openSheet("編輯複訪", `
+    <div class="field"><label>客戶</label><input value="${esc(c.name||"")}" disabled></div>
+    ${dateFieldHtml("vEditDate", r.date||todayISO(), "日期")}
+    <div class="row2">
+      <div class="field"><label>預定開始時間（選填）</label><input type="time" id="vEditStart" value="${esc(r.startTime||"")}"></div>
+      <div class="field"><label>預定結束時間（選填）</label><input type="time" id="vEditEnd" value="${esc(r.endTime||"")}"></div>
+    </div>
+    <div class="field"><label>備註</label><input id="vEditNote" value="${esc(r.note||"")}" placeholder="例：保單健檢、送資料、加保討論"></div>
+    <button class="btn green full" onclick="saveVisitEdit('${cid}','${id}')">儲存變更</button>
+    <button class="btn ghost full" style="margin-top:10px;color:var(--danger);border-color:var(--danger-soft)" onclick="delEvent('${cid}','${id}')">🗑 刪除這筆複訪</button>`);
+}
+function saveVisitEdit(cid,id){
+  const c=DB.clients.find(x=>x.id===cid); if(!c) return;
+  const r=(c.reminders||[]).find(x=>x.id===id); if(!r) return;
+  r.date=($("#vEditDate")||{}).value||r.date;
+  r.startTime=($("#vEditStart")||{}).value||"";
+  r.endTime=($("#vEditEnd")||{}).value||"";
+  r.note=($("#vEditNote")||{}).value.trim();
+  r.title=r.note?("複訪："+r.note):"複訪";
+  commit(); closeSheet(); render();
+  toast("已更新複訪");
+  if(r.gcalEventId) gcalUpdateVisitEvent(r, c.name);
 }
 function doneEvent(cid,id,iso){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
@@ -1902,10 +1961,13 @@ function reminderListBody(){
     const [,mm,dd]=r.date.split("-");
     const over=r.date<t;
     const dn = r.date===t? "今天" : (over? `逾 ${Math.abs(daysBetween(r.date,t))} 天` : `${daysBetween(t,r.date)} 天後`);
+    const isVisit=r.type==="visit"&&r.id;
     const canEdit=(r.type==="visit"||r.type==="manual")&&r.id;
-    return `<div class="remitem ${over?"over":""}" onclick="openDetail('${r.clientId}')">
+    const clickAction=isVisit?`editVisit('${r.clientId}','${r.id}')`:`openDetail('${r.clientId}')`;
+    const timeLabel=(isVisit&&r.startTime)? `${r.startTime}${r.endTime?"–"+r.endTime:""} ・ ` : "";
+    return `<div class="remitem ${over?"over":""}" onclick="${clickAction}">
       <div class="date"><b>${dd}</b>${mm}月</div>
-      <div class="body"><div class="t">${esc(r.title)}</div><div class="who">${esc(r.who)} ・ ${dn}</div></div>
+      <div class="body"><div class="t">${esc(r.title)}</div><div class="who">${esc(timeLabel)}${esc(r.who)} ・ ${dn}</div></div>
       <span class="type ${tc}">${tl}</span>
       ${canEdit?`<button class="checkbtn" onclick="event.stopPropagation();doneEvent('${r.clientId}','${r.id}')">✓</button>`:""}
     </div>`;
