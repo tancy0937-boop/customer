@@ -126,6 +126,15 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .tmcount.zero{color:var(--danger);background:var(--danger-soft)}
 .tmbtn{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--teal);font-size:12px;font-weight:700;padding:6px 10px;border-radius:9px;cursor:pointer}
 .tmbtn.danger{color:var(--danger);border-color:var(--danger-soft)}
+.giftrow{display:flex;gap:16px;flex-wrap:wrap}
+.giftchk{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.giftsummary-row{display:flex;gap:22px;flex-wrap:wrap}
+.giftitem{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--muted);font-weight:600}
+.giftitem b{font-family:var(--mono);font-size:16px;color:var(--pine)}
+.giftsubtotal{padding:8px 16px;font-size:12px;color:var(--muted);background:var(--surface-2);border-bottom:1px solid var(--line-2);font-weight:600}
+.quickgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.qstep{background:var(--surface-2);border-radius:11px;padding:11px 12px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.qstep .qn{display:block;font-size:11px;font-weight:700;color:var(--teal);margin-bottom:4px}
 .reflinked{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);font-size:13.5px;font-weight:600;flex-wrap:wrap}
 .reflinked .sp{flex:1}
 .reflink{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
@@ -540,6 +549,10 @@ textarea.raw{width:100%;min-height:160px;font-family:var(--mono);font-size:12px;
     定聯
  </button>
  <button class="navbtn" data-view="guide" onclick="go('guide')">
+ <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 015.4-5.4l-2.6 2.6-2-2 2.6-2.6z" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+    工具
+ </button>
+ <button class="navbtn" data-view="manual" onclick="go('manual')">
  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8.5h.01" stroke-linecap="round"/></svg></div>
     說明
  </button>
@@ -770,6 +783,11 @@ function allTags(){
   DB.clients.forEach(c=>(c.tags||[]).forEach(t=>{ if(t) set.add(t); }));
   return [...set];
 }
+function allGroupProjects(){
+  const set=new Set((DB.groupProjectCatalog||[]).filter(Boolean));
+  DB.clients.forEach(c=>(c.policies||[]).forEach(p=>{ if(p.groupProject) set.add(p.groupProject); }));
+  return [...set];
+}
 function toggleTagFilter(t){
   const i=tagFilter.indexOf(t);
   if(i>-1) tagFilter.splice(i,1); else tagFilter.push(t);
@@ -918,6 +936,21 @@ function viewServicing(){
     </div>
     <div class="block"><h4>🗂️ 要保人變更紀錄<span class="tag">${(DB.ownerChangeLog||[]).length} 筆</span></h4>
       <div class="block-body" id="ownerChangeLogList">${ownerChangeLogHtml()}</div>
+    </div>
+    <div class="info">
+      <h3>📋 團險批次續約</h3>
+      <p>整批更新同一個團險專案底下的投保日／滿期日／繳費日（保費可選填一起調整），適合每年續約時使用。</p>
+      <div class="field"><label>① 選擇團險專案</label>
+        <select id="grProject" onchange="grPickProject(this.value)">
+          <option value="">選擇專案</option>
+          ${allGroupProjects().map(g=>`<option ${grProjectSel===g?"selected":""}>${esc(g)}</option>`).join("")}
+        </select>
+      </div>
+      <div id="grPolicyList">${grPolicyListHtml()}</div>
+      <div id="grFormArea">${grFormHtml()}</div>
+    </div>
+    <div class="block"><h4>🗂️ 團險批次續約紀錄<span class="tag">${(DB.groupRenewalLog||[]).length} 筆</span></h4>
+      <div class="block-body" id="groupRenewalLogList">${groupRenewalLogHtml()}</div>
     </div>`;
 }
 function pcuSearchClient(){
@@ -1040,6 +1073,138 @@ function delOwnerChange(id){
   DB.ownerChangeLog=(DB.ownerChangeLog||[]).filter(y=>y.id!==id);
   commit(); closeSheet();
   if(view==="servicing") refreshOwnerChangeLog();
+  toast("已刪除這筆紀錄");
+}
+
+/* ---------- 團險批次續約 ---------- */
+let grProjectSel="", grSelected=[], grPending=null;
+function grPickProject(proj){
+  grProjectSel=proj||"";
+  grSelected=[];
+  if(grProjectSel){
+    DB.clients.forEach(c=>(c.policies||[]).forEach(p=>{ if(p.groupProject===grProjectSel) grSelected.push({cid:c.id,pid:p.id}); }));
+  }
+  render();
+}
+function grPolicyListHtml(){
+  if(!grProjectSel) return "";
+  const rows=[];
+  DB.clients.forEach(c=>(c.policies||[]).forEach(p=>{ if(p.groupProject===grProjectSel) rows.push({cid:c.id,pid:p.id,cname:c.name,p}); }));
+  if(!rows.length) return `<p style="color:var(--faint);font-size:13px;margin-top:14px">這個專案目前沒有任何保單，請先到「工具」頁用團險專案補標籤工具，或在保單編輯畫面選這個專案。</p>`;
+  return `<div class="field" style="margin-top:14px"><label>② 名單預覽（可取消勾選，共 ${rows.length} 筆）</label>
+      <input id="grSearch" placeholder="搜尋姓名快速找人…" oninput="grFilterList()" style="margin-bottom:8px">
+      <div class="tagmanage" id="grListBody">
+        ${rows.map(r=>`<div class="tmrow" data-name="${esc(r.cname.toLowerCase())}">
+          <input type="checkbox" data-cid="${r.cid}" data-pid="${r.pid}" ${grSelected.some(s=>s.cid===r.cid&&s.pid===r.pid)?"checked":""} onchange="grToggle(this)" style="width:auto;flex:none">
+          <span class="tmname">${esc(r.cname)}<small style="color:var(--faint);font-weight:400">${r.p.startDate?" 投保 "+fmtDate(r.p.startDate):""}</small></span>
+        </div>`).join("")}
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px">已勾選 <b id="grCountLabel">${grSelected.length}</b>／${rows.length} 人，將只套用到已勾選的名單</p>
+    </div>`;
+}
+function grFilterList(){
+  const q=($("#grSearch")||{}).value.trim().toLowerCase();
+  document.querySelectorAll("#grListBody .tmrow").forEach(row=>{
+    row.style.display=(!q||(row.dataset.name||"").includes(q))?"":"none";
+  });
+}
+function grToggle(el){
+  const cid=el.dataset.cid, pid=el.dataset.pid;
+  const idx=grSelected.findIndex(s=>s.cid===cid&&s.pid===pid);
+  if(el.checked){ if(idx<0) grSelected.push({cid,pid}); } else if(idx>-1){ grSelected.splice(idx,1); }
+  const label=$("#grCountLabel"); if(label) label.textContent=grSelected.length;
+  const form=$("#grFormArea"); if(form) form.innerHTML=grFormHtml();
+}
+function grFormHtml(){
+  if(!grProjectSel || !grSelected.length) return "";
+  return `<div class="field" style="margin-top:16px;margin-bottom:0"><label>③ 這次要套用的新資料（可留空＝不變動）</label></div>
+    <div class="row2">
+      ${dateFieldHtml("grStartDate","","新投保日")}
+      ${dateFieldHtml("grMaturityDate","","新滿期日")}
+    </div>
+    ${dateFieldHtml("grPaymentDate","","新繳費日")}
+    <div class="field"><label>新主約保費（選填）</label><input id="grPremium" inputmode="numeric" placeholder="留空表示不變動"></div>
+    <button type="button" class="btn green full" style="margin-top:6px" onclick="grPreview()">④ 確認批次續約</button>`;
+}
+function grPreview(){
+  const startDate=($("#grStartDate")||{}).value||"";
+  const maturityDate=($("#grMaturityDate")||{}).value||"";
+  const paymentDate=($("#grPaymentDate")||{}).value||"";
+  const premium=($("#grPremium")||{}).value.trim();
+  if(!startDate && !maturityDate && !paymentDate && !premium){ toast("請至少填一項要變更的資料","warn"); return; }
+  grPending={startDate,maturityDate,paymentDate,premium};
+  const changes=[];
+  if(startDate) changes.push(`投保日 → ${esc(fmtDate(startDate))}`);
+  if(maturityDate) changes.push(`滿期日 → ${esc(fmtDate(maturityDate))}`);
+  if(paymentDate) changes.push(`繳費日 → ${esc(fmtDate(paymentDate))}`);
+  if(premium) changes.push(`主約保費 → ${esc(premium)}`);
+  openSheet("確認批次續約", `
+    <p style="font-size:14px;line-height:1.7">將影響「<b>${esc(grProjectSel)}</b>」專案下 <b>${grSelected.length}</b> 張保單：<br>${changes.join("、")}</p>
+    ${dateFieldHtml("grLogDate", todayISO(), "續約日期")}
+    <div class="field"><label>備註（選填）</label><input id="grLogNote" placeholder="例：113年度續約"></div>
+    <div class="btnrow" style="margin-top:16px">
+      <button class="btn ghost" onclick="closeSheet()">取消</button>
+      <button class="btn green" onclick="grExecute()">確定執行</button>
+    </div>
+  `);
+}
+function grExecute(){
+  if(!grPending) return;
+  const {startDate,maturityDate,paymentDate,premium}=grPending;
+  const logDate=($("#grLogDate")||{}).value||todayISO();
+  const note=($("#grLogNote")||{}).value.trim();
+  let n=0;
+  grSelected.forEach(s=>{
+    const c=DB.clients.find(x=>x.id===s.cid); if(!c) return;
+    const p=(c.policies||[]).find(x=>x.id===s.pid); if(!p) return;
+    if(startDate) p.startDate=startDate;
+    if(maturityDate) p.maturityDate=maturityDate;
+    if(paymentDate) p.paymentDate=paymentDate;
+    if(premium){ p.premium=premium; const total=numVal(p.premium)+(p.riders||[]).reduce((s2,r)=>s2+numVal(r.premium),0); p.totalPremium=total?String(total):""; }
+    n++;
+  });
+  DB.groupRenewalLog=DB.groupRenewalLog||[];
+  DB.groupRenewalLog.push({ id:uid(), date:logDate, project:grProjectSel, count:n, startDate, maturityDate, paymentDate, premium, note });
+  grPending=null; grProjectSel=""; grSelected=[];
+  commit(); closeSheet();
+  toast(`已完成批次續約，共 ${n} 張保單`);
+  render();
+}
+function groupRenewalLogHtml(){
+  const log=(DB.groupRenewalLog||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  if(!log.length) return `<div style="color:var(--faint);font-size:13px">尚無批次續約紀錄。</div>`;
+  return log.map(x=>{
+    const changes=[];
+    if(x.startDate) changes.push(`投保日 ${fmtDate(x.startDate)}`);
+    if(x.maturityDate) changes.push(`滿期日 ${fmtDate(x.maturityDate)}`);
+    if(x.paymentDate) changes.push(`繳費日 ${fmtDate(x.paymentDate)}`);
+    if(x.premium) changes.push(`保費 ${esc(x.premium)}`);
+    return `<div style="cursor:pointer" onclick="viewGroupRenewalLog('${x.id}')">
+      <div class="kv"><span class="k">${esc(fmtDate(x.date))} ${esc(x.project)}</span><span class="v" style="color:var(--muted);font-weight:500">${x.count} 張</span></div>
+      <div style="font-size:12px;color:var(--muted);padding:0 0 8px">${changes.join("、")}${x.note?" ・ "+esc(x.note):""}</div>
+    </div>`;
+  }).join("");
+}
+function viewGroupRenewalLog(id){
+  const x=(DB.groupRenewalLog||[]).find(y=>y.id===id); if(!x) return;
+  const changes=[];
+  if(x.startDate) changes.push(`投保日 → ${esc(fmtDate(x.startDate))}`);
+  if(x.maturityDate) changes.push(`滿期日 → ${esc(fmtDate(x.maturityDate))}`);
+  if(x.paymentDate) changes.push(`繳費日 → ${esc(fmtDate(x.paymentDate))}`);
+  if(x.premium) changes.push(`主約保費 → ${esc(x.premium)}`);
+  openSheet("批次續約紀錄", `
+    <p style="font-size:14px;line-height:1.9">
+      日期：${esc(fmtDate(x.date))}<br>
+      專案：${esc(x.project)}<br>
+      影響：${x.count} 張保單<br>
+      內容：${changes.join("、")||"（無異動）"}${x.note?"<br>備註："+esc(x.note):""}
+    </p>
+    <button class="btn ghost full" style="color:var(--danger);border-color:var(--danger-soft)" onclick="delGroupRenewalLog('${id}')">🗑 刪除這筆紀錄</button>`);
+}
+function delGroupRenewalLog(id){
+  DB.groupRenewalLog=(DB.groupRenewalLog||[]).filter(y=>y.id!==id);
+  commit(); closeSheet();
+  if(view==="servicing") render();
   toast("已刪除這筆紀錄");
 }
 let lsOK = true;
@@ -1293,11 +1458,17 @@ function migrate(d){
   d.meta = Object.assign({brand:"保險客戶資料庫",agent:"",updatedAt:null,schema:2}, d.meta||{});
   d.clients = Array.isArray(d.clients)?d.clients:[];
   d.tagCatalog = Array.isArray(d.tagCatalog)?d.tagCatalog:[];
+  d.groupProjectCatalog = Array.isArray(d.groupProjectCatalog)?d.groupProjectCatalog:[];
   d.ownerChangeLog = Array.isArray(d.ownerChangeLog)?d.ownerChangeLog:[];
+  d.groupRenewalLog = Array.isArray(d.groupRenewalLog)?d.groupRenewalLog:[];
   d.clients.forEach(c=>{
     c.policies=c.policies||[]; c.reminders=c.reminders||[]; c.claims=c.claims||[]; c.careLog=c.careLog||[];
     c.sopStatus=c.sopStatus||{}; if(typeof c.sopStep!=="number") c.sopStep=1;
     if(c.grade==null) c.grade="";
+    if(c.giftDesk==null) c.giftDesk=false;
+    if(c.giftWall==null) c.giftWall=false;
+    if(c.giftOther==null) c.giftOther=false;
+    if(c.giftOtherText==null) c.giftOtherText="";
     if(!Array.isArray(c.tags)){ c.tags = c.region ? [c.region] : []; }
     c.tags = c.tags.map(t=>(t||"").trim()).filter(Boolean);
     delete c.region;
@@ -1315,6 +1486,8 @@ function migrate(d){
       if(p.coverage==null) p.coverage="";
       if(p.term==null) p.term="";
       if(p.notes==null) p.notes="";
+      if(p.groupProject==null) p.groupProject="";
+      if(p.groupProject && !d.groupProjectCatalog.includes(p.groupProject)) d.groupProjectCatalog.push(p.groupProject);
       p.riders=(p.riders||[]).map(r=>({name:r.name||"",coverage:r.coverage||"",premium:r.premium||"",term:r.term||""}));
       const total=numVal(p.premium)+p.riders.reduce((s,r)=>s+numVal(r.premium),0);
       p.totalPremium = total? String(total) : "";
@@ -1528,6 +1701,7 @@ function render(){
   else if(view==="grades") m.innerHTML=viewGrades();
   else if(view==="marketing") m.innerHTML=viewMarketing();
   else if(view==="guide") m.innerHTML=viewGuide();
+  else if(view==="manual") m.innerHTML=viewManual();
   if(view==="clients" && clientMode==="board") bindBoard();
 }
 
@@ -2008,18 +2182,37 @@ function viewClaims(){
 function viewGrades(){
   const by={A:[],B:[],C:[],D:[],"":[]};
   DB.clients.forEach(c=>by[c.grade].push(c));
+  const totalDesk=DB.clients.filter(c=>c.giftDesk).length;
+  const totalWall=DB.clients.filter(c=>c.giftWall).length;
+  const totalOther=DB.clients.filter(c=>c.giftOther).length;
   let html=`<div class="viewhead"><h2>客戶分級</h2><span class="count mono">${DB.clients.length}</span></div>
-    <div class="info" style="padding:14px 16px"><p style="margin:0;font-size:13.5px;color:var(--muted)">SOP 步驟 6–8：把客戶分為 A／B／C／D 級，A 級重點維繫，BCD 級當作潛力名單節奏經營。</p></div>`;
+    <div class="info" style="padding:14px 16px"><p style="margin:0;font-size:13.5px;color:var(--muted)">SOP 步驟 6–8：把客戶分為 A／B／C／D 級，A 級重點維繫，BCD 級當作潛力名單節奏經營。</p></div>
+    ${(totalDesk||totalWall||totalOther)?`<div class="info">
+      <h3>🎁 年度製作物全部合計</h3>
+      <div class="giftsummary-row">
+        <span class="giftitem">🖥️ 桌曆<b>${totalDesk}</b></span>
+        <span class="giftitem">📅 月曆<b>${totalWall}</b></span>
+        <span class="giftitem">➕ 其他<b>${totalOther}</b></span>
+      </div>
+    </div>`:""}`;
   const block=(g)=>{
     const arr=by[g]; const meta=GRADES[g];
     const gc=g?("g-"+g):"g-none";
+    const gDesk=arr.filter(c=>c.giftDesk).length;
+    const gWall=arr.filter(c=>c.giftWall).length;
+    const gOther=arr.filter(c=>c.giftOther).length;
     return `<div class="block">
       <h4><span class="gradebadge ${gc}">${g||"–"}</span> ${meta.label}・${meta.note}<span class="tag">${arr.length} 位</span></h4>
-      ${arr.length? `<div class="block-body" style="padding:8px 10px">${arr.map(c=>`
+      ${(gDesk||gWall||gOther)?`<div class="giftsubtotal">🎁 本級小計：桌曆 ${gDesk}・月曆 ${gWall}・其他 ${gOther}</div>`:""}
+      ${arr.length? `<div class="block-body" style="padding:8px 10px">${arr.map(c=>{
+        const gifts=[c.giftDesk?"🖥️桌曆":"",c.giftWall?"📅月曆":"",c.giftOther?`➕其他${c.giftOtherText?"："+esc(c.giftOtherText):""}`:""].filter(Boolean).join("　");
+        return `
         <div class="kv" style="cursor:pointer;align-items:center" onclick="openDetail('${c.id}')">
           <span class="k" style="color:var(--ink);font-weight:600">${esc(c.name)}</span>
           <span class="v" style="font-weight:500;color:var(--muted)">${(c.policies||[]).length} 張保單 ・ SOP ${c.sopStep}</span>
-        </div>`).join("")}</div>`
+        </div>
+        ${gifts?`<div style="font-size:12px;color:var(--muted);padding:0 0 8px">${gifts}</div>`:""}`;
+      }).join("")}</div>`
       : `<div class="block-body" style="color:var(--faint);font-size:13px">此級別尚無客戶</div>`}
     </div>`;
   };
@@ -2028,7 +2221,7 @@ function viewGrades(){
 
 /* ---- guide view ---- */
 function viewGuide(){
-  return `<div class="viewhead"><h2>說明</h2></div>
+  return `<div class="viewhead"><h2>工具</h2></div>
   <div class="info">
     <h3>🧭 SOP 流程（${SOP.length} 步驟）</h3>
     <ol class="steplist">
@@ -2045,6 +2238,16 @@ function viewGuide(){
     <h3>👤 轉介來源比對</h3>
     <p>新增客戶時系統會自動檢查有沒有其他客戶的「轉介來源」寫的剛好是這位新客戶的名字，主動問你要不要連結起來。如果你想手動補掃一次舊資料（或當時跳出提示時選了先不用），可以按下面這顆按鈕。</p>
     <button class="btn green full" onclick="scanReferrerMatches()">掃描比對轉介來源</button>
+  </div>
+  <div class="info">
+    <h3>🏷️ 團險專案補標籤</h3>
+    <p>把還沒標上「團險專案」的舊保單一次性歸類進專案，方便之後在「保全」頁用「團險批次續約」整批處理。這個動作不會留下紀錄，純粹整理資料用。</p>
+    <div class="field"><label>① 搜尋客戶（找出要歸類的保單）</label>
+      <input id="gpSearch" placeholder="輸入客戶姓名關鍵字…" oninput="gpSearchPolicies()" autocomplete="off">
+    </div>
+    <div id="gpPolicyList"></div>
+    <div id="gpApplyArea"></div>
+    <datalist id="groupProjList">${allGroupProjects().map(g=>`<option value="${esc(g)}">`).join("")}</datalist>
   </div>
   <div class="info">
     <h3>💾 備份與還原（重要）</h3>
@@ -2106,6 +2309,94 @@ function viewGuide(){
       <p style="font-size:12px;color:var(--muted);margin:8px 0 0">清空前請先匯出備份。此動作無法復原。</p>
     </div>
   </div>`;
+}
+function viewManual(){
+  const sec=(icon,title,intro,steps)=>`<div class="info">
+    <h3>${icon} ${title}</h3>
+    <p>${intro}</p>
+    <details class="tagdrop">
+      <summary>查看詳細步驟</summary>
+      <ol style="margin-top:10px">${steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+    </details>
+  </div>`;
+  return `<div class="viewhead"><h2>說明</h2></div>
+  <div class="info">
+    <h3>🚀 快速上手</h3>
+    <div class="quickgrid">
+      <div class="qstep"><span class="qn">Step 1</span>新增客戶</div>
+      <div class="qstep"><span class="qn">Step 2</span>建立保單資料</div>
+      <div class="qstep"><span class="qn">Step 3</span>排複訪、追蹤提醒</div>
+      <div class="qstep"><span class="qn">Step 4</span>定期匯出備份</div>
+    </div>
+  </div>
+  <div style="font-size:13px;font-weight:700;color:var(--muted);margin:4px 2px 10px">功能怎麼用</div>
+  ${sec("🏷️","標籤分類","一位客戶可以有多個標籤，可以下拉多選既有標籤，也能自行輸入新標籤。",[
+    "打開客戶編輯畫面，找到「標籤分類」欄位。",
+    "點「從既有標籤選擇（可複選）」展開，點選一個或多個既有標籤，會顯示打勾。",
+    "想新增一個新標籤：在下方輸入框打字，按 Enter 或「＋新增標籤」加入。",
+    "客戶清單、看板頁上方可以用標籤篩選客戶，篩選列可以左右滑動看到所有標籤。",
+    "標籤太多、太亂想整理：到「工具」頁「標籤整理」，可以重新命名（同名即合併）、刪除少用的標籤，也能拖曳左側「⠿」調整順序。",
+  ])}
+  ${sec("👤","轉介來源","記錄這位客戶是誰介紹來的，可以連結既有客戶，反查誰介紹了哪些人。",[
+    "客戶編輯畫面「轉介來源」欄位，展開後可以搜尋既有客戶並點選連結。",
+    "如果介紹人還不是你的客戶，也可以直接手動輸入姓名。",
+    "之後這位介紹人如果變成新客戶，系統會自動比對、跳出提示問你要不要連結起來；也可以到「工具」頁「轉介來源比對」手動掃描。",
+    "在轉介人自己的客戶詳情頁，會看到「由此人轉介的客戶」清單，一眼看出他帶來了多少人。",
+    "「看板」頁最上方的「客戶轉介排行榜」會即時列出轉介最多人的前幾名。",
+  ])}
+  ${sec("📋","保單管理","每張保單可以記錄主約、附約、日期、金額等完整資訊。",[
+    "客戶編輯畫面拉到「保單」區塊，按「＋ 新增保單」。",
+    "依序填：規劃分類、保險公司、繳別（年繳／半年繳／季繳／月繳／躉繳）；「總保費」是系統自動加總主約＋附約，不用手動填。",
+    "投保日、滿期日直接填；繳費日系統會依投保日＋繳別自動算出下一期日期，也可以手動調整覆蓋。",
+    "主約名稱、保單號碼、保額、年期照實際保單填寫；如果被保險人不是要保人本人（例如幫家人保），填「被保險人」跟「與要保人關係」。",
+    "附約按「＋附約」逐筆新增，一樣有保額、保費、年期。",
+    "最下面「保單特別記事」可以記錄這張保單需要留意的事項。",
+  ])}
+  ${sec("📅","日期輸入（西元／民國）","所有日期欄位都能手動輸入，也能切換西元／民國年份格式。",[
+    "每個日期欄位右上角有「切換西元／切換民國」的小按鈕，點一下整個系統的日期欄位會一起切換格式。",
+    "可以直接在文字框手動打日期（例如 2026/1/15 或民國 115/1/15），系統會自動驗證格式對不對。",
+    "也可以點旁邊的 📅 圖示，用原生日曆挑選日期。",
+  ])}
+  ${sec("🔄","保全（要保人變更／團險續約）","保單過戶給別人、或團險整批續約，都在「保全」頁處理，並留有異動紀錄。",[
+    "【單筆變更要保人】：進「保全」頁，搜尋目前的要保人客戶 → 選要變更的保單 → 按「確認進行變更」→ 搜尋新的要保人客戶 → 填變更日期與備註 → 確認執行。",
+    "這張保單會完整搬到新客戶名下（含附約、日期、備註），原客戶其他資料不受影響。",
+    "每筆變更都會記錄在頁面下方「要保人變更紀錄」，點任一筆可以編輯日期備註或刪除。",
+    "【團險批次續約】：保單先在編輯畫面填上「團險專案」名稱（或先到「工具」頁用「補標籤」工具一次歸類舊資料）。",
+    "回到「保全」頁「團險批次續約」，選專案，系統會列出這個專案底下所有保單，預設全部勾選，可以取消勾選不續保的人。",
+    "填這次要套用的新投保日／滿期日／繳費日／保費（都可留空表示不變動），按「確認批次續約」，會先給你異動摘要確認過才真的執行。",
+    "執行完的紀錄留在「團險批次續約紀錄」，方便日後查核。",
+  ])}
+  ${sec("🎁","年度製作物","記錄客戶要準備桌曆、月曆或其他製作物，方便統計要準備的數量。",[
+    "客戶編輯畫面「備註」區塊下方，勾選桌曆／月曆／其他（可複選），選「其他」會多一個文字框讓你說明是什麼。",
+    "到「客戶分級」頁，最上方會顯示「年度製作物全部合計」，每個品項各自的總數一目瞭然。",
+    "每個級別（A／B／C／D／未分級）的區塊標題下方，也會顯示「本級小計」，方便你依級別準備。",
+    "每位客戶名字下方也會顯示他勾選了哪些品項，方便逐一核對。",
+  ])}
+  ${sec("📞","理賠追蹤","每一筆理賠案件都能記錄狀態，隨時更新進度。",[
+    "客戶詳情頁「理賠服務」按「＋ 新增理賠案件」，填申請日期、狀態、理賠類型、相關保單、金額、備註。",
+    "「理賠」頁（底部導覽列）會列出所有客戶的理賠案件，也可以在客戶詳情頁裡看。",
+    "點任一筆理賠紀錄（不管在哪個頁面）都能開啟編輯，更新狀態或刪除。",
+  ])}
+  ${sec("🗂️","看板與分級","用看板檢視 SOP 進度，用分級管理客戶經營優先順序。",[
+    "「客戶」頁右上角可以切換「清單」與「看板」兩種檢視模式。",
+    "看板模式會依 SOP 步驟分欄，長按卡片拖曳可以直接調整這位客戶目前的 SOP 進度。",
+    "「分級」頁把客戶分成 A／B／C／D 級，在客戶編輯畫面的「客戶分級」區塊設定；A 級通常代表要重點維繫的客戶。",
+  ])}
+  ${sec("📅","Google 行事曆同步","連接後，複訪會自動同步到 Google 行事曆，月曆也會顯示 Google 上的行程，避免撞期。",[
+    "到「工具」頁「Google 行事曆同步」，貼上 Client ID 後按「連接 Google 行事曆」（第一次需要先到 Google Cloud Console 申請，步驟已寫在展開的說明裡）。",
+    "如果有另外的工作行事曆，也可以貼上「工作行事曆 ID」：月曆會同時顯示兩邊的行程，但新增的複訪只會建立在工作行事曆裡。",
+    "「提醒」頁排複訪時可以填預定的開始／結束時間，會一起同步過去；之後點該筆複訪可以隨時編輯，Google 那邊也會跟著更新。",
+  ])}
+  ${sec("💬","定聯訊息（LINE關懷）","套用範本快速產生要傳給客戶的 LINE 訊息內容，可以帶入保單資料。",[
+    "「行銷」頁（定聯訊息）選一個範本，選客戶，如果範本有用到保單相關欄位，也可以從這位客戶的保單自動帶入。",
+    "調整內容後即可複製傳送。",
+  ])}
+  ${sec("💾","備份與還原","資料只存在這台裝置上，請養成定期備份的習慣。",[
+    "右上角狀態鈕變成「待匯出備份」時，點它匯出成 .json 檔。",
+    "iPad 會跳出分享面板，選「儲存到檔案」存到 iCloud 雲碟，比較不會遺失。",
+    "換裝置或資料不見時，用右上角「⤓ 匯入」選回這個 .json 檔即可還原。",
+    "備份與還原、標籤整理、SOP自訂、Google行事曆設定等工具，都收在「工具」頁裡。",
+  ])}`;
 }
 function saveSettings(){
   DB.meta.brand=$("#setBrand").value.trim()||"保險客戶資料庫";
@@ -2802,12 +3093,22 @@ function editClient(id, prefill){
 
     <div class="formsec">備註</div>
     <div class="field"><textarea id="edNotes" placeholder="其他要記住的事…">${v("notes")}</textarea></div>
+    <div class="field">
+      <label>年度製作物（選填，可複選）</label>
+      <div class="giftrow">
+        <label class="giftchk"><input type="checkbox" id="edGiftDesk" ${src&&src.giftDesk?"checked":""} style="width:auto"> 桌曆</label>
+        <label class="giftchk"><input type="checkbox" id="edGiftWall" ${src&&src.giftWall?"checked":""} style="width:auto"> 月曆</label>
+        <label class="giftchk"><input type="checkbox" id="edGiftOther" ${src&&src.giftOther?"checked":""} onchange="toggleGiftOtherInput(this.checked)" style="width:auto"> 其他</label>
+      </div>
+      <input id="edGiftOtherText" value="${v("giftOtherText")}" placeholder="請說明「其他」品項" style="margin-top:8px;${src&&src.giftOther?"":"display:none"}">
+    </div>
 
     <button class="btn green full" style="margin-top:18px;height:52px" onclick="saveClient()">${c?"儲存變更":"新增客戶"}</button>
   `);
   renderPolicyRows();
   editFormOpen = true;
 }
+function toggleGiftOtherInput(checked){ const el=$("#edGiftOtherText"); if(el) el.style.display=checked?"":"none"; }
 function pickGrade(btn,g){
   document.querySelectorAll(".gradepick button").forEach(b=>b.className="");
   btn.className=`sel s-${g||"none"}`; $("#edGrade").value=g;
@@ -2911,6 +3212,60 @@ function applyScanReferrerMatches(){
   toast(`已連結 ${results.length} 筆`);
   render();
 }
+/* ---------- 團險專案補標籤（一次性整理，不留紀錄）---------- */
+let gpSelected=[];
+function gpSearchPolicies(){
+  const q=($("#gpSearch")||{}).value.trim().toLowerCase();
+  const box=$("#gpPolicyList"); if(!box) return;
+  if(!q){ box.innerHTML=""; return; }
+  const rows=[];
+  DB.clients.forEach(c=>{
+    if(!(c.name||"").toLowerCase().includes(q)) return;
+    (c.policies||[]).forEach(p=>{
+      rows.push({cid:c.id, pid:p.id, cname:c.name, label:`${p.mainName||"保單"}${p.company?"・"+p.company:""}`, current:p.groupProject||""});
+    });
+  });
+  if(!rows.length){ box.innerHTML=`<div style="color:var(--faint);font-size:12.5px;margin-top:8px">找不到符合的客戶，或這位客戶還沒有保單</div>`; return; }
+  box.innerHTML=`<div class="tagmanage" style="margin-top:10px">
+    ${rows.map(r=>`<div class="tmrow">
+      <input type="checkbox" data-cid="${r.cid}" data-pid="${r.pid}" ${gpSelected.some(s=>s.cid===r.cid&&s.pid===r.pid)?"checked":""} onchange="gpToggle(this)" style="width:auto;flex:none">
+      <span class="tmname">${esc(r.cname)}<small style="color:var(--faint);font-weight:400"> ${esc(r.label)}${r.current?`（目前：${esc(r.current)}）`:""}</small></span>
+    </div>`).join("")}
+  </div>`;
+  gpRefreshApplyArea();
+}
+function gpToggle(el){
+  const cid=el.dataset.cid, pid=el.dataset.pid;
+  const idx=gpSelected.findIndex(s=>s.cid===cid&&s.pid===pid);
+  if(el.checked){ if(idx<0) gpSelected.push({cid,pid}); } else if(idx>-1){ gpSelected.splice(idx,1); }
+  gpRefreshApplyArea();
+}
+function gpRefreshApplyArea(){
+  const box=$("#gpApplyArea"); if(!box) return;
+  if(!gpSelected.length){ box.innerHTML=""; return; }
+  box.innerHTML=`<div class="field" style="margin-top:14px"><label>② 貼上團險專案（已勾選 ${gpSelected.length} 張）</label>
+    <input list="groupProjList" id="gpProjectInput" placeholder="輸入或選擇既有專案名稱">
+  </div>
+  <button type="button" class="btn green full" onclick="gpApply()">套用到已勾選的 ${gpSelected.length} 張保單</button>`;
+}
+function gpApply(){
+  const proj=($("#gpProjectInput")||{}).value.trim();
+  if(!proj){ toast("請輸入或選擇專案名稱","warn"); return; }
+  DB.groupProjectCatalog=DB.groupProjectCatalog||[];
+  if(!DB.groupProjectCatalog.includes(proj)) DB.groupProjectCatalog.push(proj);
+  let n=0;
+  gpSelected.forEach(s=>{
+    const c=DB.clients.find(x=>x.id===s.cid); if(!c) return;
+    const p=(c.policies||[]).find(x=>x.id===s.pid); if(!p) return;
+    p.groupProject=proj; n++;
+  });
+  gpSelected=[];
+  commit();
+  toast(`已將 ${n} 張保單標記為「${proj}」`);
+  const se=$("#gpSearch"); if(se) se.value="";
+  const pl=$("#gpPolicyList"); if(pl) pl.innerHTML="";
+  const aa=$("#gpApplyArea"); if(aa) aa.innerHTML="";
+}
 function referrerBoxHtml(){
   if(editingReferrerId){
     const rc=DB.clients.find(x=>x.id===editingReferrerId);
@@ -2973,6 +3328,10 @@ function renderPolicyRows(){
           ${(p.companyOther||(p.company&&!POLICY_COMPANIES.includes(p.company)))?`<input style="margin-top:8px" value="${esc(p.company)}" oninput="polSet(${i},'company',this.value)" placeholder="輸入保險公司名稱">`:""}
         </div>
       </div>
+      <div class="field" style="margin-bottom:10px"><label>團險專案（選填）</label>
+        <input list="groupProjList" value="${esc(p.groupProject||"")}" oninput="polSet(${i},'groupProject',this.value)" placeholder="個人保單留空；團險輸入或選擇既有專案名稱">
+        <datalist id="groupProjList">${allGroupProjects().map(g=>`<option value="${esc(g)}">`).join("")}</datalist>
+      </div>
       <div class="row2">
         <div class="field" style="margin-bottom:10px"><label>總保費（元）</label><input readonly id="pol_${i}_total" value="${total?total.toLocaleString("en-US"):""}" placeholder="自動加總主約＋附約"></div>
         <div class="field" style="margin-bottom:10px"><label>繳別</label>
@@ -3033,7 +3392,7 @@ function polRecalcTotal(i){
 function addRider(i){ if(!editingPolicies[i]) return; if(!editingPolicies[i].riders) editingPolicies[i].riders=[]; editingPolicies[i].riders.push({name:"",coverage:"",premium:"",term:""}); renderPolicyRows(); }
 function rmRider(i,ri){ if(editingPolicies[i]&&editingPolicies[i].riders){ editingPolicies[i].riders.splice(ri,1); renderPolicyRows(); polRecalcTotal(i); } }
 function riderSet(i,ri,k,v){ const p=editingPolicies[i]; if(p&&p.riders&&p.riders[ri]){ p.riders[ri][k]=v; if(k==="premium") polRecalcTotal(i); } }
-function addPolicyRow(){ editingPolicies.push({id:uid(),mainName:"",policyNo:"",category:"",company:"",premium:"",totalPremium:"",payFreq:"",insured:"",insuredRel:"",coverage:"",term:"",startDate:"",paymentDate:"",maturityDate:"",notes:"",riders:[]}); renderPolicyRows(); }
+function addPolicyRow(){ editingPolicies.push({id:uid(),mainName:"",policyNo:"",category:"",company:"",groupProject:"",premium:"",totalPremium:"",payFreq:"",insured:"",insuredRel:"",coverage:"",term:"",startDate:"",paymentDate:"",maturityDate:"",notes:"",riders:[]}); renderPolicyRows(); }
 function rmPolicy(i){ editingPolicies.splice(i,1); renderPolicyRows(); }
 function polSet(i,k,v){
   const p=editingPolicies[i]; if(!p) return;
@@ -3071,6 +3430,9 @@ function saveClient(auto){
     referrerId: editingReferrerId||"", referrerName: editingReferrerId?"":(editingReferrerName||""),
     grade:$("#edGrade").value, sopStep:+$("#edStep").value||1,
     needs:$("#edNeeds").value.trim(), notes:$("#edNotes").value.trim(),
+    giftDesk:!!($("#edGiftDesk")||{}).checked, giftWall:!!($("#edGiftWall")||{}).checked,
+    giftOther:!!($("#edGiftOther")||{}).checked,
+    giftOtherText:($("#edGiftOther")||{}).checked?(($("#edGiftOtherText")||{}).value||"").trim():"",
     policies:editingPolicies
       .map(p=>{
         const riders=(p.riders||[]).filter(r=>(r.name||"").trim()||(r.coverage||"").trim()||(r.premium||"").trim()||(r.term||"").trim());
@@ -3081,6 +3443,8 @@ function saveClient(auto){
   };
   DB.tagCatalog = DB.tagCatalog||[];
   data.tags.forEach(t=>{ if(t && !DB.tagCatalog.includes(t)) DB.tagCatalog.push(t); });
+  DB.groupProjectCatalog = DB.groupProjectCatalog||[];
+  data.policies.forEach(p=>{ if(p.groupProject && !DB.groupProjectCatalog.includes(p.groupProject)) DB.groupProjectCatalog.push(p.groupProject); });
   if(id){
     const c=DB.clients.find(x=>x.id===id);
     Object.assign(c,data);
