@@ -268,6 +268,20 @@ input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .gradepick button.sel.s-C{background:var(--slate);color:#fff;border-color:var(--slate)}
 .gradepick button.sel.s-D{background:var(--clay);color:#fff;border-color:var(--clay)}
 .gradepick button.sel.s-none{background:var(--pine);color:#fff;border-color:var(--pine)}
+.gradedefs{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);display:flex;flex-direction:column;gap:6px}
+.gradedefs div{font-size:11.5px;color:var(--faint);line-height:1.5}
+.gradedefs b{color:var(--muted);margin-right:5px;font-family:var(--mono)}
+.gradeauto{display:flex;align-items:center;gap:8px;margin-top:9px;flex-wrap:wrap}
+.gaTag{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.gaTag.auto{background:var(--teal-soft);color:#1f5249}
+.gaTag.manual{background:var(--amber-soft);color:#7a5410}
+.temppick{display:flex;flex-wrap:wrap;gap:7px}
+.temppick .tbtn{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:999px;cursor:pointer}
+.temppick .tbtn[data-v=""].sel{background:var(--surface);border-color:var(--line);color:var(--faint)}
+.temppick .tbtn.t-hot.sel{background:#FBDCD4;border-color:#C23F1F;color:#8a2c15}
+.temppick .tbtn.t-warm.sel{background:#FCEAC5;border-color:#B97E27;color:#7a5410}
+.temppick .tbtn.t-ice.sel{background:#DCEBFA;border-color:#2B6CB0;color:#1c4a78}
+.temppick .tbtn.t-frozen.sel{background:#E3E1F5;border-color:#4A3F8C;color:#332b63}
 
 /* sop step picker */
 .soppick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -487,9 +501,20 @@ textarea.raw{width:100%;min-height:160px;font-family:var(--mono);font-size:12px;
 .kcard h4{margin:0 0 4px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;padding-left:4px}
 .kcard .meta{font-size:11.5px;color:var(--muted);padding-left:4px}
 .kcard.dragging{opacity:.32}
+.kcard.temp-hot{background:#FDECE7;border-color:#E0623F}
+.kcard.temp-warm{background:#FDF3DC;border-color:#D9A64A}
+.kcard.temp-ice{background:#E8F1FB;border-color:#6FA8DC}
+.kcard.temp-frozen{background:#EDEBFA;border-color:#8C7FC9}
+.ktemp{margin-left:auto;font-size:13px}
 .kghost{position:fixed;z-index:90;pointer-events:none;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--shadow-lg);cursor:grabbing;margin:0}
 .kempty{color:var(--faint);font-size:12px;text-align:center;padding:18px 6px;border:1px dashed var(--line);border-radius:10px}
 .boardhint{font-size:12px;color:var(--muted);margin:10px 2px 0;display:flex;align-items:center;gap:7px}
+.dailytip{margin-bottom:12px}
+.tiplist{display:flex;flex-direction:column;gap:2px}
+.tiprow{display:flex;align-items:flex-start;gap:10px;padding:8px 4px;border-radius:9px}
+.tiprow input[type="checkbox"]{width:19px;height:19px;flex:none;margin-top:1px;cursor:pointer}
+.tiprow span{font-size:13.5px;color:var(--ink);line-height:1.5;cursor:pointer}
+.tiprow span:hover{text-decoration:underline}
 .reflead{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
 .reflead-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-bottom:8px}
 .reflead-h .live{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--ok);background:#DCEFE9;padding:2px 8px;border-radius:999px;letter-spacing:.3px}
@@ -748,6 +773,18 @@ const GRADES = {
   C:{label:"C 級", sub:"培養", note:"潛力培養・節奏經營"},
   D:{label:"D 級", sub:"觀察", note:"觀察名單・伺機升級"},
   "":{label:"未分級", sub:"待評", note:"尚未分級"},
+};
+const DEFAULT_GRADE_DEFS = {
+  A:"已累積5筆非團保保單成交，或曾轉介5位成交非團保客戶或10位以上成交團保客戶。",
+  B:"已累積3筆以上非團保保單成交，或曾轉介3位成交非團保客戶或5位以上成交團保客戶。",
+  C:"已累積1筆以上非團保保單成交，或曾轉介1位以上非團保客戶諮詢或3位以上成交團保客戶，或剛開始往來進行諮詢討論。",
+  D:"目前尚無實質成交或貢獻，如僅領取保卡者，或名下僅有團保保單，屬於開發／觀察階段名單。",
+};
+const TEMP_DEFS = {
+  hot:{label:"熱",icon:"🔥",order:0,desc:"成交機率高（約一個月左右），討論互動頻繁"},
+  warm:{label:"溫",icon:"🌤️",order:1,desc:"成交機率尚可（約一季～半年）"},
+  ice:{label:"冰",icon:"🧊",order:2,desc:"觀望中，沒啥感覺，可能還在建立信任感"},
+  frozen:{label:"凍",icon:"❄️",order:3,desc:"已婉拒"},
 };
 const POLICY_CATEGORIES = ["壽險","醫療","重大（特定）疾（傷）病","癌症","意外","儲蓄／投資","年金","長照","旅平險","團體保險","其他"];
 const INSURED_RELATIONS = ["本人","配偶","子女","父母","其他"];
@@ -1209,7 +1246,7 @@ function delGroupRenewalLog(id){
 }
 let lsOK = true;
 let dirty = false;
-let clientMode = "list";   // 'list' | 'board'
+let clientMode = "board";   // 'list' | 'board'
 let bd = null;             // board drag state
 let calY=null, calM=null, calMode="month";  // calendar state
 
@@ -1456,6 +1493,7 @@ function tryLoadLocal(){
 function migrate(d){
   d = d||{};
   d.meta = Object.assign({brand:"保險客戶資料庫",agent:"",updatedAt:null,schema:2}, d.meta||{});
+  d.meta.gradeDefs = Object.assign({}, DEFAULT_GRADE_DEFS, d.meta.gradeDefs||{});
   d.clients = Array.isArray(d.clients)?d.clients:[];
   d.tagCatalog = Array.isArray(d.tagCatalog)?d.tagCatalog:[];
   d.groupProjectCatalog = Array.isArray(d.groupProjectCatalog)?d.groupProjectCatalog:[];
@@ -1465,6 +1503,7 @@ function migrate(d){
     c.policies=c.policies||[]; c.reminders=c.reminders||[]; c.claims=c.claims||[]; c.careLog=c.careLog||[];
     c.sopStatus=c.sopStatus||{}; if(typeof c.sopStep!=="number") c.sopStep=1;
     if(c.grade==null) c.grade="";
+    if(c.gradeAuto==null) c.gradeAuto = !c.grade;
     if(c.giftDesk==null) c.giftDesk=false;
     if(c.giftWall==null) c.giftWall=false;
     if(c.giftOther==null) c.giftOther=false;
@@ -1495,7 +1534,46 @@ function migrate(d){
   });
   return d;
 }
+function tempPickerHtml(id, current){
+  return `<div class="field"><label>這次接觸的溫度（選填）</label>
+    <div class="temppick" id="${id}">
+      <button type="button" class="tbtn ${!current?"sel":""}" data-v="" onclick="pickTemp('${id}',this)">未選擇</button>
+      ${Object.keys(TEMP_DEFS).map(k=>`<button type="button" class="tbtn t-${k} ${current===k?"sel":""}" data-v="${k}" onclick="pickTemp('${id}',this)">${TEMP_DEFS[k].icon} ${TEMP_DEFS[k].label}</button>`).join("")}
+    </div>
+    <input type="hidden" id="${id}_val" value="${esc(current||"")}">
+  </div>`;
+}
+function pickTemp(id, btn){
+  document.querySelectorAll(`#${id} .tbtn`).forEach(b=>b.classList.remove("sel"));
+  btn.classList.add("sel");
+  const val=$(`#${id}_val`); if(val) val.value=btn.dataset.v;
+}
+function currentTemp(c){
+  let latest=null, latestDate="";
+  (c.careLog||[]).forEach(e=>{ if(e.temp && e.date && e.date>=latestDate){ latestDate=e.date; latest=e.temp; } });
+  Object.keys(c.sopStatus||{}).forEach(k=>{ const e=c.sopStatus[k]; if(e&&e.temp&&e.date&&e.date>=latestDate){ latestDate=e.date; latest=e.temp; } });
+  return latest;
+}
+function computeAutoGrade(c){
+  const hasGroup=(c.policies||[]).some(p=>p.groupProject);
+  const nonGroupCount=(c.policies||[]).filter(p=>!p.groupProject).length;
+  let refNonGroup=0, refGroup=0;
+  DB.clients.forEach(x=>{
+    if(x.id===c.id || x.referrerId!==c.id) return;
+    if((x.policies||[]).some(p=>!p.groupProject)) refNonGroup++;
+    if((x.policies||[]).some(p=>p.groupProject)) refGroup++;
+  });
+  if(nonGroupCount>=5 || refNonGroup>=5 || refGroup>=10) return "A";
+  if(nonGroupCount>=3 || refNonGroup>=3 || refGroup>=5) return "B";
+  if(nonGroupCount>=1 || refNonGroup>=1 || refGroup>=3) return "C";
+  if(hasGroup) return "D";
+  return "";
+}
+function recalcAllGrades(){
+  DB.clients.forEach(c=>{ if(c.gradeAuto!==false) c.grade=computeAutoGrade(c); });
+}
 function commit(markDirty=true){
+  recalcAllGrades();
   DB.meta.updatedAt = new Date().toISOString();
   const saved = trySaveLocal();
   if(markDirty){ dirty=true; }
@@ -1776,8 +1854,14 @@ function renderClientResults(){
 function setMode(m){ clientMode=m; render(); }
 
 /* ---- kanban board ---- */
+function tempOrder(t){ return t==="hot"?0 : t==="warm"?1 : !t?2 : t==="ice"?3 : t==="frozen"?4 : 5; }
 function viewBoard(list){
-  const sortFn=(a,b)=>{ const o={A:0,B:1,C:2,D:3,"":4}; if(o[a.grade]!==o[b.grade]) return o[a.grade]-o[b.grade]; return (a.name||"").localeCompare(b.name||"","zh-Hant"); };
+  const sortFn=(a,b)=>{
+    const ta=tempOrder(currentTemp(a)), tb=tempOrder(currentTemp(b));
+    if(ta!==tb) return ta-tb;
+    const o={A:0,B:1,C:2,D:3,"":4}; if(o[a.grade]!==o[b.grade]) return o[a.grade]-o[b.grade];
+    return (a.name||"").localeCompare(b.name||"","zh-Hant");
+  };
   const cols=SOP.map(s=>{
     const items=list.filter(c=>(c.sopStep||1)===s.n).sort(sortFn);
     return `<div class="kcol" data-step="${s.n}">
@@ -1785,8 +1869,67 @@ function viewBoard(list){
       <div class="kcol-body">${items.length?items.map(boardCard).join(""):`<div class="kempty">拖曳客戶到此</div>`}</div>
     </div>`;
   }).join("");
-  return `${referralLeaderboardHtml()}<div class="board" id="board">${cols}</div>
+  return `${dailyTipHtml()}${referralLeaderboardHtml()}<div class="board" id="board">${cols}</div>
     <div class="boardhint"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4v16M15 4v16M4 9h16M4 15h16" stroke-linecap="round"/></svg>長按卡片拖曳即可調整 SOP 進度，點一下開啟客戶</div>`;
+}
+function lastContactDate(c){
+  let d="";
+  (c.careLog||[]).forEach(e=>{ if(e.date && e.date>d) d=e.date; });
+  Object.values(c.sopStatus||{}).forEach(e=>{ if(e&&e.date && e.date>d) d=e.date; });
+  return d;
+}
+function todayDismissKey(){ return "insure_crm_tip_dismiss_"+todayISO(); }
+function getDismissedTips(){
+  try{ return JSON.parse(localStorage.getItem(todayDismissKey())||"[]"); }catch(e){ return []; }
+}
+function dismissTip(id){
+  try{
+    const arr=getDismissedTips();
+    if(!arr.includes(id)){ arr.push(id); localStorage.setItem(todayDismissKey(), JSON.stringify(arr)); }
+  }catch(e){}
+}
+function tipCheck(el,id,kind,cid,rid){
+  if(!el.checked) return;
+  if(kind==="reminder"){ doneEvent(cid,rid); return; }
+  dismissTip(id);
+  render();
+}
+function dailyTipHtml(){
+  const t=todayISO();
+  const dismissed=new Set(getDismissedTips());
+  const items=[];
+  allReminders().forEach(r=>{
+    if(!r.id || r.date>t) return;
+    const tag=r.date<t?"逾期":"今天";
+    items.push({id:`rem-${r.id}`, kind:"reminder", cid:r.clientId, rid:r.id, priority:r.date<t?0:1,
+      label:`${tag}：${esc(r.who)} — ${esc(r.title)}`});
+  });
+  DB.clients.forEach(c=>{
+    if(currentTemp(c)!=="hot") return;
+    const lc=lastContactDate(c);
+    const days=lc? daysBetween(lc,t) : 9999;
+    if(days>=7){ const id=`stale-${c.id}`; if(!dismissed.has(id)) items.push({id, kind:"tip", cid:c.id, priority:2, label:`🔥 ${esc(c.name)} 已 ${days>=9999?"很久":days} 天沒聯繫，建議優先跟進`}); }
+  });
+  DB.clients.forEach(c=>{
+    if(c.sopStep>1 || (c.sopStatus&&Object.keys(c.sopStatus).length)) return;
+    const id=`nosop-${c.id}`; if(!dismissed.has(id)) items.push({id, kind:"tip", cid:c.id, priority:3, label:`🆕 ${esc(c.name)} 還沒開始 SOP 流程，建議去跟進`});
+  });
+  DB.clients.forEach(c=>{
+    if(c.grade) return;
+    const id=`nograde-${c.id}`; if(!dismissed.has(id)) items.push({id, kind:"tip", cid:c.id, priority:4, label:`🏷️ ${esc(c.name)} 還沒有分級，建議去評估`});
+  });
+  items.sort((a,b)=>a.priority-b.priority);
+  const shown=items.slice(0,8);
+  if(!shown.length) return "";
+  return `<div class="info dailytip">
+    <h3>💡 近期作業小提醒</h3>
+    <div class="tiplist">
+      ${shown.map(it=>`<label class="tiprow">
+        <input type="checkbox" onclick="tipCheck(this,'${it.id}','${it.kind}','${it.cid}'${it.rid?`,'${it.rid}'`:""})">
+        <span onclick="event.preventDefault();event.stopPropagation();openDetail('${it.cid}')">${it.label}</span>
+      </label>`).join("")}
+    </div>
+  </div>`;
 }
 function referralLeaderboardHtml(){
   const counts={};
@@ -1810,11 +1953,11 @@ function referralLeaderboardHtml(){
 }
 function boardCard(c){
   const g=c.grade||""; const gc=g?("g-"+g):"g-none";
-  const polN=(c.policies||[]).length;
-  return `<div class="kcard" data-id="${c.id}" data-step="${c.sopStep||1}">
+  const temp=currentTemp(c);
+  const td=temp?TEMP_DEFS[temp]:null;
+  return `<div class="kcard ${temp?"temp-"+temp:""}" data-id="${c.id}" data-step="${c.sopStep||1}">
     <div class="edge ${gc}"></div>
-    <h4>${esc(c.name||"未命名")} <span class="gradebadge ${gc}" style="width:18px;height:18px;font-size:10px;border-radius:6px">${g||"–"}</span></h4>
-    <div class="meta">${(c.tags&&c.tags.length)?"🏷️"+c.tags.map(esc).join("、")+" ・ ":""}${polN?`保單 ${polN}`:"尚無保單"}${c.phone?" ・ "+esc(c.phone):""}</div>
+    <h4>${esc(c.name||"未命名")} <span class="gradebadge ${gc}" style="width:18px;height:18px;font-size:10px;border-radius:6px">${g||"–"}</span>${td?`<span class="ktemp" title="${td.label}">${td.icon}</span>`:""}</h4>
   </div>`;
 }
 function clientCard(c){
@@ -2203,6 +2346,7 @@ function viewGrades(){
     const gOther=arr.filter(c=>c.giftOther).length;
     return `<div class="block">
       <h4><span class="gradebadge ${gc}">${g||"–"}</span> ${meta.label}・${meta.note}<span class="tag">${arr.length} 位</span></h4>
+      ${g&&(DB.meta.gradeDefs||DEFAULT_GRADE_DEFS)[g]?`<div class="giftsubtotal" style="border-bottom:1px solid var(--line-2)">${esc((DB.meta.gradeDefs||DEFAULT_GRADE_DEFS)[g])}</div>`:""}
       ${(gDesk||gWall||gOther)?`<div class="giftsubtotal">🎁 本級小計：桌曆 ${gDesk}・月曆 ${gWall}・其他 ${gOther}</div>`:""}
       ${arr.length? `<div class="block-body" style="padding:8px 10px">${arr.map(c=>{
         const gifts=[c.giftDesk?"🖥️桌曆":"",c.giftWall?"📅月曆":"",c.giftOther?`➕其他${c.giftOtherText?"："+esc(c.giftOtherText):""}`:""].filter(Boolean).join("　");
@@ -2228,6 +2372,13 @@ function viewGuide(){
       ${SOP.map(s=>`<li><span class="n"></span><div><b>${esc(s.title)}</b>${s.desc?`<small>${esc(s.desc)}</small>`:""}</div></li>`).join("")}
     </ol>
     <button class="btn green full" style="margin-top:14px" onclick="openSopEditor()">✏️ 自訂 SOP 流程（依你的銷售邏輯）</button>
+  </div>
+  <div class="info">
+    <h3>📊 分級定義（貢獻度）</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+      ${["A","B","C","D"].map(g=>`<div style="font-size:12.5px;color:var(--muted);line-height:1.6"><b style="color:var(--ink);font-family:var(--mono)">${g}</b>　${esc((DB.meta.gradeDefs||DEFAULT_GRADE_DEFS)[g])}</div>`).join("")}
+    </div>
+    <button class="btn green full" onclick="openGradeDefEditor()">✏️ 編輯分級定義</button>
   </div>
   <div class="info">
     <h3>🏷️ 標籤整理</h3>
@@ -2406,6 +2557,27 @@ function saveSettings(){
 
 /* ---- SOP flow editor ---- */
 let _sopEdit=null;
+function openGradeDefEditor(){
+  openSheet("編輯分級定義", `
+    <p style="font-size:13px;color:var(--muted);margin:0 0 14px">調整 A／B／C／D 各級的判定標準文字，會顯示在客戶編輯畫面與客戶分級頁，方便對照、避免標準不一致。這段文字只是說明，系統的自動判定邏輯（保單張數／轉介數門檻）不會因為改了文字而改變。</p>
+    ${["A","B","C","D"].map(g=>`<div class="field"><label>${g} 級定義</label><textarea id="gdEdit${g}" style="min-height:70px">${esc((DB.meta.gradeDefs||DEFAULT_GRADE_DEFS)[g])}</textarea></div>`).join("")}
+    <button class="btn green full" onclick="saveGradeDefs()">儲存</button>
+    <button class="btn ghost full" style="margin-top:10px" onclick="resetGradeDefs()">恢復預設文字</button>
+  `);
+}
+function saveGradeDefs(){
+  DB.meta.gradeDefs = DB.meta.gradeDefs||{};
+  ["A","B","C","D"].forEach(g=>{ DB.meta.gradeDefs[g] = (($(`#gdEdit${g}`)||{}).value||"").trim() || DEFAULT_GRADE_DEFS[g]; });
+  commit(); closeSheet();
+  toast("已儲存分級定義");
+  render();
+}
+function resetGradeDefs(){
+  DB.meta.gradeDefs = Object.assign({}, DEFAULT_GRADE_DEFS);
+  commit(); closeSheet();
+  toast("已恢復預設分級定義");
+  render();
+}
 function openSopEditor(){
   _sopEdit = SOP.map(s=>({title:s.title, short:s.short, desc:s.desc}));
   renderSopEditor();
@@ -2723,6 +2895,7 @@ function editSopStep(cid, n){
     <div class="field"><label>這個階段的紀錄</label>
       <textarea id="sopNote" placeholder="記下這一步做了什麼、客戶反應、下一步打算…">${esc(st.note||"")}</textarea></div>
     ${dateFieldHtml("sopDate", st.date||"", "日期")}
+    ${tempPickerHtml("sopTemp", st.temp||"")}
 
     ${isCur
       ? `<div style="background:var(--amber-soft);color:#7a5410;font-size:13px;font-weight:600;padding:11px 13px;border-radius:11px;text-align:center">這位客戶目前就在第 ${n} 步</div>`
@@ -2734,15 +2907,15 @@ function editSopStep(cid, n){
 function setSopCurrent(cid,n){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   // keep whatever note is being typed
-  const note=($("#sopNote")||{}).value, date=($("#sopDate")||{}).value;
-  if(note!=null && (note.trim()||date)){ c.sopStatus=c.sopStatus||{}; c.sopStatus[n]={note:note.trim(),date:date||""}; }
+  const note=($("#sopNote")||{}).value, date=($("#sopDate")||{}).value, temp=($("#sopTemp_val")||{}).value;
+  if(note!=null && (note.trim()||date||temp)){ c.sopStatus=c.sopStatus||{}; c.sopStatus[n]={note:note.trim(),date:date||"",temp:temp||""}; }
   c.sopStep=n; commit(); editSopStep(cid,n); toast("已設為第 "+n+" 步："+SOP[n-1].short);
 }
 function saveSopStep(cid,n){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   c.sopStatus=c.sopStatus||{};
-  const note=$("#sopNote").value.trim(), date=$("#sopDate").value;
-  if(note||date) c.sopStatus[n]={note,date}; else delete c.sopStatus[n];
+  const note=$("#sopNote").value.trim(), date=$("#sopDate").value, temp=($("#sopTemp_val")||{}).value||"";
+  if(note||date||temp) c.sopStatus[n]={note,date,temp}; else delete c.sopStatus[n];
   commit(); openDetail(cid); toast("已儲存階段紀錄");
 }
 function clearSopStep(cid,n){
@@ -2757,12 +2930,14 @@ function addCare(cid){
   openSheet("記一筆聯繫", `
     ${dateFieldHtml("careDate", todayISO(), "日期")}
     <div class="field"><label>聯繫內容</label><textarea id="careNote" placeholder="例：電話關懷，提醒車險到期，客戶詢問醫療險加保…"></textarea></div>
+    ${tempPickerHtml("careTemp", "")}
     <button class="btn green full" onclick="saveCare('${cid}')">儲存紀錄</button>`);
 }
 function saveCare(cid){
   const c=DB.clients.find(x=>x.id===cid); if(!c) return;
   const note=$("#careNote").value.trim(); if(!note){ toast("請填寫內容","warn"); return; }
-  c.careLog.push({date:$("#careDate").value||todayISO(), note});
+  const temp=($("#careTemp_val")||{}).value||"";
+  c.careLog.push({date:$("#careDate").value||todayISO(), note, temp});
   commit(); openDetail(cid); toast("已記錄");
 }
 function addClaim(cid){
@@ -3012,6 +3187,7 @@ let editingPolicies=[];
 let editFormOpen=false;
 let editingTags=[];
 let editingReferrerId="", editingReferrerName="";
+let editingGradeAuto=true;
 function editClient(id, prefill){
   const c = id? DB.clients.find(x=>x.id===id) : null;
   const src = c || prefill || null;
@@ -3021,6 +3197,7 @@ function editClient(id, prefill){
   editingReferrerName = (src && src.referrerName) || "";
   const v=(k,d="")=>src?esc(src[k]??d):d;
   const grade=src?(src.grade||""):"";
+  editingGradeAuto = src? (src.gradeAuto!==false) : true;
   const step=(src&&src.sopStep)?src.sopStep:1;
 
   const gradeBtns=["A","B","C","D",""].map(g=>{
@@ -3076,9 +3253,13 @@ function editClient(id, prefill){
       </details>
     </div>
 
-    <div class="formsec">客戶分級</div>
+    <div class="formsec">客戶分級（貢獻度）</div>
     <input type="hidden" id="edGrade" value="${grade}">
     <div class="gradepick">${gradeBtns}</div>
+    <div class="gradedefs">
+      ${["A","B","C","D"].map(g=>`<div><b>${g}</b>${esc((DB.meta.gradeDefs||DEFAULT_GRADE_DEFS)[g])}</div>`).join("")}
+    </div>
+    <div class="gradeauto" id="gradeAutoRow">${gradeAutoRowHtml()}</div>
 
     <div class="formsec">SOP 目前階段</div>
     <input type="hidden" id="edStep" value="${step}">
@@ -3112,7 +3293,19 @@ function toggleGiftOtherInput(checked){ const el=$("#edGiftOtherText"); if(el) e
 function pickGrade(btn,g){
   document.querySelectorAll(".gradepick button").forEach(b=>b.className="");
   btn.className=`sel s-${g||"none"}`; $("#edGrade").value=g;
+  editingGradeAuto=false;
+  renderGradeAutoRow();
 }
+function releaseGradeAuto(){
+  editingGradeAuto=true;
+  renderGradeAutoRow();
+}
+function gradeAutoRowHtml(){
+  return editingGradeAuto
+    ? `<span class="gaTag auto">🔄 系統自動判定</span>`
+    : `<span class="gaTag manual">✋ 手動設定，不會被自動覆蓋</span><button type="button" class="tmbtn" onclick="releaseGradeAuto()">改回自動判定</button>`;
+}
+function renderGradeAutoRow(){ const el=$("#gradeAutoRow"); if(el) el.innerHTML=gradeAutoRowHtml(); }
 function pickStep(btn,n){
   $("#edStep").value=n;
   document.querySelectorAll(".soppick button").forEach(b=>{ const bn=+b.dataset.n; b.className= bn<n?"done":bn===n?"cur":""; });
@@ -3428,7 +3621,7 @@ function saveClient(auto){
     email:($("#edEmail")||{}).value?.trim()||"", address:($("#edAddr")||{}).value?.trim()||"",
     tags: editingTags.slice(),
     referrerId: editingReferrerId||"", referrerName: editingReferrerId?"":(editingReferrerName||""),
-    grade:$("#edGrade").value, sopStep:+$("#edStep").value||1,
+    grade:$("#edGrade").value, gradeAuto:editingGradeAuto, sopStep:+$("#edStep").value||1,
     needs:$("#edNeeds").value.trim(), notes:$("#edNotes").value.trim(),
     giftDesk:!!($("#edGiftDesk")||{}).checked, giftWall:!!($("#edGiftWall")||{}).checked,
     giftOther:!!($("#edGiftOther")||{}).checked,
