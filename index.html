@@ -807,6 +807,40 @@ function nextPaymentDate(startISO, freq){
   return cand.toLocaleDateString("sv");
 }
 function numVal(s){ return parseFloat(String(s||"").replace(/[, ]/g,""))||0; }
+function parseYearsNum(str){
+  if(!str) return null;
+  const m=String(str).match(/(\d+(?:\.\d+)?)/);
+  return m? parseFloat(m[1]) : null;
+}
+function addYearsISO(dateISO, years){
+  if(!dateISO || years==null || isNaN(years)) return "";
+  const d=new Date(dateISO+"T00:00:00");
+  if(isNaN(d.getTime())) return "";
+  const whole=Math.floor(years);
+  const fracMonths=Math.round((years-whole)*12);
+  d.setFullYear(d.getFullYear()+whole);
+  if(fracMonths) d.setMonth(d.getMonth()+fracMonths);
+  return d.toLocaleDateString("sv");
+}
+function activeRiders(p){
+  return (p.riders||[]).filter(r=>(r.name||"").trim()||(r.coverage||"").trim()||(r.premium||"").trim()||(r.term||"").trim());
+}
+function policyPaymentCutoffISO(p){
+  // null = 永續（有1年期附約，持續顯示下次繳費日）；"" = 無法判斷（不設限）；否則為實際截止日
+  const riders=activeRiders(p);
+  if(!riders.length) return p.maturityDate || "";
+  const hasPerpetual=riders.some(r=>{ const y=parseYearsNum(r.term); return y!=null && Math.abs(y-1)<0.01; });
+  if(hasPerpetual) return null;
+  let maxYears=parseYearsNum(p.term)||0;
+  riders.forEach(r=>{ const y=parseYearsNum(r.term); if(y!=null && y>maxYears) maxYears=y; });
+  if(p.startDate && maxYears>0) return addYearsISO(p.startDate, maxYears);
+  return p.maturityDate || "";
+}
+function policyPaymentActive(p){
+  const cutoff=policyPaymentCutoffISO(p);
+  if(cutoff===null || !cutoff) return true;
+  return todayISO()<=cutoff;
+}
 const POLICY_COMPANIES = ["國泰人壽","富邦人壽","南山人壽","新光人壽","凱基人壽","台灣人壽","三商美邦人壽","全球人壽","遠雄人壽","保誠人壽","宏泰人壽","安聯人壽","元大人壽","第一金人壽","合作金庫人壽","安達國際人壽","友邦人壽","法國巴黎人壽","臺銀人壽","中華郵政（簡易壽險）"];
 
 /* ============ state ============ */
@@ -976,7 +1010,7 @@ function viewServicing(){
     </div>
     <div class="info">
       <h3>📋 團險批次續約</h3>
-      <p>整批更新同一個團險專案底下的投保日／滿期日／繳費日（保費可選填一起調整），適合每年續約時使用。</p>
+      <p>整批更新同一個團險專案底下的投保日／主約繳費滿期日／繳費日（保費可選填一起調整），適合每年續約時使用。</p>
       <div class="field"><label>① 選擇團險專案</label>
         <select id="grProject" onchange="grPickProject(this.value)">
           <option value="">選擇專案</option>
@@ -1157,7 +1191,7 @@ function grFormHtml(){
   return `<div class="field" style="margin-top:16px;margin-bottom:0"><label>③ 這次要套用的新資料（可留空＝不變動）</label></div>
     <div class="row2">
       ${dateFieldHtml("grStartDate","","新投保日")}
-      ${dateFieldHtml("grMaturityDate","","新滿期日")}
+      ${dateFieldHtml("grMaturityDate","","新主約繳費滿期日")}
     </div>
     ${dateFieldHtml("grPaymentDate","","新繳費日")}
     <div class="field"><label>新主約保費（選填）</label><input id="grPremium" inputmode="numeric" placeholder="留空表示不變動"></div>
@@ -1172,7 +1206,7 @@ function grPreview(){
   grPending={startDate,maturityDate,paymentDate,premium};
   const changes=[];
   if(startDate) changes.push(`投保日 → ${esc(fmtDate(startDate))}`);
-  if(maturityDate) changes.push(`滿期日 → ${esc(fmtDate(maturityDate))}`);
+  if(maturityDate) changes.push(`主約繳費滿期日 → ${esc(fmtDate(maturityDate))}`);
   if(paymentDate) changes.push(`繳費日 → ${esc(fmtDate(paymentDate))}`);
   if(premium) changes.push(`主約保費 → ${esc(premium)}`);
   openSheet("確認批次續約", `
@@ -1213,7 +1247,7 @@ function groupRenewalLogHtml(){
   return log.map(x=>{
     const changes=[];
     if(x.startDate) changes.push(`投保日 ${fmtDate(x.startDate)}`);
-    if(x.maturityDate) changes.push(`滿期日 ${fmtDate(x.maturityDate)}`);
+    if(x.maturityDate) changes.push(`主約繳費滿期日 ${fmtDate(x.maturityDate)}`);
     if(x.paymentDate) changes.push(`繳費日 ${fmtDate(x.paymentDate)}`);
     if(x.premium) changes.push(`保費 ${esc(x.premium)}`);
     return `<div style="cursor:pointer" onclick="viewGroupRenewalLog('${x.id}')">
@@ -1226,7 +1260,7 @@ function viewGroupRenewalLog(id){
   const x=(DB.groupRenewalLog||[]).find(y=>y.id===id); if(!x) return;
   const changes=[];
   if(x.startDate) changes.push(`投保日 → ${esc(fmtDate(x.startDate))}`);
-  if(x.maturityDate) changes.push(`滿期日 → ${esc(fmtDate(x.maturityDate))}`);
+  if(x.maturityDate) changes.push(`主約繳費滿期日 → ${esc(fmtDate(x.maturityDate))}`);
   if(x.paymentDate) changes.push(`繳費日 → ${esc(fmtDate(x.paymentDate))}`);
   if(x.premium) changes.push(`主約保費 → ${esc(x.premium)}`);
   openSheet("批次續約紀錄", `
@@ -1727,7 +1761,7 @@ function autoReminders(c){
   if(bmd){ const d=nextOccur(bmd); if(d) out.push({date:d, type:"bday", title:"生日關懷", who:c.name, clientId:c.id, auto:true}); }
   (c.policies||[]).forEach(p=>{
     const payMd = mdFromISO(p.paymentDate)||mdFromISO(p.startDate);
-    if(payMd){ const d=nextOccur(payMd); if(d) out.push({date:d, type:"pay", title:`${p.mainName||"保單"} 繳費／周年`, who:c.name, clientId:c.id, auto:true}); }
+    if(payMd && policyPaymentActive(p)){ const d=nextOccur(payMd); if(d) out.push({date:d, type:"pay", title:`${p.mainName||"保單"} 繳費／周年`, who:c.name, clientId:c.id, auto:true}); }
     if(p.maturityDate && p.maturityDate>=todayISO()){
       out.push({date:p.maturityDate, type:"mat", title:`${p.mainName||"保單"} 滿期`, who:c.name, clientId:c.id, auto:true});
     }
@@ -1750,7 +1784,7 @@ function eventsInMonth(y, m0){  // m0: 0-11
     if(b && b.slice(0,2)===mm) ev.push({date:`${y}-${b}`, type:"bday", title:"生日", who:c.name, clientId:c.id});
     (c.policies||[]).forEach(p=>{
       const payMd=mdFromISO(p.paymentDate)||mdFromISO(p.startDate);
-      if(payMd && payMd.slice(0,2)===mm) ev.push({date:`${y}-${payMd}`, type:"pay", title:`${p.mainName||"保單"} 繳費／周年`, who:c.name, clientId:c.id});
+      if(payMd && payMd.slice(0,2)===mm && policyPaymentActive(p)) ev.push({date:`${y}-${payMd}`, type:"pay", title:`${p.mainName||"保單"} 繳費／周年`, who:c.name, clientId:c.id});
       if(p.maturityDate){ const a=p.maturityDate.split("-"); if(+a[0]===y && a[1]===mm) ev.push({date:p.maturityDate, type:"mat", title:`${p.mainName||"保單"} 滿期`, who:c.name, clientId:c.id}); }
     });
     (c.reminders||[]).filter(r=>!r.done && r.date).forEach(r=>{ const a=r.date.split("-"); if(+a[0]===y && a[1]===mm) ev.push({date:r.date, type:r.kind||"manual", title:r.title, who:c.name, clientId:c.id, id:r.id, note:r.note}); });
@@ -2379,6 +2413,7 @@ function viewGuide(){
       ${["A","B","C","D"].map(g=>`<div style="font-size:12.5px;color:var(--muted);line-height:1.6"><b style="color:var(--ink);font-family:var(--mono)">${g}</b>　${esc((DB.meta.gradeDefs||DEFAULT_GRADE_DEFS)[g])}</div>`).join("")}
     </div>
     <button class="btn green full" onclick="openGradeDefEditor()">✏️ 編輯分級定義</button>
+    <button class="btn ghost full" style="margin-top:10px" onclick="resetAllGradesToAuto()">🔄 全部客戶改為系統自動判定</button>
   </div>
   <div class="info">
     <h3>🏷️ 標籤整理</h3>
@@ -2498,7 +2533,7 @@ function viewManual(){
   ${sec("📋","保單管理","每張保單可以記錄主約、附約、日期、金額等完整資訊。",[
     "客戶編輯畫面拉到「保單」區塊，按「＋ 新增保單」。",
     "依序填：規劃分類、保險公司、繳別（年繳／半年繳／季繳／月繳／躉繳）；「總保費」是系統自動加總主約＋附約，不用手動填。",
-    "投保日、滿期日直接填；繳費日系統會依投保日＋繳別自動算出下一期日期，也可以手動調整覆蓋。",
+    "投保日直接填；主約繳費滿期日系統會依投保日＋主約年期自動換算，也可以手動調整覆蓋；繳費日系統會依投保日＋繳別自動算出下一期日期。",
     "主約名稱、保單號碼、保額、年期照實際保單填寫；如果被保險人不是要保人本人（例如幫家人保），填「被保險人」跟「與要保人關係」。",
     "附約按「＋附約」逐筆新增，一樣有保額、保費、年期。",
     "最下面「保單特別記事」可以記錄這張保單需要留意的事項。",
@@ -2514,7 +2549,7 @@ function viewManual(){
     "每筆變更都會記錄在頁面下方「要保人變更紀錄」，點任一筆可以編輯日期備註或刪除。",
     "【團險批次續約】：保單先在編輯畫面填上「團險專案」名稱（或先到「工具」頁用「補標籤」工具一次歸類舊資料）。",
     "回到「保全」頁「團險批次續約」，選專案，系統會列出這個專案底下所有保單，預設全部勾選，可以取消勾選不續保的人。",
-    "填這次要套用的新投保日／滿期日／繳費日／保費（都可留空表示不變動），按「確認批次續約」，會先給你異動摘要確認過才真的執行。",
+    "填這次要套用的新投保日／主約繳費滿期日／繳費日／保費（都可留空表示不變動），按「確認批次續約」，會先給你異動摘要確認過才真的執行。",
     "執行完的紀錄留在「團險批次續約紀錄」，方便日後查核。",
   ])}
   ${sec("🎁","年度製作物","記錄客戶要準備桌曆、月曆或其他製作物，方便統計要準備的數量。",[
@@ -2576,6 +2611,22 @@ function resetGradeDefs(){
   DB.meta.gradeDefs = Object.assign({}, DEFAULT_GRADE_DEFS);
   commit(); closeSheet();
   toast("已恢復預設分級定義");
+  render();
+}
+function resetAllGradesToAuto(){
+  openSheet("全部改為系統自動判定", `
+    <p style="font-size:14px;line-height:1.7">確定要把「所有客戶」的分級都改回系統自動判定嗎？目前手動設定過的分級也會一併被系統重新計算覆蓋。之後你仍可以隨時針對個別客戶手動調整分級。</p>
+    <div class="btnrow" style="margin-top:16px">
+      <button class="btn ghost" onclick="closeSheet()">取消</button>
+      <button class="btn green" onclick="doResetAllGradesToAuto()">確定全部改為自動</button>
+    </div>
+  `);
+}
+function doResetAllGradesToAuto(){
+  DB.clients.forEach(c=>{ c.gradeAuto=true; });
+  const n=DB.clients.length;
+  commit(); closeSheet();
+  toast(`已將 ${n} 位客戶改為系統自動判定`);
   render();
 }
 function openSopEditor(){
@@ -2659,7 +2710,7 @@ function openDetail(id){
     <span class="v">${p.totalPremium?esc(p.totalPremium)+" 元":(p.premium?esc(p.premium)+" 元":"")}</span></div>
     ${p.insured?`<div style="font-size:12px;color:var(--amber);font-weight:700;padding:2px 0 4px">🧍 被保險人：${esc(p.insured)}${p.insuredRel?`（${esc(p.insuredRel)}）`:""}</div>`:""}
     <div style="font-size:12px;color:var(--muted);padding:0 0 ${(p.riders&&p.riders.length)?"6px":"8px"};${(p.riders&&p.riders.length)?"":"border-bottom:1px solid var(--line-2)"}">
-      ${p.policyNo?"No. "+esc(p.policyNo)+"　":""}${p.company?esc(p.company)+" ・ ":""}${p.payFreq?esc(p.payFreq)+" ・ ":""}${p.coverage?"保額 "+esc(p.coverage)+" ・ ":""}${p.term?esc(p.term)+" ・ ":""}${p.startDate?"投保 "+fmtDate(p.startDate):""}${p.paymentDate?" ・ 繳費 "+fmtDate(p.paymentDate):""}${p.maturityDate?" ・ 滿期 "+fmtDate(p.maturityDate):""}
+      ${p.policyNo?"No. "+esc(p.policyNo)+"　":""}${p.company?esc(p.company)+" ・ ":""}${p.payFreq?esc(p.payFreq)+" ・ ":""}${p.coverage?"保額 "+esc(p.coverage)+" ・ ":""}${p.term?esc(p.term)+" ・ ":""}${p.startDate?"投保 "+fmtDate(p.startDate):""}${(p.paymentDate&&policyPaymentActive(p))?" ・ 繳費 "+fmtDate(p.paymentDate):""}${p.maturityDate?" ・ 主約繳費滿期 "+fmtDate(p.maturityDate):""}
     </div>
     ${(p.riders&&p.riders.length)?`<div class="riderlist">${p.riders.map(r=>`<div class="rideritem"><span>↳ ${esc(r.name||"附約")}</span><span class="rc">${[r.coverage?"保額 "+esc(r.coverage):"", r.premium?"保費 "+esc(r.premium):"", r.term?esc(r.term):""].filter(Boolean).join("　")}</span></div>`).join("")}</div>`:""}
     ${p.notes?`<div style="font-size:12px;color:var(--muted);padding:6px 0 8px;border-bottom:1px solid var(--line-2)">📝 ${esc(p.notes)}</div>`:""}`).join("") : `<div style="color:var(--faint);font-size:13px">尚無保單紀錄</div>`;
@@ -3535,7 +3586,7 @@ function renderPolicyRows(){
       </div>
       <div class="row2">
         ${dateFieldHtml(`pol_${i}_startDate`, p.startDate||"", "投保日", `polSet(${i},'startDate',this.value)`)}
-        ${dateFieldHtml(`pol_${i}_maturityDate`, p.maturityDate||"", "滿期日", `polSet(${i},'maturityDate',this.value)`)}
+        ${dateFieldHtml(`pol_${i}_maturityDate`, p.maturityDate||"", "主約繳費滿期日", `polSet(${i},'maturityDate',this.value)`)}
       </div>
       ${dateFieldHtml(`pol_${i}_paymentDate`, p.paymentDate||"", "繳費日", `polSet(${i},'paymentDate',this.value)`, "系統依投保日＋繳別自動推算下次繳費日，也可手動調整")}
       <div class="field" style="margin-bottom:10px"><label>主約名稱</label><input value="${esc(p.mainName||"")}" oninput="polSet(${i},'mainName',this.value)" placeholder="例：終身醫療"></div>
@@ -3587,9 +3638,20 @@ function rmRider(i,ri){ if(editingPolicies[i]&&editingPolicies[i].riders){ editi
 function riderSet(i,ri,k,v){ const p=editingPolicies[i]; if(p&&p.riders&&p.riders[ri]){ p.riders[ri][k]=v; if(k==="premium") polRecalcTotal(i); } }
 function addPolicyRow(){ editingPolicies.push({id:uid(),mainName:"",policyNo:"",category:"",company:"",groupProject:"",premium:"",totalPremium:"",payFreq:"",insured:"",insuredRel:"",coverage:"",term:"",startDate:"",paymentDate:"",maturityDate:"",notes:"",riders:[]}); renderPolicyRows(); }
 function rmPolicy(i){ editingPolicies.splice(i,1); renderPolicyRows(); }
+function polRecalcMaturity(i){
+  const p=editingPolicies[i]; if(!p) return;
+  const years=parseYearsNum(p.term);
+  if(p.startDate && years!=null){
+    p.maturityDate=addYearsISO(p.startDate, years);
+    const hidden=$(`#pol_${i}_maturityDate`), disp=$(`#pol_${i}_maturityDate_disp`);
+    if(hidden) hidden.value=p.maturityDate;
+    if(disp) disp.value=isoToDisp(p.maturityDate);
+  }
+}
 function polSet(i,k,v){
   const p=editingPolicies[i]; if(!p) return;
   p[k]=v;
+  if(k==="startDate"||k==="term"){ polRecalcMaturity(i); }
   if(k==="startDate"||k==="payFreq"){
     p.paymentDate = nextPaymentDate(p.startDate, p.payFreq);
     const hidden=$(`#pol_${i}_paymentDate`), disp=$(`#pol_${i}_paymentDate_disp`);
