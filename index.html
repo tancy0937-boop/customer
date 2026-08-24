@@ -841,6 +841,14 @@ function policyPaymentActive(p){
   if(cutoff===null || !cutoff) return true;
   return todayISO()<=cutoff;
 }
+function sortPoliciesByStart(policies){
+  return (policies||[]).slice().sort((a,b)=>{
+    if(!a.startDate && !b.startDate) return 0;
+    if(!a.startDate) return 1;
+    if(!b.startDate) return -1;
+    return a.startDate<b.startDate?-1:a.startDate>b.startDate?1:0;
+  });
+}
 const POLICY_COMPANIES = ["國泰人壽","富邦人壽","南山人壽","新光人壽","凱基人壽","台灣人壽","三商美邦人壽","全球人壽","遠雄人壽","保誠人壽","宏泰人壽","安聯人壽","元大人壽","第一金人壽","合作金庫人壽","安達國際人壽","友邦人壽","法國巴黎人壽","臺銀人壽","中華郵政（簡易壽險）"];
 
 /* ============ state ============ */
@@ -2705,7 +2713,7 @@ function openDetail(id){
     </div>`;
   }).join("");
 
-  const policies=(c.policies||[]).length? c.policies.map(p=>`
+  const policies=(c.policies||[]).length? sortPoliciesByStart(c.policies).map(p=>`
     <div class="kv"><span class="k">${esc(p.mainName||"保單")}${p.category?` ・${esc(p.category)}`:""}</span>
     <span class="v">${p.totalPremium?esc(p.totalPremium)+" 元":(p.premium?esc(p.premium)+" 元":"")}</span></div>
     ${p.insured?`<div style="font-size:12px;color:var(--amber);font-weight:700;padding:2px 0 4px">🧍 被保險人：${esc(p.insured)}${p.insuredRel?`（${esc(p.insuredRel)}）`:""}</div>`:""}
@@ -3242,7 +3250,7 @@ let editingGradeAuto=true;
 function editClient(id, prefill){
   const c = id? DB.clients.find(x=>x.id===id) : null;
   const src = c || prefill || null;
-  editingPolicies = (src && src.policies)? JSON.parse(JSON.stringify(src.policies)) : [];
+  editingPolicies = (src && src.policies)? sortPoliciesByStart(JSON.parse(JSON.stringify(src.policies))) : [];
   editingTags = (src && Array.isArray(src.tags)) ? src.tags.slice() : (src && src.region ? [src.region] : []);
   editingReferrerId = (src && src.referrerId) || "";
   editingReferrerName = (src && src.referrerName) || "";
