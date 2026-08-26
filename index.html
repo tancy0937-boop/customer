@@ -506,6 +506,7 @@ textarea.raw{width:100%;min-height:160px;font-family:var(--mono);font-size:12px;
 .kcard.temp-ice{background:#E8F1FB;border-color:#6FA8DC}
 .kcard.temp-frozen{background:#EDEBFA;border-color:#8C7FC9}
 .ktemp{margin-left:auto;font-size:13px}
+.kmatured{display:inline-block;background:#F2E2BE;color:#7a5410;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin:0 0 5px 4px}
 .kghost{position:fixed;z-index:90;pointer-events:none;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--shadow-lg);cursor:grabbing;margin:0}
 .kempty{color:var(--faint);font-size:12px;text-align:center;padding:18px 6px;border:1px dashed var(--line);border-radius:10px}
 .boardhint{font-size:12px;color:var(--muted);margin:10px 2px 0;display:flex;align-items:center;gap:7px}
@@ -1993,12 +1994,17 @@ function referralLeaderboardHtml(){
     </div>
   </div>`;
 }
+function hasMaturedPolicy(c){
+  return (c.policies||[]).some(p=>p.maturityDate && !policyPaymentActive(p));
+}
 function boardCard(c){
   const g=c.grade||""; const gc=g?("g-"+g):"g-none";
   const temp=currentTemp(c);
   const td=temp?TEMP_DEFS[temp]:null;
+  const matured=hasMaturedPolicy(c);
   return `<div class="kcard ${temp?"temp-"+temp:""}" data-id="${c.id}" data-step="${c.sopStep||1}">
     <div class="edge ${gc}"></div>
+    ${matured?`<div class="kmatured">💰 有保單滿期，可活化</div>`:""}
     <h4>${esc(c.name||"未命名")} <span class="gradebadge ${gc}" style="width:18px;height:18px;font-size:10px;border-radius:6px">${g||"–"}</span>${td?`<span class="ktemp" title="${td.label}">${td.icon}</span>`:""}</h4>
   </div>`;
 }
